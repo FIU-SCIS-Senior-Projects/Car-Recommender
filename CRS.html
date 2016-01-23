@@ -1,0 +1,153 @@
+<head>
+  <title>CRS</title>
+</head>
+
+
+<body>
+  {{#if loggingIn}}
+    <p>Loading...</p>
+  {{else}}
+    {{#if currentUser}}
+       <!-- user log out option template  -->
+       {{> dashboard}}       
+
+    {{else}}
+    {{> htmltables}}<!--tables and forms including the registration and the log in forms-->
+    {{/if}}
+  {{/if}}
+</body>
+
+<!-- HTML body-->
+<template name="htmltables">
+<div class="top-content">
+
+    <div class="inner-bg">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text">
+                    <h1 align="center"> Login &amp; Register</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+
+                        <div class="form-box">
+                                <div class="form-top">
+                                   <div class="form-top-left">
+                                      <h3>Login to our site</h3>
+                                       <p>Enter email and password to log on:</p>
+                                     </div>
+                                     <div class="form-top-right">
+                                      <i class="fa fa-key"></i>
+                                      </div>
+                                </div>
+                                <div class="form-bottom">
+                                <!-- log in template  -->
+                                {{>login}}
+                                </div>
+                        </div>
+
+                </div>
+
+                <div class="col-sm-1 middle-border"></div>
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-5">
+
+                        <div class="form-box">
+                                <div class="form-top">
+                                        <div class="form-top-left">
+                                                <h3>Sign up now</h3>
+                                        <p>Fill in the form below to get instant access:</p>
+                                        </div>
+                                        <div class="form-top-right">
+                                                <i class="fa fa-pencil"></i>
+                                        </div>
+                            </div>
+                            <div class="form-bottom">
+                              <!-- registration template  -->
+                                {{>register}}
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</template>
+
+<!-- registration template  -->
+<template name="register">
+    <form data-toggle="validator" role="form">
+      <div class="form-group">
+        <label class="sr-only" for="form-useremail">email</label>
+        <input type="email" name="registerEmail" placeholder="email..." class="form-email form-control" id="form-email" data-error="address is invalid" required>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="form-passwoard">password</label>
+        <input type="password" name="registerPassword" placeholder="password.." class="form-password form-control" id="form-password" minlength="6" maxlength="20" required>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="form-passwoard">First name</label>
+        <input type="text" name="registerFirstName" placeholder="First name..." class="form-first-name form-control" id="form-first-name" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="form-passwoard">Last name</label>
+        <input type="text" name="registerLastName" placeholder="Last name..." class="form-last-name form-control" id="form-last-name" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="form-passwoard">phone</label>
+        <input type="tel" name="registerPhoneNum" placeholder="phone number..." class="form-phone form-control" id="form-phone" pattern="^[0-9 ]+$" maxlength="20" required>
+      </div>
+        <input type="submit" value="Register">
+    </form>
+</template>
+
+<!-- loging template  -->
+<template name="login">
+    <form data-toggle="validator" role="form">
+        <div class="form-group">
+          <label class="sr-only" for="form-useremail">email</label>                
+          <input type="email" name="loginEmail" placeholder="email..." class="form-useremail form-control" id="form-useremail" >
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="form-password">Password</label>
+          <input type="password" name="loginPassword" placeholder="Password..." class="form-password form-control" id="form-password" >
+      </div>
+        <input type="submit" value="Login">
+    </form>
+</template>
+
+<!-- current user  -->
+<template name="dashboard">
+  <!--
+    <p>You're logged in.</p>
+    <p><a href="#" class="logout">Logout</a></p>
+  -->
+    <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h3 class="text-muted">Social Platform</h3>
+        <nav>
+          <ul class="nav nav-justified">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Favorites</a></li>
+            <li><a href="#">Sell</a></li>            
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#" class="logout">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+</template>
+
+
