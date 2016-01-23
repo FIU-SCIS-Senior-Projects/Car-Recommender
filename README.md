@@ -7,3 +7,8 @@ Bootstrap
 mongodb
 
 The goal of this project is to ceate a socail selling car platform, with simmilar funcationality as Pandora(content base recomandation)
+
+
+to see the website
+please go to
+http://carrecomandationsystem.meteor.com/
