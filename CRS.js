@@ -35,7 +35,10 @@ Session.set("enemyLogOut", "Fill in the form below to get instant access:");
           if(err)
             Session.set("enemyLogOut", "Error, email is allready taken");
           else
+           { 
             Session.set("enemyLogOut", "Fill in the form below to get instant access:");
+            Session.set("enemyLogIn", "Enter email and password to log on");
+          }
         }
         );
     }
@@ -55,6 +58,7 @@ Session.set("enemyLogOut", "Fill in the form below to get instant access:");
           else
           {
             Session.set("enemyLogIn", "Enter email and password to log on");
+            Session.set("enemyLogOut", "Fill in the form below to get instant access:");
           }
 
          
