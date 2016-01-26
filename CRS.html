@@ -1,5 +1,5 @@
 <head>
-  <title>CRS</title>
+  <title>Car recomandation System</title>
 </head>
 
 
@@ -17,8 +17,16 @@
   {{/if}}
 </body>
 
+<!-- Templates for the body, the templates are
+htmltables  -) puting the login and the registration forms side by side, this template inside the body
+register    -) registration form , which is inside the htmltables
+login       -) login form, which is inside the htmltables
+dashboard   -) is a menu for a regstered user, its inside the body
+
+-->
+
 <!-- HTML body-->
-<template name="htmltables">
+<template name="htmltables"><!--Making the tables side by side-->
 <div class="top-content">
 
     <div class="inner-bg">
@@ -31,13 +39,13 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-5"><!--Login form-->
 
                         <div class="form-box">
                                 <div class="form-top">
                                    <div class="form-top-left">
                                       <h3>Login to our site</h3>
-                                       <p>{{LogError}}</p>
+                                       <p>{{LogError}}</p><!--message for user, in case he made incorrect submission-->
                                      </div>
                                      <div class="form-top-right">
                                       <i class="fa fa-key"></i>
@@ -54,18 +62,18 @@
                 <div class="col-sm-1 middle-border"></div>
                 <div class="col-sm-1"></div>
 
-                <div class="col-sm-5">
+                <div class="col-sm-5"><!--Registration form-->
 
                         <div class="form-box">
                                 <div class="form-top">
                                         <div class="form-top-left">
                                                 <h3>Sign up now</h3>
-                                        <p>{{LogOutError}}</p>
+                                        <p>{{LogOutError}}</p><!--message for user, in case he made incorrect submission-->
                                         </div>
                                         <div class="form-top-right">
                                                 <i class="fa fa-pencil"></i>
                                         </div>
-                            </div>
+                                </div>
                             <div class="form-bottom">
                               <!-- registration template  -->
                                 {{>register}}
@@ -93,15 +101,23 @@
         <input type="password" name="registerPassword" placeholder="password.." class="form-password form-control" id="form-password" minlength="6" maxlength="20" required>
       </div>
       <div class="form-group">
-        <label class="sr-only" for="form-passwoard">First name</label>
-        <input type="text" name="registerFirstName" placeholder="First name..." class="form-first-name form-control" id="form-first-name" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+        <label class="sr-only" for="form-fullname">Full name</label>
+        <input type="text" name="registerFullName" placeholder="Full name..." class="form-full-name form-control" id="form-full-name" pattern="^[a-zA-Z ]+$"  maxlength="40" required>
       </div>
       <div class="form-group">
-        <label class="sr-only" for="form-passwoard">Last name</label>
-        <input type="text" name="registerLastName" placeholder="Last name..." class="form-last-name form-control" id="form-last-name" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+        <label class="sr-only" for="form-adress">Address</label>
+        <input type="text" name="registerAddress" placeholder="Address..." class="form-address form-control" id="form-address" maxlength="300" required>
       </div>
       <div class="form-group">
-        <label class="sr-only" for="form-passwoard">phone</label>
+        <label class="sr-only" for="form-state">State</label>
+        <input type="text" name="registerState" placeholder="State..." class="form-state form-control" id="form-state" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+      </div>
+       <div class="form-group">
+        <label class="sr-only" for="form-zipcode">Zip Code</label>
+        <input type="text" name="registerZipCode" placeholder="Zip Code..." class="form-zipcode form-control" id="form-zipcode" pattern="^[0-9 ]+$" maxlength="35" required>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="form-phone">phone</label>
         <input type="tel" name="registerPhoneNum" placeholder="phone number..." class="form-phone form-control" id="form-phone" pattern="^[0-9 ]+$" maxlength="20" required>
       </div>
         <input type="submit" value="Register">
@@ -125,10 +141,6 @@
 
 <!-- current user  -->
 <template name="dashboard">
-  <!--
-    <p>You're logged in.</p>
-    <p><a href="#" class="logout">Logout</a></p>
-  -->
     <div class="container">
 
       <!-- The justified navigation menu is meant for single line per list item.
