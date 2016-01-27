@@ -1,3 +1,16 @@
+
+//routers
+Router.configure({
+    layoutTemplate: 'main'
+});
+Router.route('/RecoverPassword');
+Router.route('/', {
+    template: 'login'
+});
+Router.route('/register');
+Router.route('/dashboard');
+
+//client side
 if (Meteor.isClient) {
 
 	Session.set("enemyLogIn", "Enter email and password to log on");
@@ -126,15 +139,10 @@ Template.RecoverPassword.events({
 	
 }
 
-Router.configure({
-    layoutTemplate: 'main'
-});
-Router.route('/RecoverPassword');
-Router.route('/', {
-    template: 'login'
-});
-Router.route('/register');
-Router.route('/dashboard');
 
+if (Meteor.isServer) {
+    // code here will only be run on the server
 
+    
+}
 
