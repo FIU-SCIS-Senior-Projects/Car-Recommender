@@ -1,6 +1,22 @@
 /* CSS declarations go here */
 
 /* Main marketing message and sign up button */
+	
+h1 {
+   	font-family: Script MT;
+}
+
+legend {
+	font-family: Script MT;
+	font-size: 180%;
+}
+	
+form {
+    margin-left: 34%;
+    margin-right:25%;
+    width: 100%;
+}
+
 .jumbotron {
   text-align: center;
   background-color: transparent;

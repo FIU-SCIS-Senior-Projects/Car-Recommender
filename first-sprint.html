@@ -1,0 +1,129 @@
+<template name="main">
+	<h1 align="center">Car Recommendation System</h1>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+	{{#if currentUser}}
+        {{> dashboard}}
+    {{else}}
+	    {{> yield}}
+    {{/if}}
+</body>
+<script>
+	function myFunction() {
+    var pass1 = document.getElementByName("registerPassword").value;
+    var pass2 = document.getElementByName("confirmPassword").value;
+    var ok = true;
+    if (pass1 != pass2) {
+        //alert("Passwords Do not match");
+        document.getElementByName("registerPassword").style.borderColor = "#E34234";
+        document.getElementByName("confirmPassword").style.borderColor = "#E34234";
+        ok = false;
+    }
+    else {
+        alert("Passwords Match!!!");
+    }
+    return ok;
+}
+</script>	
+</template>
+
+
+<template name="register">
+	<form onsubmit="return myFunction()">
+	<div class="col-xs-4">
+		<br>
+		<legend>Registration</legend>
+		<input type="text" name="registerFirstName" placeholder="Enter first name..." class="form-control" required>
+		<br>
+		<input type="text" name="registerLastName" placeholder="Enter last name..." class="form-control" required>
+		<br>
+		<input type="email" name="registerEmail" placeholder="Enter email..." class="form-control" required>
+		<br>
+		<input type="password" name="registerPassword" placeholder="Enter password..." class="form-control">
+		<br>
+		<input type="password" name="confirmPassword" placeholder="Confirm password..." class="form-control">
+		<br>
+		<input type="text" name="registerAddress" placeholder="Enter address..." class="form-control">
+		<br>
+		<input type="text" name="registerState" placeholder="Enter state..." class="form-control">
+		<br>
+		<input type="text" name="registerZip" placeholder="Enter zip code..." class="form-control">
+		<br>
+		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" required>
+	    <br>
+		<input type="submit" value="Register">
+	</div>
+	</form>
+</template>
+
+<template name="login">
+    <form data-toggle="validator" role="form">
+	    <div class="col-xs-4">
+		  <br><br><br>
+		  <legend>Login</legend>
+          <label class="sr-only" for="form-useremail">Email</label>	  
+          <input type="email" name="loginEmail" placeholder="Email..." class="form-useremail form-control" id="form-useremail" ><br>
+		  <label class="sr-only" for="form-password">Password</label>
+          <input type="password" name="loginPassword" placeholder="Password..." class="form-password form-control" id="form-password" >
+		  <br><a href="/RecoverPassword">Forgot your password?</a><br>	
+          <br><input type="submit" value="Login"><br><br>
+		  <a href="/register">Don't have an account yet? Register for free</a>
+		  </div>	
+    </form>
+</template>
+
+<template name="RecoverPassword">  
+  {{#if resetPassword}}
+    <form id="set-new-password">
+	  <div class="col-xs-4">
+	  <br><br><br>	
+	  <legend>Reset Password</legend>	  
+      <label for="new-password">New Password</label>
+      <input type="text" id="new-password" placeholder="Enter new password..." class="form-control">
+	  <br>	
+      <input type="submit" value="Confirm New Password">
+      <p id="form-messages"></p>
+	  </div>	  
+    </form>
+  {{else}}
+    <form id="forgot-password">
+      <div class="col-xs-4">
+	  <br><br><br>	
+	  <legend>Recover Password</legend>	  	  
+      <input type="text" id="user-email" placeholder="Enter email..." class="form-control">
+	  <br>	
+      <input type="submit" value="Get Reset Password Instructions">
+      <p id="form-messages"></p>
+	  </div>	  
+    </form>
+  {{/if}}
+</template>  
+
+
+<template name="dashboard">
+    <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h3 class="text-muted">Social Platform</h3>
+        <nav>
+          <ul class="nav nav-justified">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Favorites</a></li>
+            <li><a href="#">Sell</a></li>            
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#" class="logout">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+</template>
