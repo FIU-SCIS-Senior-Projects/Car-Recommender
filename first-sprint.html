@@ -3,9 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
  {{#if loggingIn}}
@@ -49,6 +47,8 @@
 	<div class="col-xs-4">
 		<br>
 		<legend>Registration</legend>
+
+    <p>{{RegistrationError}}</P>
 		<input type="text" name="registerFirstName" placeholder="Enter first name..." class="form-control" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
 		<br>
 		<input type="text" name="registerLastName" placeholder="Enter last name..." class="form-control" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
@@ -67,7 +67,8 @@
 		<br>
 		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required >
 	    <br>
-		<input type="submit" value="Register">
+		<input type="submit" class="btn btn-primary btn-lg active" value="Register">
+    <a href="/#" class="btn btn-secondary btn-lg active" role="button">back</a>        
 	</div>
 	</form>
 </template>
@@ -77,16 +78,18 @@
 	    <div class="col-xs-4">
 		  <br><br><br>
 		  <legend>Login</legend>
+      <p >{{LogError}}</p>      
+
           <label class="sr-only" for="form-useremail"> Email </label>	  
           <input type="email" name="loginEmail" placeholder="Email..." class="form-control" id="form-useremail" required>
           <br>
 		      <label class="sr-only" for="form-password">Password</label>
           <input type="password" name="loginPassword" placeholder="Password..." class="form-control" id="form-password" required>
 		      <br>
-      <a href="/RecoverPassword">Forgot your password?</a><br>	
+          <input type="submit" class="btn btn-primary btn-lg btn-block" value="Login"><br>
+          <a href="/RecoverPassword">Forgot your password?</a> 
           <br>
-          <input type="submit" value="Login"><br><br>
-		  <a href="/register">Don't have an account yet? Register for free</a>
+		  <a href="/register" >Don't have an account yet? Register for free</a>
 		  </div>	
     </form>
 </template>
@@ -124,8 +127,7 @@
 
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
-      <div class="masthead">
-        <h3 class="text-muted">Social Platform</h3>
+      <div class="masthead">       
         <nav>
           <ul class="nav nav-justified">
             <li class="active"><a href="#">Home</a></li>

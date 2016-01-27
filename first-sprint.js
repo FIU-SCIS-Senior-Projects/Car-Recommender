@@ -13,11 +13,12 @@ Router.route('/dashboard');
 //client side
 if (Meteor.isClient) {
 
-	Session.set("enemyLogIn", "Enter email and password to log on");
-	Session.set("enemyLogOut", "Fill in the form below to get instant access:");
+  //message for login and registration
+	Session.set("enemyLogIn", "");//login
+	Session.set("enemyLogOut", "");//registration
 
     Template.register.events({
-    'submit form': function(event) {
+    'submit form': function(event) {//insert the user name to database
         event.preventDefault();
         var fnameVar = event.target.registerFirstName.value;
 		var lnameVar = event.target.registerLastName.value;
@@ -40,10 +41,25 @@ if (Meteor.isClient) {
 			state: stateVar, 
 			zip: zipVar,
 			telephone: telephoneVar 
-			
+        },
+        function(err)//in case we have error, such as existing user
+        {
+          if(err)//present this message 
+            Session.set("enemyLogOut", "Error, email is allready taken");
+          else
+           { //otherwise, change the message, we succed to store the user
+            Session.set("enemyLogOut", "");
+            Session.set("enemyLogIn", "");
+          }
         });
     }
 });
+Template.register.helpers({//to present the message in the registration page
+  RegistrationError: function()
+  {
+    return Session.get("enemyLogOut");
+  }
+})
 	
 	Template.login.events({//
     'submit form': function(event){//when someone submit hsi login information
@@ -58,8 +74,8 @@ if (Meteor.isClient) {
           }
           else
           {//other wise we succed
-            Session.set("enemyLogIn", "Enter email and password to log on");
-            Session.set("enemyLogOut", "Fill in the form below to get instant access:");
+            Session.set("enemyLogIn", "");
+            Session.set("enemyLogOut", "");
           }
 
          
@@ -67,8 +83,15 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.login.helpers({
+     LogError: function()//show the message for the login error
+    {
+       return Session.get("enemyLogIn");
+     }
+  });
+
 	
-	Template.dashboard.events({
+	Template.dashboard.events({//for the log out page
     'click .logout': function(event){
         event.preventDefault();
         Meteor.logout();
