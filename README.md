@@ -5,6 +5,6 @@
 visit http://crsystem.meteor.com/
 
 Features implemented:
-Login
-Logout
+Login,
+Logout,
 Registration
