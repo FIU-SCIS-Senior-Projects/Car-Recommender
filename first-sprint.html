@@ -67,8 +67,8 @@
 		<br>
 		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required >
 	    <br>
-		<input type="submit" class="btn btn-primary btn-lg active" value="Register">
-    <a href="/#" class="btn btn-secondary btn-lg active" role="button">back</a>        
+		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
+    <a href="/" class="btn btn-secondary btn-lg active" role="button">back</a>        
 	</div>
 	</form>
 </template>
@@ -86,7 +86,7 @@
 		      <label class="sr-only" for="form-password">Password</label>
           <input type="password" name="loginPassword" placeholder="Password..." class="form-control" id="form-password" required>
 		      <br>
-          <input type="submit" class="btn btn-primary btn-lg btn-block" value="Login"><br>
+          <input type="submit" class="btn btn-primary btn-lg btn-block" value="Login" id="submitlogin"><br>
           <a href="/RecoverPassword">Forgot your password?</a> 
           <br>
 		  <a href="/register" >Don't have an account yet? Register for free</a>
@@ -135,7 +135,7 @@
             <li><a href="#">Sell</a></li>            
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
-            <li><a href="#" class="logout">Logout</a></li>
+            <li><a href="" class="logout" id= "logoutmenu">Logout</a></li>
           </ul>
         </nav>
       </div>
