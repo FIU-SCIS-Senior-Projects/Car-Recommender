@@ -57,9 +57,29 @@
 		<br>
 		<input type="email" name="registerEmail" placeholder="Enter email..." class="form-control" required>
 		<br>
-		<input type="password" name="registerPassword" placeholder="Enter password..." class="form-control" minlength="6" maxlength="30" required>
+		<input type="password" id="registerPassword" name="registerPassword" placeholder="Enter password..." class="form-control" minlength="6" maxlength="30" required>
 		<br>
-		<input type="password" name="confirmPassword" placeholder="Confirm password..." class="form-control" minlength="6" maxlength="30" required>
+		<input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password..." onkeyup="checkPass()" class="form-control" minlength="6" maxlength="30" required>
+		<script>
+		function checkPass() 
+		{
+			var password = document.getElementById("registerPassword");
+			var confirm_password = document.getElementById("confirmPassword");
+				function validatePassword()
+				{
+		  			if(password.value != confirm_password.value) 
+					{
+						confirm_password.setCustomValidity("Passwords Don't Match");
+		  			} 
+					else 
+					{
+						confirm_password.setCustomValidity('');
+		  			}
+				}
+			password.onchange = validatePassword;
+			confirm_password.onkeyup = validatePassword;
+		}  
+		</script>	
 		<br>
 		<input type="text" name="registerAddress" placeholder="Enter address..." class="form-control" maxlength="300" required>
 		<br>
