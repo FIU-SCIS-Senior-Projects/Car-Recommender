@@ -166,22 +166,17 @@
 </template>
 
 <template name="home">
-
   <br><br><br>
   <div class="container">
   <div id="carousel-example-generic" class="carousel slide container" data-ride="carousel">
 
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img src="http://placehold.it/700x300" alt="..." class="container">
-      <div class="carousel-caption">
-      <h3>picture</h3>
-      <p>wtf</p>
-      <button type="button" class="btn btn-info btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
-      <button type="button" class="btn btn-warning btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button>
-      </div>
-    </div>   
+   {{> slidercars2}}
+  {{#each cars}}
+        {{> slidercars}}
+  {{/each}}
+  
   </div>
 
   <!-- Controls -->
@@ -195,6 +190,30 @@
   </a>
 </div>
 </div>
+</template>
+
+<template name="slidercars">
+    <div class="item">
+      <img src="{{imgLink}}" alt="..." class="container">
+      <div class="carousel-caption">
+      <h3>Info </h3>
+      <p>Pice:{{price}}</p>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
+      </div>
+    </div> 
+</template>
+
+<template name="slidercars2">
+    <div class="item active">
+      <img src="http://placehold.it/700x300" alt="..." class="container">
+      <div class="carousel-caption">
+      <h3>Info </h3>
+      <p>Pice:</p>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
+      </div>
+    </div> 
 </template>
 
 <template name="favorites">

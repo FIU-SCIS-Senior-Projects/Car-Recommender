@@ -2,14 +2,9 @@
 Router.configure({
     layoutTemplate: 'main'
 });
-
-/*Router.route('/', {
-    template: 'login',    
-});*/
 Router.route('/RecoverPassword');
 Router.route('/register');
 Router.route('/dashboard');
-//Router.route('/home');
 Router.route('/about',function()
   {
     this.render('about', {to: 'aside'});
@@ -24,14 +19,14 @@ Router.route('/sell',function(){
 Router.route('/contact',function(){
   this.render('contact', {to: 'aside'});
 });
-
-
 Router.route('/', function () {
 
     this.render('login');
     this.render('home', {to: 'aside'});
 });
 
+//collections
+Tasks = new Mongo.Collection("tasks");
 
 //client side
 if (Meteor.isClient) {
@@ -134,8 +129,16 @@ if (Meteor.isClient) {
     }
   });
 	
-	   	
+	Template.home.helpers({
+    cars: function()
+    {
+      return Tasks.find({});
+    }
+  });
 	
+
+
+
 	/* client/accounts/recover-password.js */
 
 	// Ensure we have the token to pass into the template when it's present
