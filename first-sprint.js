@@ -119,7 +119,6 @@ if (Meteor.isClient) {
 
 	
 	Template.dashboard.events({//for the log out page
-<<<<<<< HEAD
     'click .logout': function(event){
         event.preventDefault();
         Router.go('/');
@@ -134,13 +133,6 @@ if (Meteor.isClient) {
       return template === currentRoute.lookupTemplate().toLowerCase() ? 'active' : '';
     }
   });
-=======
-		'click .logout': function(event){
-			event.preventDefault();
-			Meteor.logout();
-		}
-	});
->>>>>>> ef80b5887da0a977decde71f9d45b26d2904f909
 	
 	   	
 	
