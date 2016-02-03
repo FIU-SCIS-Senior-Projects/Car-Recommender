@@ -1,14 +1,37 @@
-
 //routers
 Router.configure({
     layoutTemplate: 'main'
 });
+
+/*Router.route('/', {
+    template: 'login',    
+});*/
 Router.route('/RecoverPassword');
-Router.route('/', {
-    template: 'login'
-});
 Router.route('/register');
 Router.route('/dashboard');
+//Router.route('/home');
+Router.route('/about',function()
+  {
+    this.render('about', {to: 'aside'});
+  });
+Router.route('/favorites',function()
+  {
+    this.render('favorites', {to: 'aside'});
+  });
+Router.route('/sell',function(){
+  this.render('sell', {to: 'aside'});
+});
+Router.route('/contact',function(){
+  this.render('contact', {to: 'aside'});
+});
+
+
+Router.route('/', function () {
+
+    this.render('login');
+    this.render('home', {to: 'aside'});
+});
+
 
 //client side
 if (Meteor.isClient) {
@@ -94,9 +117,18 @@ Template.register.helpers({//to present the message in the registration page
 	Template.dashboard.events({//for the log out page
     'click .logout': function(event){
         event.preventDefault();
+        Router.go('/');
         Meteor.logout();
+        
     }
 });
+
+  Template.dashboard.helpers({
+    activeIfTemplateIs: function (template) {
+      var currentRoute = Router.current();            
+      return template === currentRoute.lookupTemplate().toLowerCase() ? 'active' : '';
+    }
+  });
 	
 	   	
 	
