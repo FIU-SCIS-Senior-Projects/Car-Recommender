@@ -166,8 +166,7 @@
 </template>
 
 <template name="home">
-  <br><br><br>
-  <div class="container">
+  <br><br><br>  
   <div id="carousel-example-generic" class="carousel slide container" data-ride="carousel">
 
   <!-- Wrapper for slides -->
@@ -178,7 +177,6 @@
   {{/each}}
   
   </div>
-
   <!-- Controls -->
   <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -189,16 +187,15 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-</div>
 </template>
 
 <template name="slidercars">
     <div class="item">
-      <img src="{{imgLink}}" alt="..." class="container">
-      <div class="carousel-caption">
+      <img src="{{imgLink}}" alt="..." class="container" >
+      <div class="carousel-caption" >
       <h3>Info </h3>
       <p>Pice:{{price}}</p>
-      <button type="button" class="btn btn-info btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-info btn-circle btn-lg " id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
       <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
       </div>
     </div> 
@@ -206,7 +203,7 @@
 
 <template name="slidercars2">
     <div class="item active">
-      <img src="http://placehold.it/700x300" alt="..." class="container">
+      <img src="http://placehold.it/700x300" alt="..." class="container" >
       <div class="carousel-caption">
       <h3>Info </h3>
       <p>Pice:</p>

@@ -102,3 +102,14 @@ form {
   border-radius: 25px;
 }
 
+.carousel{
+    background: #fff;   
+    width: 700px;
+    height: auto;
+}
+
+.img {
+  width: 700px;
+  height: 300px;
+}
+
