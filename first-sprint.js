@@ -34,6 +34,7 @@ if (Meteor.isClient) {
   //message for login and registration
 	Session.set("enemyLogIn", "");//login
 	Session.set("enemyLogOut", "");//registration
+  Session.set('selectedTable', null);//to see if someone clicked the info button
 
     Template.register.events({
     'submit form': function(event) {//insert the user name to database
@@ -136,6 +137,25 @@ if (Meteor.isClient) {
     }
   });
 	
+  Template.slidercars.events({
+    'click #infobutton': function(event)
+    {
+      event.preventDefault();
+      if(!Session.equals('selectedTable', this._id))
+      {
+        Session.set('selectedTable', this._id);
+      }else
+      {
+        Session.set('selectedTable', null);
+      }
+    }
+  });
+
+  Template.slidercars.helpers({
+     selected: function(){
+    return Session.equals('selectedTable', this._id);
+    }
+});
 
 
 

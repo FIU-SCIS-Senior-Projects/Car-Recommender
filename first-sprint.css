@@ -113,3 +113,15 @@ form {
   height: 300px;
 }
 
+/*
+.table {
+    width: 400px;  
+    align-items:center 
+}*/
+
+.carousel-caption {
+    position: relative;
+    left: auto;
+    right: auto;
+}
+

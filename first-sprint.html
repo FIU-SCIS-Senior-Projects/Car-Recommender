@@ -173,7 +173,7 @@
   <div class="carousel-inner" role="listbox">
    {{> slidercars2}}
   {{#each cars}}
-        {{> slidercars}}
+        {{> slidercars}}         
   {{/each}}
   
   </div>
@@ -187,30 +187,83 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
 </template>
 
 <template name="slidercars">
     <div class="item">
-      <img src="{{imgLink}}" alt="..." class="container" >
-      <div class="carousel-caption" >
-      <h3>Info </h3>
+      <img src="{{imgLink}}" alt="..." class="container" >      
+      <div class="carousel-caption" >      
       <p>Pice:{{price}}</p>
       <button type="button" class="btn btn-info btn-circle btn-lg " id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-success btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
       <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
+      {{#if selected}}
+      <div name="zeevtable" class="zeevtable" id="zeevtable">
+      {{>carinfotable}}
+      </div> 
+      {{/if}}     
       </div>
     </div> 
 </template>
 
 <template name="slidercars2">
     <div class="item active">
-      <img src="http://placehold.it/700x300" alt="..." class="container" >
-      <div class="carousel-caption">
-      <h3>Info </h3>
+      <img src="http://placehold.it/700x300" alt="..." class="container" >      
+      <div class="carousel-caption">              
       <p>Pice:</p>
       <button type="button" class="btn btn-info btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-success btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
       <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
       </div>
     </div> 
+</template>
+
+
+<template name="carinfotable">
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>properties</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">price</th>
+      <td>{{price}}</td>
+    </tr>
+    <tr>
+      <th scope="row">make</th>
+      <td>{{make}}</td>
+    </tr>
+    <tr>
+      <th scope="row">model</th>
+      <td>{{model}}</td>
+    </tr>
+    <tr>
+      <th scope="row">year</th>
+      <td>{{year}}</td>
+    </tr>
+    <tr>
+      <th scope="row">style</th>
+      <td>{{style}}</td>
+    </tr>
+    <tr>
+      <th scope="row">color</th>
+      <td>{{color}}</td>
+    </tr>
+    <tr>
+      <th scope="row">engine</th>
+      <td>{{engine}}</td>
+    </tr>
+    <tr>
+      <th scope="row">condition</th>
+      <td>{{condition}}</td>
+    </tr>
+  </tbody>
+</table>
 </template>
 
 <template name="favorites">
