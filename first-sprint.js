@@ -148,6 +148,13 @@ if (Meteor.isClient) {
       {
         Session.set('selectedTable', null);
       }
+    },
+    'click #likebutton': function(event,template)
+    {
+      event.preventDefault;
+//      alert(template.find(('#likebutton')));      
+       template.$('#carpicture').addClass("img-circle");
+
     }
   });
 
