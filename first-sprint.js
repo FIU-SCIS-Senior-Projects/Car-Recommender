@@ -27,6 +27,7 @@ Router.route('/', function () {
 
 //collections
 Tasks = new Mongo.Collection("tasks");
+LikesColllection = new Mongo.Collection("likes-collection");
 
 //client side
 if (Meteor.isClient) {
@@ -34,7 +35,7 @@ if (Meteor.isClient) {
   //message for login and registration
 	Session.set("enemyLogIn", "");//login
 	Session.set("enemyLogOut", "");//registration
-  Session.set('selectedTable', null);//to see if someone clicked the info button
+  Session.set('selectedTable', null);//to see if someone clicked the info button  
 
     Template.register.events({
     'submit form': function(event) {//insert the user name to database
@@ -50,11 +51,11 @@ if (Meteor.isClient) {
 		var telephoneVar = event.target.registerTelephone.value;
 		
 				
-        Accounts.createUser({
-            email: emailVar,
+      Accounts.createUser({
+      email: emailVar,
 			fname: fnameVar,
 			lname: lnameVar,
-            password: passwordVar,
+      password: passwordVar,
 			confirm: confirmVar, 
 			address: addressVar,
 			state: stateVar, 
@@ -149,20 +150,35 @@ if (Meteor.isClient) {
         Session.set('selectedTable', null);
       }
     },
-    'click #likebutton': function(event,template)
+    'click #likebutton': function(event)
     {
-      event.preventDefault;
-//      alert(template.find(('#likebutton')));      
-       template.$('#carpicture').addClass("img-circle");
-
+      event.preventDefault;        
+      //alert(Meteor.user().emails[0].address);
+      var useremail = Meteor.user().emails[0].address;
+      var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId});
+      if(typeof item == 'undefined' || item ==null)
+      {
+       Meteor.call('insertLikeData', useremail, this.carId);
+      }else
+      {
+        Meteor.call('removePlayerData', useremail, this.carId);
+      }
+     //$(event.currentTarget).addClass("glyphicon glyphicon-check");     
     }
   });
 
   Template.slidercars.helpers({
      selected: function(){
     return Session.equals('selectedTable', this._id);
+    },
+    likesign: function(){
+      var useremail = Meteor.user().emails[0].address;
+      var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId});      
+      return (typeof item == 'undefined' || item == null);
     }
 });
+
+
 
 
 
@@ -231,6 +247,22 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
     // code here will only be run on the server
+
+    Meteor.methods({
+    'insertLikeData': function(userEmail,carId){
+        var item = LikesColllection.findOne({BuyerEmail: userEmail},{CarId:carId});
+        if(typeof item == 'undefined' || item ==null)
+        {
+          LikesColllection.insert({
+              BuyerEmail: userEmail,
+              CarId: carId           
+          });
+        }
+    },
+    'removePlayerData': function(userEmail,carId){        
+        LikesColllection.remove({BuyerEmail: documentName},{CarId:carId});
+    }      
+});
 	
 }
 
