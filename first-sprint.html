@@ -27,25 +27,7 @@
 
 <template name="register">
 
-  <script>
-  function myFunction() {
-    var pass1 = document.getElementByName("registerPassword").value;
-    var pass2 = document.getElementByName("confirmPassword").value;
-    var ok = true;
-    if (pass1 != pass2) {
-        //alert("Passwords Do not match");
-        document.getElementByName("registerPassword").style.borderColor = "#E34234";
-        document.getElementByName("confirmPassword").style.borderColor = "#E34234";
-        ok = false;
-    }
-    else {
-        alert("Passwords Match!!!");
-    }
-    return ok;
-}
-</script>
-
-	<form onsubmit="return myFunction()">
+ 	<form>
 	<div class="col-xs-4">
 		<br>
 		<legend>Registration</legend>
@@ -90,7 +72,7 @@
 		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required >
 	    <br>
 		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
-    <a href="/" class="btn btn-secondary btn-lg active" role="button">back</a>        
+    <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
 	</div>
 	</form>
 </template>
@@ -174,7 +156,92 @@
 </template>
 
 <template name="sell">
-  <p class="container">sell template</p>
+  	<form>
+	<div class="col-xs-4">
+		<br>
+		<legend>To sell a car, fill the form below:</legend>
+		<small>*At least one picture is required</small><br>
+		<input type="file" name="filename1" accept="image/gif, image/jpeg, image/png" required><br>
+		<input type="file" name="filename2" accept="image/gif, image/jpeg, image/png"><br>
+		<input type="file" name="filename3" accept="image/gif, image/jpeg, image/png"><br>
+		<input type="file" name="filename4" accept="image/gif, image/jpeg, image/png"><br>
+		<input type="file" name="filename5" accept="image/gif, image/jpeg, image/png"><br>
+				
+		<select>
+		  <option value="" disabled selected>Select Year</option>	
+		 	{{#each data.year}}  
+				<option value="year">{{y}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select Make</option>	
+		 	{{#each data.make}}  
+				<option value="make">{{car}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select Type</option>	
+		 	{{#each data.style}}  
+				<option value="type">{{s}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<input type="text" name="model" placeholder="Enter Model..." attern="^[a-zA-Z ]+$" maxlength="50" required>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select City MPG</option>	
+		 	{{#each data.mileage}}  
+				<option value="cmileage">{{m}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select Highway MPG</option>	
+		 	{{#each data.mileage}}  
+				<option value="hmileage">{{m}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select Engine</option>	
+		 	{{#each data.transmission}}  
+				<option value="transmission">{{t}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select Exterior Color</option>	
+		 	{{#each data.ecolor}}  
+				<option value="ecolor">{{c}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		<select>
+		  <option value="" disabled selected>Select Interior Color</option>	
+		 	{{#each data.icolor}}  
+				<option value="icolor">{{c}}</option>
+			{{/each}}
+		</select>
+		<br><br>
+		Select Features:<br>
+		<input type="checkbox" name="feature1" value="feature1"> Bluetooth<br>
+		<input type="checkbox" name="feature2" value="feature2"> DVD Player<br>
+	    <input type="checkbox" name="feature3" value="feature3"> Exterior Camera<br> 
+		<input type="checkbox" name="feature4" value="feature4"> Keyless Ignition<br> 
+		<input type="checkbox" name="feature5" value="feature5"> Navigation System<br>
+		<input type="checkbox" name="feature6" value="feature6"> Pre-collision<br> 
+		<input type="checkbox" name="feature7" value="feature7"> Safety System<br> 
+		<input type="checkbox" name="feature8" value="feature8"> Satellite Radio<br>
+	    <input type="checkbox" name="feature9" value="feature9"> Sunroof<br>
+		<input type="checkbox" name="feature10" value="feature10"> Third row seat<br><br>
+		<small>*Add more information about the car (Optional)</small>
+		<textarea name="comments" cols=40 rows=6></textarea><br><br>
+		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
+    <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
+	</div>
+	</form> 
 </template>
 
 <template name="about">
@@ -184,3 +251,7 @@
 <template name="contact">
   <p class="container">contact template</p>
 </template>
+
+
+
+	
