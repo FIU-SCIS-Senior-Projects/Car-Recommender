@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  -->
 </head>
 <body>
  {{#if loggingIn}}
@@ -197,7 +197,7 @@
       <p class="text-success">Pice:{{price}}</p>
       <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton" ><i class={{likesign}}></i></button>
       <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
-      <button type="button" class="btn btn-danger btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-earphone"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton"><i class="glyphicon glyphicon-earphone"></i></button>
       {{#if selected}}
       <div name="zeevtable" class="zeevtable" id="zeevtable">
       {{>carinfotable}}
@@ -216,19 +216,24 @@
       <p>Pice:</p>
       <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
       <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
-      <button type="button" class="btn btn-danger btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-earphone"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<font color='Black'>seller Contact</font>" data-content="<font color='Black'>name: zeev feldbeine <br> Email: zfeld003@fiu.edu <br> Phone: 3059342453 <br>" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
       </div>
     </div> 
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
 </template>
 
 
 <template name="carinfotable">
-
-<table class="table table-bordered">
+<table class="table table-bordered container" style="color:black; text-align:center; width:50%;">
   <thead>
     <tr>
       <th>properties</th>
-      <th>value</th>
+      <th>values</th>
     </tr>
   </thead>
   <tbody>

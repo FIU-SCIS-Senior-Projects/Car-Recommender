@@ -26,8 +26,11 @@ Router.route('/', function () {
 });
 
 //collections
-Tasks = new Mongo.Collection("tasks");
-LikesColllection = new Mongo.Collection("likes-collection");
+//accounts collections containts user information
+Tasks = new Mongo.Collection("tasks");//this is for the cars collections or the sell collection
+LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
+SellersCollection = new Mongo.Collection("seller-collection");//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
+
 
 //client side
 if (Meteor.isClient) {
