@@ -197,14 +197,21 @@
       <p class="text-success">Pice:{{price}}</p>
       <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton" ><i class={{likesign}}></i></button>
       <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
-      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton"><i class="glyphicon glyphicon-earphone"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<font color='Black'>seller Contact</font>" data-content="" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
       {{#if selected}}
       <div name="zeevtable" class="zeevtable" id="zeevtable">
       {{>carinfotable}}
       </div> 
       {{/if}}     
       </div>
-    </div> 
+    </div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script> 
+
 </template>
 
 

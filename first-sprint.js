@@ -180,6 +180,12 @@ if (Meteor.isClient) {
       var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId}); 
       //alert(useremail);
       return (typeof item == 'undefined' || item == null ||typeof this.carId == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
+    },
+    popoverdata: function()
+    {
+      var item =  SellersCollection.findOne({CarId: this.carId});
+      var data = "Name: "+item.FirstName+" "+item.LastName+"<br>" + "Email: "+item.SellerEmail+"<br>"+"Phone: "+item.SellerPhone;
+      return data;
     }
 });
 
