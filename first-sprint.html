@@ -167,64 +167,64 @@
 		<input type="file" name="filename4" accept="image/gif, image/jpeg, image/png"><br>
 		<input type="file" name="filename5" accept="image/gif, image/jpeg, image/png"><br>
 				
-		<select>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Year</option>	
 		 	{{#each data.year}}  
 				<option value="year">{{y}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<select>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Make</option>	
 		 	{{#each data.make}}  
 				<option value="make">{{car}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<select>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Type</option>	
 		 	{{#each data.style}}  
 				<option value="type">{{s}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<input type="text" name="model" placeholder="Enter Model..." attern="^[a-zA-Z ]+$" maxlength="50" required>
-		<br><br>
-		<select>
+		<br>
+		<input type="text" name="model" class="form-control" placeholder="Enter Model..." attern="^[a-zA-Z ]+$" maxlength="50" required>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select City MPG</option>	
 		 	{{#each data.mileage}}  
 				<option value="cmileage">{{m}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<select>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Highway MPG</option>	
 		 	{{#each data.mileage}}  
 				<option value="hmileage">{{m}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<select>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Engine</option>	
 		 	{{#each data.transmission}}  
 				<option value="transmission">{{t}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<select>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Exterior Color</option>	
 		 	{{#each data.ecolor}}  
 				<option value="ecolor">{{c}}</option>
 			{{/each}}
 		</select>
-		<br><br>
-		<select>
+		<br>
+		<select class="form-control">
 		  <option value="" disabled selected>Select Interior Color</option>	
 		 	{{#each data.icolor}}  
 				<option value="icolor">{{c}}</option>
 			{{/each}}
 		</select>
-		<br><br>
+		<br>
 		Select Features:<br>
 		<input type="checkbox" name="feature1" value="feature1"> Bluetooth<br>
 		<input type="checkbox" name="feature2" value="feature2"> DVD Player<br>
@@ -237,7 +237,7 @@
 	    <input type="checkbox" name="feature9" value="feature9"> Sunroof<br>
 		<input type="checkbox" name="feature10" value="feature10"> Third row seat<br><br>
 		<small>*Add more information about the car (Optional)</small>
-		<textarea name="comments" cols=40 rows=6></textarea><br><br>
+		<textarea class="form-control" name="comments" cols=40 rows=6></textarea><br><br>
 		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
     <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
 	</div>
