@@ -194,10 +194,10 @@
     <div class="item">
       <img src="{{imgLink}}" alt="..." class="img-rounded container" id="carpicture{{price}}">      
       <div class="carousel-caption" >      
-      <p>Pice:{{price}}</p>
-      <button type="button" class="btn btn-info btn-circle btn-lg" id="likebutton" ><i class={{#if likesign}}"glyphicon glyphicon-ok"{{else}}"glyphicon glyphicon-check"{{/if}}></i></button>
-      <button type="button" class="btn btn-success btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
-      <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
+      <p class="text-success">Pice:{{price}}</p>
+      <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton" ><i class={{likesign}}></i></button>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-earphone"></i></button>
       {{#if selected}}
       <div name="zeevtable" class="zeevtable" id="zeevtable">
       {{>carinfotable}}
@@ -214,9 +214,9 @@
       <img src="http://placehold.it/700x300" alt="..." class="img-rounded container" >      
       <div class="carousel-caption">              
       <p>Pice:</p>
-      <button type="button" class="btn btn-info btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
-      <button type="button" class="btn btn-success btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
-      <button type="button" class="btn btn-warning btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-remove"></i></button>
+      <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="dislikebutton"><i class="glyphicon glyphicon-earphone"></i></button>
       </div>
     </div> 
 </template>

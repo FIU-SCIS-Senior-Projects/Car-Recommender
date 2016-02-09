@@ -161,6 +161,7 @@ if (Meteor.isClient) {
        Meteor.call('insertLikeData', useremail, this.carId);
       }else
       {
+        alert("its got to this section")   ;
         Meteor.call('removePlayerData', useremail, this.carId);
       }
      //$(event.currentTarget).addClass("glyphicon glyphicon-check");     
@@ -173,8 +174,9 @@ if (Meteor.isClient) {
     },
     likesign: function(){
       var useremail = Meteor.user().emails[0].address;
-      var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId});      
-      return (typeof item == 'undefined' || item == null);
+      var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId}); 
+      //alert(useremail);
+      return (typeof item == 'undefined' || item == null ||typeof this.carId == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
     }
 });
 
@@ -259,7 +261,8 @@ if (Meteor.isServer) {
           });
         }
     },
-    'removePlayerData': function(userEmail,carId){        
+    'removePlayerData': function(userEmail,carId){     
+     //   alert("its got to this section")   ;
         LikesColllection.remove({BuyerEmail: documentName},{CarId:carId});
     }      
 });
