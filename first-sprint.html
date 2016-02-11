@@ -179,7 +179,7 @@
       <p class="text-success">Pice:{{price}}</p>
       <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton" ><i class={{likesign}}></i></button>
       <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
-      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<font color='Black'>seller Contact</font>" data-content="" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<font color='Black'>seller Contact</font>" data-content="{{popoverdata}}" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
       {{#if selected}}
       <div name="zeevtable" class="zeevtable" id="zeevtable">
       {{>carinfotable}}
@@ -204,7 +204,7 @@ $(document).ready(function(){
       <div class="carousel-caption">              
       <p>Pice:</p>
       <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
-      <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton" ><i class="glyphicon glyphicon-info-sign"></i></button>
       <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<font color='Black'>seller Contact</font>" data-content="<font color='Black'>name: zeev feldbeine <br> Email: zfeld003@fiu.edu <br> Phone: 3059342453 <br>" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
       </div>
     </div> 
@@ -218,43 +218,43 @@ $(document).ready(function(){
 
 
 <template name="carinfotable">
-<table class="table table-bordered container" style="color:black; text-align:center; width:50%;">
+<table class="table table-bordered container" style="color:black; text-align:center; width:70%;">
   <thead>
-    <tr>
+    <tr class="success">
       <th>properties</th>
       <th>values</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr class="info">
       <th scope="row">price</th>
       <td>{{price}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">make</th>
       <td>{{make}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">model</th>
       <td>{{model}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">year</th>
       <td>{{year}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">style</th>
       <td>{{style}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">color</th>
       <td>{{color}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">engine</th>
       <td>{{engine}}</td>
     </tr>
-    <tr>
+    <tr class="info">
       <th scope="row">condition</th>
       <td>{{condition}}</td>
     </tr>
