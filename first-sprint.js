@@ -29,7 +29,8 @@ Router.route('/', function () {
 //accounts collections containts user information
 Tasks = new Mongo.Collection("tasks");//this is for the cars collections or the sell collection
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
-SellersCollection = new Mongo.Collection("seller-collection");//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
+SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
+CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
 
 
 //client side
@@ -38,12 +39,42 @@ if (Meteor.isClient) {
   //message for login and registration
 	Session.set("enemyLogIn", "");//login
 	Session.set("enemyLogOut", "");//registration
-  Session.set('selectedTable', null);//to see if someone clicked the info button  
+    Session.set('selectedTable', null);//to see if someone clicked the info button  
 
 	
-	
+	 Template.sell.events({
+    'submit form': function(event) {//insert the user name to database
+        //event.preventDefault();
+		var emailVar = Meteor.user().emails[0].address;
+        var yearVar = event.target.year.value;
+		var makeVar = event.target.make.value;
+		var typeVar = event.target.type.value;
+		var modelVar = event.target.model.value;
+		var cmpgVar = event.target.cmpg.value;
+		var hmpgVar = event.target.hmpg.value;
+		var engineVar = event.target.engine.value;
+		var ecolorVar = event.target.ecolor.value;
+		var icolorVar = event.target.icolor.value;
+		
+		
+		// the email will be the Primary Key between the sellers and cars collections
+		CarsCollection.insert({
+			email: emailVar,
+			year: yearVar,
+			make: makeVar,
+			type: typeVar,
+			model: modelVar,
+			cmpg: cmpgVar,
+			hmpg: hmpgVar,
+			engine: engineVar,
+			ecolor: ecolorVar,
+			icolor: icolorVar
+		});
+	}});
+		
 	Template.sell.helpers({  
-    data: { 
+	
+	data: { 
 		
 	year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
   		   {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
@@ -94,12 +125,23 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-				
-      Accounts.createUser({
-      email: emailVar,
+		
+		// the email will be the Primary Key between the sellers and cars collections
+		SellersCollection.insert({
+			email: emailVar,
 			fname: fnameVar,
 			lname: lnameVar,
-      password: passwordVar,
+			phone: telephoneVar,
+			address: addressVar,
+			state: stateVar, 
+			zip: zipVar
+		});
+        
+		Accounts.createUser({
+      		email: emailVar,
+			fname: fnameVar,
+			lname: lnameVar,
+      		password: passwordVar, 
 			confirm: confirmVar, 
 			address: addressVar,
 			state: stateVar, 
@@ -123,9 +165,22 @@ if (Meteor.isClient) {
 	
 		
 	Template.register.helpers({//to present the message in the registration page
+		
 		RegistrationError: function()
 		{
 			return Session.get("enemyLogOut");
+		}
+	});
+	
+	Template.about.helpers({//to present the message in the registration page
+		seller: function(){
+			var emailCurrentUser = Meteor.user().emails[0].address;
+		   	return SellersCollection.find({ email: emailCurrentUser});
+		},
+		
+		cars: function(){
+			var emailCurrentUser = Meteor.user().emails[0].address;
+		   	return CarsCollection.find({ email: emailCurrentUser});
 		}
 	});
 	
@@ -158,6 +213,15 @@ if (Meteor.isClient) {
      	}
   	});
 
+	 Template.main.helpers({
+	 
+	   seller: function(){
+			var emailCurrentUser = Meteor.user().emails[0].address;
+		   	return SellersCollection.find({ email: emailCurrentUser});
+	}
+	 
+	 
+	 });
 	
 	Template.dashboard.events({//for the log out page
     'click .logout': function(event){
@@ -169,7 +233,7 @@ if (Meteor.isClient) {
 });
 
   Template.dashboard.helpers({
-    activeIfTemplateIs: function (template) {
+	 activeIfTemplateIs: function (template) {
       var currentRoute = Router.current();            
       return template === currentRoute.lookupTemplate().toLowerCase() ? 'active' : '';
     }
