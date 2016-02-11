@@ -132,14 +132,10 @@ form {
 }
 
 .carousel{
-    background: #fff;   
+  /*background: #fff;   */
+    background-image:none;
     width: 700px;
     height: auto;
-}
-
-img {
-  width: 700px;
-  height: 300px;
 }
 
 /*
@@ -154,3 +150,11 @@ img {
     right: auto;
 }
 
+.carousel-control.right, .carousel-control.left {
+  background-image:none;
+}
+
+img {
+  width: 700px;
+  height: 300px;
+}

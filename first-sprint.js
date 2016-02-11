@@ -239,15 +239,16 @@ if (Meteor.isClient) {
     }
   });
 	
+  //helpers for the home template
 	Template.home.helpers({
     cars: function()
     {
-      return Tasks.find({});
+      return Tasks.find({});//get values in the car collections Sellcar
     }
   });
 	
-  Template.slidercars.events({
-    'click #infobutton': function(event)
+  Template.slidercars.events({//event in the slides
+    'click #infobutton': function(event)//if user clicked info button show table info
     {
       event.preventDefault();
       if(!Session.equals('selectedTable', this._id))
@@ -258,7 +259,7 @@ if (Meteor.isClient) {
         Session.set('selectedTable', null);
       }
     },
-    'click #likebutton': function(event)
+    'click #likebutton': function(event)//if user clicked 'like' respond accordinally
     {
       event.preventDefault;        
       //alert(Meteor.user().emails[0].address);
@@ -266,27 +267,27 @@ if (Meteor.isClient) {
       var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId});
       if(typeof item == 'undefined' || item ==null)
       {
-       Meteor.call('insertLikeData', useremail, this.carId);
+       Meteor.call('insertLikeData', useremail, this.carId);//call server method to insert a like into the collection
       }else
       {
         alert("its got to this section")   ;
-        Meteor.call('removePlayerData', useremail, this.carId);
+        Meteor.call('removePlayerData', useremail, this.carId);//call server method to remove the like
       }
      //$(event.currentTarget).addClass("glyphicon glyphicon-check");     
     }
   });
 
-  Template.slidercars.helpers({
-     selected: function(){
+  Template.slidercars.helpers({//helpers for the slides
+     selected: function(){//check if to show or not to show the table info
     return Session.equals('selectedTable', this._id);
     },
-    likesign: function(){
+    likesign: function(){//to show the like sign accordinally, based on the like collection
       var useremail = Meteor.user().emails[0].address;
       var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId}); 
       //alert(useremail);
       return (typeof item == 'undefined' || item == null ||typeof this.carId == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
     },
-    popoverdata: function()
+    popoverdata: function()//this for contact information
     {
       var item =  SellersCollection.findOne({CarId: this.carId});
       var data = "Name: "+item.FirstName+" "+item.LastName+"<br>" + "Email: "+item.SellerEmail+"<br>"+"Phone: "+item.SellerPhone;
