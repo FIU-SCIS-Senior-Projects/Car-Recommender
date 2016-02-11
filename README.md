@@ -1,5 +1,3 @@
-#  Car-Recommender
-
 # Car Recommendation System
 
 visit http://crsystem.meteor.com/
@@ -11,5 +9,4 @@ Registration,
 cars display,
 cars info,
 selling form
-=======
 
