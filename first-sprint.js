@@ -200,14 +200,13 @@ if (Meteor.isClient) {
       event.preventDefault;        
       //alert(Meteor.user().emails[0].address);
       var useremail = Meteor.user().emails[0].address;
-      var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId});
+      var item = LikesColllection.findOne({BuyerEmail: useremail,CarID: this.CarID});
       if(typeof item == 'undefined' || item ==null)
       {
-       Meteor.call('insertLikeData', useremail, this.carId);//call server method to insert a like into the collection
+       Meteor.call('insertLikeData', useremail, this.CarID);//call server method to insert a like into the collection
       }else
-      {
-        alert("its got to this section")   ;
-        Meteor.call('removePlayerData', useremail, this.carId);//call server method to remove the like
+      {        
+        Meteor.call('removePlayerData', useremail, this.CarID);//call server method to remove the like
       }
      //$(event.currentTarget).addClass("glyphicon glyphicon-check");     
     }
@@ -219,13 +218,13 @@ if (Meteor.isClient) {
     },
     likesign: function(){//to show the like sign accordinally, based on the like collection
       var useremail = Meteor.user().emails[0].address;
-      var item = LikesColllection.findOne({BuyerEmail: useremail},{CarId: this.carId}); 
+      var item = LikesColllection.findOne({BuyerEmail: useremail,CarID: this.CarID}); 
       //alert(useremail);
-      return (typeof item == 'undefined' || item == null ||typeof this.carId == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
+      return (typeof item == 'undefined' || item == null ||typeof this.CarID == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
     },
     popoverdata: function()//this for contact information
     {
-      var item =  SellersCollection.findOne({CarId: this.carId});
+      var item =  SellersCollection.findOne({CarID: this.CarID});
       var data = "Name: "+item.FirstName+" "+item.LastName+"<br>" + "Email: "+item.SellerEmail+"<br>"+"Phone: "+item.SellerPhone;
       return data;
     }
@@ -303,18 +302,18 @@ if (Meteor.isServer) {
 
     Meteor.methods({
     'insertLikeData': function(userEmail,carId){
-        var item = LikesColllection.findOne({BuyerEmail: userEmail},{CarId:carId});
+        var item = LikesColllection.findOne({BuyerEmail: userEmail,CarID:carId});
         if(typeof item == 'undefined' || item ==null)
         {
           LikesColllection.insert({
               BuyerEmail: userEmail,
-              CarId: carId           
+              CarID: carId           
           });
         }
     },
     'removePlayerData': function(userEmail,carId){     
      //   alert("its got to this section")   ;
-        LikesColllection.remove({BuyerEmail: documentName},{CarId:carId});
+        LikesColllection.remove({BuyerEmail: userEmail,CarID:carId});
     }      
 });
 	
