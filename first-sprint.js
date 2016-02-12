@@ -27,7 +27,7 @@ Router.route('/', function () {
 
 //collections
 //accounts collections containts user information
-Tasks = new Mongo.Collection("tasks");//this is for the cars collections or the sell collection
+//Tasks = new Mongo.Collection("tasks");//this is for the cars collections or the sell collection
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
 SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
@@ -41,7 +41,7 @@ if (Meteor.isClient) {
 	Session.set("enemyLogOut", "");//registration
     Session.set('selectedTable', null);//to see if someone clicked the info button  
 
-	
+	//brenda change this
 	 Template.sell.events({
     'submit form': function(event) {//insert the user name to database
         //event.preventDefault();
@@ -55,10 +55,11 @@ if (Meteor.isClient) {
 		var engineVar = event.target.engine.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-		
-		
+		//keep i
+		//need to add 'CarID' for this, you can do it by session , and incremate every time your insert.
 		// the email will be the Primary Key between the sellers and cars collections
 		CarsCollection.insert({
+      //CarID: get session of some variable
 			email: emailVar,
 			year: yearVar,
 			make: makeVar,
@@ -70,6 +71,22 @@ if (Meteor.isClient) {
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
+
+      /* this need to be moved to the sells template, with Addition of CarId, keep in mind that the CarId, need to be the same as the one above,
+      //in order to get the the user info, u can just take his email, and than do sssss=meteor.users.findone({email:email}), s.email,s.firstname,s.lastname.  its very simple
+    SellersCollection.insert({
+      //CarID: get session of some variable
+      email: emailVar,
+      fname: fnameVar,
+      lname: lnameVar,
+      phone: telephoneVar,
+      address: addressVar,
+      state: stateVar, 
+      zip: zipVar
+    });
+    */  
+    //after this you can incrimatne the session of the carID for the next one.
+
 	}});
 		
 	Template.sell.helpers({  
@@ -125,18 +142,7 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-		
-		// the email will be the Primary Key between the sellers and cars collections
-		SellersCollection.insert({
-			email: emailVar,
-			fname: fnameVar,
-			lname: lnameVar,
-			phone: telephoneVar,
-			address: addressVar,
-			state: stateVar, 
-			zip: zipVar
-		});
-        
+
 		Accounts.createUser({
       		email: emailVar,
 			fname: fnameVar,
@@ -243,7 +249,7 @@ if (Meteor.isClient) {
 	Template.home.helpers({
     cars: function()
     {
-      return Tasks.find({});//get values in the car collections Sellcar
+      return CarsCollection.find({});//get values in the car collections Sellcar
     }
   });
 	
@@ -297,7 +303,7 @@ if (Meteor.isClient) {
 
 
 
-
+//start of sh section - please ingnore
 	/* client/accounts/recover-password.js */
 
 	// Ensure we have the token to pass into the template when it's present
@@ -357,6 +363,7 @@ if (Meteor.isClient) {
 		return false;
 	  }
 	});
+//end of this sh section
 	
 }
 

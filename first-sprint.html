@@ -1,18 +1,8 @@
 <template name="main">
-	
-	{{#if currentUser}}
-		{{#each seller}} 
-		 <br><p style="margin-left:55em;">Welcome, {{fname}} {{lname}}</p>
-		{{/each}}
-		<h1 align="center">Car Recommendation System</h1>
-	{{else}}
-		<br><br><h1 align="center">Car Recommendation System</h1>
-	{{/if}}
-	
+  <h1 align="center">Car Recommendation System</h1>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  -->
 </head>
  <body>
  {{#if loggingIn}}
