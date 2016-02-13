@@ -2,7 +2,7 @@
 	
 	{{#if currentUser}}
 		{{#each seller}} 
-		 <br><p style="margin-left:55em;">Welcome, {{fname}} {{lname}}</p>
+		<br><p style="margin-left:65em;">Welcome, {{fname}} {{lname}}</p>
 		{{/each}}
 		<h1 align="center">Car Recommendation System</h1>
 	{{else}}
@@ -77,7 +77,7 @@
 		<br>
 		<input type="text" name="registerZip" placeholder="Enter zip code..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required>
 		<br>
-		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required >
+		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required>
 	    <br>
 		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
     <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
@@ -145,7 +145,7 @@
       <div class="masthead">       
         <nav>
           <ul class="nav nav-tabs nav-justified">
-            <li class="{{ activeIfTemplateIs '' }}"><a href="/">Home</a></li>
+			<li class="{{ activeIfTemplateIs '' }}"><a href="/">Home</a></li>
             <li class="{{ activeIfTemplateIs 'favorites' }}"><a href="/favorites">Favorites</a></li>
             <li class="{{ activeIfTemplateIs 'sell' }}"><a href="/sell">Sell</a></li>            
             <li class="{{ activeIfTemplateIs 'about' }}"><a href="/about">About</a></li>
@@ -284,12 +284,10 @@ $(document).ready(function(){
 		<!--<p color="white">{{currentUser.emails.[0].address}}</p>-->
 		<legend>To sell a car, fill the form below:</legend>
 		<small>*At least one picture is required</small><br>
-		<input type="file" name="filename1" accept="image/gif, image/jpeg, image/png" required><br>
-		<input type="file" name="filename2" accept="image/gif, image/jpeg, image/png"><br>
-		<input type="file" name="filename3" accept="image/gif, image/jpeg, image/png"><br>
-		<input type="file" name="filename4" accept="image/gif, image/jpeg, image/png"><br>
-		<input type="file" name="filename5" accept="image/gif, image/jpeg, image/png"><br>
-				
+		<input type="file" name="firstpic" accept="image/gif, image/jpeg, image/png" required><br>
+		<input type="file" name="secondpic" accept="image/gif, image/jpeg, image/png"><br>
+		<input type="file" name="thirdpic" accept="image/gif, image/jpeg, image/png"><br>
+	
 		<select class="form-control" name="year">
 		  <option value="" disabled selected>Select Year</option>	
 		 	{{#each data.year}}  
@@ -311,21 +309,13 @@ $(document).ready(function(){
 			{{/each}}
 		</select>
 		<br>
-		<input type="text" name="model" class="form-control" placeholder="Enter Model..." attern="^[a-zA-Z ]+$" maxlength="50" required>
+		<input type="text" name="model" class="form-control" placeholder="Enter Model..." pattern="^[a-zA-Z ]+$" maxlength="50" required>
 		<br>
-		<select class="form-control" name="cmpg">
-		  <option value="" disabled selected>Select City MPG</option>	
-		 	{{#each data.mileage}}  
-				<option>{{m}}</option>
-			{{/each}}
-		</select>
+		<input type="text" name="mileage" class="form-control" placeholder="Enter Mileage..." pattern="^[0-9 ]+$" maxlength="10" required>
 		<br>
-		<select class="form-control" name="hmpg">
-		  <option value="" disabled selected>Select Highway MPG</option>	
-		 	{{#each data.mileage}}  
-				<option>{{m}}</option>
-			{{/each}}
-		</select>
+		<input type="text" name="cmpg" class="form-control" placeholder="Enter City MPG..." pattern="^[0-9 ]+$" maxlength="10" required>
+		<br>
+		<input type="text" name="hmpg" class="form-control" placeholder="Enter Highway MPG..." pattern="^[0-9 ]+$" maxlength="10" required>
 		<br>
 		<select class="form-control" name="engine">
 		  <option value="" disabled selected>Select Engine</option>	
@@ -373,11 +363,14 @@ $(document).ready(function(){
 	 		{{/each}}
 			    <br><legend>The cars you are selling:</legend> 	
 			{{#each cars}}
+			    <p>Pic 1: {{firstpic}}</p>
+			    <!--<p>carID: {{carID}}</p>-->
 			    <p>Year: {{year}}</p>
 				<p>Make: {{make}}</p>
 				<p>Type: {{type}}</p>
 				<p>Model: {{model}}</p>
-				<p>City MPG: {{cmpg}}</p>
+				<p>Mileage: {{mileage}}</p>
+			    <p>City MPG: {{cmpg}}</p>
 				<p>Highway MPG: {{hmpg}}</p>
 				<p>Engine: {{engine}}</p>
 				<p>Exterior color: {{ecolor}}</p>
