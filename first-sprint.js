@@ -57,12 +57,8 @@ if (Meteor.isClient) {
 		var engineVar = event.target.engine.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-    
-		//please have the following fields 'price',and 'condition'
-		//need to add 'CarID' for this, you can do it by session , and incremate every time your insert.
-		// the email will be the Primary Key between the sellers and cars collections
-      //CarID: get session of some variable
-		var carIDVar = new Meteor.Collection.ObjectID(); 				
+    	var carIDVar = new Meteor.Collection.ObjectID(); 				
+	
 		CarsCollection.insert({
 			CarID: carIDVar,
 			email: emailVar,
@@ -78,21 +74,6 @@ if (Meteor.isClient) {
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
-
-      /* this need to be moved to the sells template, with Addition of CarId, keep in mind that the CarId, need to be the same as the one above,
-      //in order to get the the user info, u can just take his email, and than do sssss=meteor.users.findone({email:email}), s.email,s.firstname,s.lastname.  its very simple
-    SellersCollection.insert({
-      //CarID: get session of some variable
-      email: emailVar,
-      fname: fnameVar,
-      lname: lnameVar,
-      phone: telephoneVar,
-      address: addressVar,
-      state: stateVar, 
-      zip: zipVar
-    });
-    */  
-    //after this you can incrimatne the session of the carID for the next one.
 
 	}});
 		
@@ -140,6 +121,16 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
+		// the email will be the Primary Key between the sellers and cars collections
+		SellersCollection.insert({
+			email: emailVar,
+			fname: fnameVar,
+			lname: lnameVar,
+			phone: telephoneVar,
+			address: addressVar,
+			state: stateVar, 
+			zip: zipVar
+		});
 
 		Accounts.createUser({
       		email: emailVar,
