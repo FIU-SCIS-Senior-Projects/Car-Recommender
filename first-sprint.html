@@ -1,7 +1,4 @@
 <template name="main">
-
-  <h1 align="center">Car Recommendation System</h1>
-
 	{{#if currentUser}}
 		{{#each seller}} 
 		<br><h4 style="margin-left:65em;font-family:verdana;color: silver;text-align: right;"><b>Welcome, {{fname}} {{lname}}</b></h4>
@@ -291,7 +288,7 @@ $(document).ready(function(){
 			carPic.src = URL.createObjectURL(event.target.files[0]);
 		  };
 		</script>
-		<input type="file" name="picture" accept="image/*" onchange="displayImage()">
+		<input type="file" name="picture" accept="image/*" onchange="displayImage()" required>
 		<img src="https://www.volkswagen.co.uk/vw-testdrive/images/cars/summary-angled-transparent/no-selection.png" id="carPic" style="width:150px;height:100px;">
 		<br><br>
 		
@@ -316,7 +313,7 @@ $(document).ready(function(){
 			{{/each}}
 		</select>
 		<br>
-		<input type="text" name="model" class="form-control" placeholder="Enter Model..." pattern="^[a-zA-Z ]+$" maxlength="50" required>
+		<input type="text" name="model" class="form-control" placeholder="Enter Model..." maxlength="50" required>
 		<br>
 		<input type="text" name="mileage" class="form-control" placeholder="Enter Mileage..." pattern="^[0-9 ]+$" maxlength="10" required>
 		<br>
