@@ -1,5 +1,16 @@
 <template name="main">
+
   <h1 align="center">Car Recommendation System</h1>
+
+	{{#if currentUser}}
+		{{#each seller}} 
+		<br><h4 style="margin-left:65em;font-family:verdana;color: silver;text-align: right;"><b>Welcome, {{fname}} {{lname}}</b></h4>
+		{{/each}}
+		<img src="http://i.imgur.com/lr0uNjw.jpg" style="width:900px;height:100px;display: block;margin: 0 auto;">
+	{{else}}
+		<br><br><br><img src="http://i.imgur.com/lr0uNjw.jpg" style="width:900px;height:100px;display: block;margin: 0 auto;">
+	{{/if}}
+	
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -67,7 +78,7 @@
 		<br>
 		<input type="text" name="registerZip" placeholder="Enter zip code..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required>
 		<br>
-		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required >
+		<input type="tel" name="registerTelephone" placeholder="Enter phone number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required>
 	    <br>
 		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
     <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
@@ -135,11 +146,11 @@
       <div class="masthead">       
         <nav>
           <ul class="nav nav-tabs nav-justified">
-            <li class="{{ activeIfTemplateIs '' }}"><a href="/">Home</a></li>
+			<li class="{{ activeIfTemplateIs '' }}"><a href="/">Home</a></li>
             <li class="{{ activeIfTemplateIs 'favorites' }}"><a href="/favorites">Favorites</a></li>
             <li class="{{ activeIfTemplateIs 'sell' }}"><a href="/sell">Sell</a></li>            
-            <li class="{{ activeIfTemplateIs 'about' }}"><a href="/about">About</a></li>
-            <li class="{{ activeIfTemplateIs 'contact' }}"><a href="/contact">Contact</a></li>
+            <li class="{{ activeIfTemplateIs 'profile' }}"><a href="/profile">Profile</a></li>
+            <li class="{{ activeIfTemplateIs 'inventory' }}"><a href="/inventory">Inventory</a></li>
             <li><a href="/" class="logout" id= "logoutmenu">Logout</a></li>
           </ul>
         </nav>
@@ -273,13 +284,17 @@ $(document).ready(function(){
 		<br>
 		<!--<p color="white">{{currentUser.emails.[0].address}}</p>-->
 		<legend>To sell a car, fill the form below:</legend>
-		<small>*At least one picture is required</small><br>
-		<input type="file" name="filename1" accept="image/gif, image/jpeg, image/png" required><br>
-		<input type="file" name="filename2" accept="image/gif, image/jpeg, image/png"><br>
-		<input type="file" name="filename3" accept="image/gif, image/jpeg, image/png"><br>
-		<input type="file" name="filename4" accept="image/gif, image/jpeg, image/png"><br>
-		<input type="file" name="filename5" accept="image/gif, image/jpeg, image/png"><br>
-				
+		<small>*All fields are required</small><br><br>
+		<script>
+		var displayImage = function() {
+			var carPic = document.getElementById('carPic');
+			carPic.src = URL.createObjectURL(event.target.files[0]);
+		  };
+		</script>
+		<input type="file" name="picture" accept="image/*" onchange="displayImage()">
+		<img src="https://www.volkswagen.co.uk/vw-testdrive/images/cars/summary-angled-transparent/no-selection.png" id="carPic" style="width:150px;height:100px;">
+		<br><br>
+		
 		<select class="form-control" name="year">
 		  <option value="" disabled selected>Select Year</option>	
 		 	{{#each data.year}}  
@@ -301,21 +316,13 @@ $(document).ready(function(){
 			{{/each}}
 		</select>
 		<br>
-		<input type="text" name="model" class="form-control" placeholder="Enter Model..." attern="^[a-zA-Z ]+$" maxlength="50" required>
+		<input type="text" name="model" class="form-control" placeholder="Enter Model..." pattern="^[a-zA-Z ]+$" maxlength="50" required>
 		<br>
-		<select class="form-control" name="cmpg">
-		  <option value="" disabled selected>Select City MPG</option>	
-		 	{{#each data.mileage}}  
-				<option>{{m}}</option>
-			{{/each}}
-		</select>
+		<input type="text" name="mileage" class="form-control" placeholder="Enter Mileage..." pattern="^[0-9 ]+$" maxlength="10" required>
 		<br>
-		<select class="form-control" name="hmpg">
-		  <option value="" disabled selected>Select Highway MPG</option>	
-		 	{{#each data.mileage}}  
-				<option>{{m}}</option>
-			{{/each}}
-		</select>
+		<input type="text" name="cmpg" class="form-control" placeholder="Enter City MPG..." pattern="^[0-9 ]+$" maxlength="10" required>
+		<br>
+		<input type="text" name="hmpg" class="form-control" placeholder="Enter Highway MPG..." pattern="^[0-9 ]+$" maxlength="10" required>
 		<br>
 		<select class="form-control" name="engine">
 		  <option value="" disabled selected>Select Engine</option>	
@@ -348,12 +355,11 @@ $(document).ready(function(){
 
 
 <!-- Displays current user data and cars being sold by said user-->
-<template name="about">
+<template name="profile">
 	<form>
 		<div class="col-xs-4">
 			{{#each seller}} 
-	    		<br><legend>Your profile:</legend> 	
-				<p>First name: {{fname}}</p>
+	    		<p>First name: {{fname}}</p>
 				<p>Last name: {{lname}}</p>
 				<p>Email: {{email}}</p>
 				<p>Phone: {{phone}}</p>
@@ -361,25 +367,30 @@ $(document).ready(function(){
 				<p>State: {{state}}</p>
 				<p>Zip: {{zip}}</p>
 	 		{{/each}}
-			    <br><legend>The cars you are selling:</legend> 	
-			{{#each cars}}
-			    <p>Year: {{year}}</p>
-				<p>Make: {{make}}</p>
-				<p>Type: {{type}}</p>
-				<p>Model: {{model}}</p>
-				<p>City MPG: {{cmpg}}</p>
-				<p>Highway MPG: {{hmpg}}</p>
-				<p>Engine: {{engine}}</p>
-				<p>Exterior color: {{ecolor}}</p>
-				<p>Interior color: {{icolor}}</p><br><br>
-			{{/each}}	
 		</div>	  
 	</form>	
 </template>
 
 
-<template name="contact">
-  <p class="container">contact template</p>
+<template name="inventory">
+  <form>
+		<div class="col-xs-4">
+				{{#each cars}}
+			    <p>Picture: {{picture}}</p>
+			    <!--<p>carID: {{carID}}</p>-->
+			    <p>Year: {{year}}</p>
+				<p>Make: {{make}}</p>
+				<p>Type: {{type}}</p>
+				<p>Model: {{model}}</p>
+				<p>Mileage: {{mileage}}</p>
+			    <p>City MPG: {{cmpg}}</p>
+				<p>Highway MPG: {{hmpg}}</p>
+				<p>Engine: {{engine}}</p>
+				<p>Exterior color: {{ecolor}}</p>
+				<p>Interior color: {{icolor}}</p><br><br>
+			{{/each}}
+		</div>	  
+	</form>	
 </template>
 
 

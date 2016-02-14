@@ -5,9 +5,9 @@ Router.configure({
 Router.route('/RecoverPassword');
 Router.route('/register');
 Router.route('/dashboard');
-Router.route('/about',function()
+Router.route('/profile',function()
   {
-    this.render('about', {to: 'aside'});
+    this.render('profile', {to: 'aside'});
   });
 Router.route('/favorites',function()
   {
@@ -16,8 +16,8 @@ Router.route('/favorites',function()
 Router.route('/sell',function(){
   this.render('sell', {to: 'aside'});
 });
-Router.route('/contact',function(){
-  this.render('contact', {to: 'aside'});
+Router.route('/inventory',function(){
+  this.render('inventory', {to: 'aside'});
 });
 Router.route('/', function () {
 
@@ -44,12 +44,14 @@ if (Meteor.isClient) {
 	//brenda change this
 	 Template.sell.events({
     'submit form': function(event) {//insert the user name to database
-        //event.preventDefault();
+          //event.preventDefault();
 		var emailVar = Meteor.user().emails[0].address;
-        var yearVar = event.target.year.value;
+ 		var pictureVar = event.target.picture.value;
+		var yearVar = event.target.year.value;
 		var makeVar = event.target.make.value;
 		var typeVar = event.target.type.value;
 		var modelVar = event.target.model.value;
+		var mileageVar = event.target.mileage.value;
 		var cmpgVar = event.target.cmpg.value;
 		var hmpgVar = event.target.hmpg.value;
 		var engineVar = event.target.engine.value;
@@ -59,13 +61,17 @@ if (Meteor.isClient) {
 		//please have the following fields 'price',and 'condition'
 		//need to add 'CarID' for this, you can do it by session , and incremate every time your insert.
 		// the email will be the Primary Key between the sellers and cars collections
-		CarsCollection.insert({
       //CarID: get session of some variable
+		var carIDVar = new Meteor.Collection.ObjectID(); 				
+		CarsCollection.insert({
+			CarID: carIDVar,
 			email: emailVar,
+			picture: pictureVar,
 			year: yearVar,
 			make: makeVar,
 			type: typeVar,
 			model: modelVar,
+			mileage: mileageVar,
 			cmpg: cmpgVar,
 			hmpg: hmpgVar,
 			engine: engineVar,
@@ -107,15 +113,6 @@ if (Meteor.isClient) {
 		
 	style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
 			{s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
-		
-	mileage: [{m: "<10"}, {m: "10"}, {m: "11"}, {m: "12"}, {m: "13"}, {m: "14"}, {m: "15"}, {m: "16"}, {m: "17"}, {m: "18"}, {m: "19"},
-			  {m: "20"}, {m: "21"}, {m: "22"}, {m: "23"}, {m: "24"}, {m: "25"}, {m: "26"}, {m: "27"}, {m: "28"}, {m: "29"},
-			  {m: "30"}, {m: "31"}, {m: "32"}, {m: "33"}, {m: "34"}, {m: "35"}, {m: "36"}, {m: "37"}, {m: "38"}, {m: "39"},
-			  {m: "40"}, {m: "41"}, {m: "42"}, {m: "43"}, {m: "44"}, {m: "45"}, {m: "46"}, {m: "47"}, {m: "48"}, {m: "49"},
-			  {m: "50"}, {m: "51"}, {m: "52"}, {m: "53"}, {m: "54"}, {m: "55"}, {m: "56"}, {m: "57"}, {m: "58"}, {m: "59"},
-			  {m: "60"}, {m: "61"}, {m: "62"}, {m: "63"}, {m: "64"}, {m: "65"}, {m: "66"}, {m: "67"}, {m: "68"}, {m: "69"},
-			  {m: "70"}, {m: "71"}, {m: "72"}, {m: "73"}, {m: "74"}, {m: "75"}, {m: ">75"}
-			 ],
 		
 	cylinder: [	{c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
 	
@@ -179,12 +176,14 @@ if (Meteor.isClient) {
 		}
 	});
 	
-	Template.about.helpers({//to present the message in the registration page
+	Template.profile.helpers({//to present the message in the registration page
 		seller: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
 		   	return SellersCollection.find({ email: emailCurrentUser});
-		},
-		
+		}
+	});
+	
+	Template.inventory.helpers({//to present the message in the registration page
 		cars: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
 		   	return CarsCollection.find({ email: emailCurrentUser});
