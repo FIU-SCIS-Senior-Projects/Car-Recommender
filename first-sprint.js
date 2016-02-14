@@ -44,7 +44,7 @@ if (Meteor.isClient) {
 	//brenda change this
 	 Template.sell.events({
     'submit form': function(event) {//insert the user name to database
-          //event.preventDefault();
+    event.preventDefault();
 		var emailVar = Meteor.user().emails[0].address;
  		var pictureVar = event.target.picture.value;
 		var yearVar = event.target.year.value;
@@ -58,10 +58,7 @@ if (Meteor.isClient) {
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
     
-		//please have the following fields 'price',and 'condition'
-		//need to add 'CarID' for this, you can do it by session , and incremate every time your insert.
-		// the email will be the Primary Key between the sellers and cars collections
-      //CarID: get session of some variable
+
 		var carIDVar = new Meteor.Collection.ObjectID(); 				
 		CarsCollection.insert({
 			CarID: carIDVar,
