@@ -55,7 +55,8 @@ if (Meteor.isClient) {
 		var engineVar = event.target.engine.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-		//keep i
+    
+		//please have the following fields 'price',and 'condition'
 		//need to add 'CarID' for this, you can do it by session , and incremate every time your insert.
 		// the email will be the Primary Key between the sellers and cars collections
 		CarsCollection.insert({
