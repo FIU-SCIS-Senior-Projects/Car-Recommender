@@ -5,9 +5,9 @@ Router.configure({
 Router.route('/RecoverPassword');
 Router.route('/register');
 Router.route('/dashboard');
-Router.route('/about',function()
+Router.route('/profile',function()
   {
-    this.render('about', {to: 'aside'});
+    this.render('profile', {to: 'aside'});
   });
 Router.route('/favorites',function()
   {
@@ -16,8 +16,8 @@ Router.route('/favorites',function()
 Router.route('/sell',function(){
   this.render('sell', {to: 'aside'});
 });
-Router.route('/contact',function(){
-  this.render('contact', {to: 'aside'});
+Router.route('/inventory',function(){
+  this.render('inventory', {to: 'aside'});
 });
 Router.route('/', function () {
 
@@ -46,9 +46,7 @@ if (Meteor.isClient) {
     'submit form': function(event) {//insert the user name to database
           //event.preventDefault();
 		var emailVar = Meteor.user().emails[0].address;
-        var firstpicVar = event.target.firstpic.value;
-		var secondpicVar = event.target.secondpic.value;
-		var thirdpicVar = event.target.thirdpic.value;
+ 		var pictureVar = event.target.picture.value;
 		var yearVar = event.target.year.value;
 		var makeVar = event.target.make.value;
 		var typeVar = event.target.type.value;
@@ -66,9 +64,7 @@ if (Meteor.isClient) {
 		CarsCollection.insert({
 			carID: carIDVar,
 			email: emailVar,
-			firstpic: firstpicVar,
-			secondpic: secondpicVar,
-			thirdpic: thirdpicVar,
+			picture: pictureVar,
 			year: yearVar,
 			make: makeVar,
 			type: typeVar,
@@ -173,12 +169,14 @@ if (Meteor.isClient) {
 		}
 	});
 	
-	Template.about.helpers({//to present the message in the registration page
+	Template.profile.helpers({//to present the message in the registration page
 		seller: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
 		   	return SellersCollection.find({ email: emailCurrentUser});
-		},
-		
+		}
+	});
+	
+	Template.inventory.helpers({//to present the message in the registration page
 		cars: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
 		   	return CarsCollection.find({ email: emailCurrentUser});
