@@ -57,8 +57,10 @@ if (Meteor.isClient) {
 		var engineVar = event.target.engine.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-    var carIDVar = new Meteor.Collection.ObjectID(); 				
-	
+    var carIDVar = new Meteor.Collection.ObjectID();
+
+    var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection	  
+
 		CarsCollection.insert({
 			CarID: carIDVar,
 			email: emailVar,
@@ -75,6 +77,17 @@ if (Meteor.isClient) {
 			icolor: icolorVar
 		});
 
+    //new for the seller collection
+    SellersCollection.insert({
+      CarID: carIDVar,
+      email: Useraccount.email,
+      fname: Useraccount.fname,
+      lname: Useraccount.lname,
+      phone: Useraccount.telephone,
+      address: Useraccount.address,
+      state: Useraccount.state, 
+      zip: Useraccount.zip
+    });
 	}});
 		
 	Template.sell.helpers({  
@@ -121,6 +134,7 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
+    //please remove this section
 		// the email will be the Primary Key between the sellers and cars collections
 		SellersCollection.insert({
 			email: emailVar,
@@ -197,7 +211,6 @@ if (Meteor.isClient) {
             Session.set("enemyLogIn", "");
             Session.set("enemyLogOut", "");
           }
-
          
         });//log in with the password
     }
@@ -286,7 +299,7 @@ if (Meteor.isClient) {
     popoverdata: function()//this for contact information
     {
       var item =  SellersCollection.findOne({CarID: this.CarID});
-      var data = "Name: "+item.FirstName+" "+item.LastName+"<br>" + "Email: "+item.SellerEmail+"<br>"+"Phone: "+item.SellerPhone;
+      var data = "Name: "+item.fname+" "+item.lname+"<br>" + "Email: "+item.email+"<br>"+"Phone: "+item.phone;
       return data;
     }
 });
