@@ -156,10 +156,9 @@ if (Meteor.isClient) {
 			state: stateVar, 
 			zip: zipVar,
 			telephone: telephoneVar 
-        },
-				
+        },				
         function(err)//in case we have error, such as existing user
-		{
+		    {
           	if(err)//present this message 
             	Session.set("enemyLogOut", "Error: email is already taken");
           	else
@@ -167,7 +166,8 @@ if (Meteor.isClient) {
 			    //otherwise, change the message, we succed to store the user
             	Session.set("enemyLogOut", "");
             	Session.set("enemyLogIn", "");
-			}
+               Router.go('/');
+			       }
        	});
 	}
 });
