@@ -31,6 +31,7 @@ Router.route('/', function () {
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
 SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
+ProfileCollection = new Mongo.Collection('profile');
 
 
 //client side
@@ -44,7 +45,7 @@ if (Meteor.isClient) {
 	//brenda change this
 	 Template.sell.events({
     'submit form': function(event) {//insert the user name to database
-    event.preventDefault();
+     //event.preventDefault();
 		var emailVar = Meteor.user().emails[0].address;
  		var pictureVar = event.target.picture.value;
 		var yearVar = event.target.year.value;
@@ -57,9 +58,8 @@ if (Meteor.isClient) {
 		var engineVar = event.target.engine.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-    var carIDVar = new Meteor.Collection.ObjectID();
-
-    var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection	  
+        var carIDVar = new Meteor.Collection.ObjectID();
+		var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection	  
 
 		CarsCollection.insert({
 			CarID: carIDVar,
@@ -134,18 +134,7 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-    //please remove this section
-		// the email will be the Primary Key between the sellers and cars collections
-		SellersCollection.insert({
-			email: emailVar,
-			fname: fnameVar,
-			lname: lnameVar,
-			phone: telephoneVar,
-			address: addressVar,
-			state: stateVar, 
-			zip: zipVar
-		});
-
+    
 		Accounts.createUser({
       		email: emailVar,
 			fname: fnameVar,
