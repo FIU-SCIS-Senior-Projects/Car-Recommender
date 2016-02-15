@@ -31,7 +31,6 @@ Router.route('/', function () {
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
 SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
-ProfileCollection = new Mongo.Collection('profile');
 
 
 //client side
@@ -45,7 +44,7 @@ if (Meteor.isClient) {
 	//brenda change this
 	 Template.sell.events({
     'submit form': function(event) {//insert the user name to database
-     //event.preventDefault();
+    //event.preventDefault();
 		var emailVar = Meteor.user().emails[0].address;
  		var pictureVar = event.target.picture.value;
 		var yearVar = event.target.year.value;
@@ -58,9 +57,8 @@ if (Meteor.isClient) {
 		var engineVar = event.target.engine.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-        var carIDVar = new Meteor.Collection.ObjectID();
-		var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection	  
-
+    	var carIDVar = new Meteor.Collection.ObjectID();
+    	
 		CarsCollection.insert({
 			CarID: carIDVar,
 			email: emailVar,
@@ -77,17 +75,18 @@ if (Meteor.isClient) {
 			icolor: icolorVar
 		});
 
-    //new for the seller collection
-    SellersCollection.insert({
-      CarID: carIDVar,
-      email: Useraccount.email,
-      fname: Useraccount.fname,
-      lname: Useraccount.lname,
-      phone: Useraccount.telephone,
-      address: Useraccount.address,
-      state: Useraccount.state, 
-      zip: Useraccount.zip
-    });
+		var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection	  
+		//new for the seller collection
+		SellersCollection.insert({
+		  CarID: carIDVar,
+		  email: Useraccount.email,
+		  fname: Useraccount.fname,
+		  lname: Useraccount.lname,
+		  phone: Useraccount.telephone,
+		  address: Useraccount.address,
+		  state: Useraccount.state, 
+		  zip: Useraccount.zip
+		});
 	}});
 		
 	Template.sell.helpers({  
@@ -134,7 +133,8 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-    
+    	
+
 		Accounts.createUser({
       		email: emailVar,
 			fname: fnameVar,
@@ -382,4 +382,3 @@ if (Meteor.isServer) {
 });
 	
 }
-
