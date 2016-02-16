@@ -31,7 +31,7 @@ Router.route('/', function () {
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
 SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
-
+ProfileCollection = new Mongo.Collection('profile');
 
 //client side
 if (Meteor.isClient) {
@@ -47,6 +47,7 @@ if (Meteor.isClient) {
     //event.preventDefault();
 		var emailVar = Meteor.user().emails[0].address;
  		var pictureVar = event.target.picture.value;
+	    var priceVar = event.target.price.value;
 		var yearVar = event.target.year.value;
 		var makeVar = event.target.make.value;
 		var typeVar = event.target.type.value;
@@ -55,6 +56,7 @@ if (Meteor.isClient) {
 		var cmpgVar = event.target.cmpg.value;
 		var hmpgVar = event.target.hmpg.value;
 		var engineVar = event.target.engine.value;
+		var cylinderVar = event.target.cylinder.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
     	var carIDVar = new Meteor.Collection.ObjectID();
@@ -70,7 +72,9 @@ if (Meteor.isClient) {
 			mileage: mileageVar,
 			cmpg: cmpgVar,
 			hmpg: hmpgVar,
+			price: priceVar,
 			engine: engineVar,
+			cylinder: cylinderVar,
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
@@ -133,7 +137,15 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-    	
+    	ProfileCollection.insert({
+		  email: emailVar,
+		  fname: fnameVar,
+		  lname: lnameVar,
+		  phone: telephoneVar,
+		  address: addressVar,
+		  state: stateVar, 
+		  zip: zipVar
+		});
 
 		Accounts.createUser({
       		email: emailVar,
@@ -160,8 +172,7 @@ if (Meteor.isClient) {
        	});
 	}
 });
-	
-		
+			
 	Template.register.helpers({//to present the message in the registration page
 		
 		RegistrationError: function()
@@ -171,9 +182,9 @@ if (Meteor.isClient) {
 	});
 	
 	Template.profile.helpers({//to present the message in the registration page
-		seller: function(){
+		profile: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return SellersCollection.find({ email: emailCurrentUser});
+		   	return ProfileCollection.find({ email: emailCurrentUser});
 		}
 	});
 	
@@ -214,9 +225,9 @@ if (Meteor.isClient) {
 
 	 Template.main.helpers({
 	 
-	   seller: function(){
+	   profile: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return SellersCollection.find({ email: emailCurrentUser});
+		   	return ProfileCollection.find({ email: emailCurrentUser});
 	}
 	 
 	 

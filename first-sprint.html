@@ -1,6 +1,6 @@
 <template name="main">
 	{{#if currentUser}}
-		{{#each seller}} 
+		{{#each profile}} 
 		<br><h4 style="margin-left:65em;font-family:verdana;color: silver;text-align: right;"><b>Welcome, {{fname}} {{lname}}</b></h4>
 		{{/each}}
 		<img src="http://i.imgur.com/lr0uNjw.jpg" style="width:900px;height:100px;display: block;margin: 0 auto;">
@@ -292,21 +292,21 @@ $(document).ready(function(){
 		<img src="https://www.volkswagen.co.uk/vw-testdrive/images/cars/summary-angled-transparent/no-selection.png" id="carPic" style="width:150px;height:100px;">
 		<br><br>
 		
-		<select class="form-control" name="year">
+		<select class="form-control" name="year" required>
 		  <option value="" disabled selected>Select Year</option>	
 		 	{{#each data.year}}  
 				<option>{{y}}</option>
 			{{/each}}
 		</select>
 		<br>
-		<select class="form-control" name="make">
+		<select class="form-control" name="make" required>
 		  <option value="" disabled selected>Select Make</option>	
 		 	{{#each data.make}}  
 				<option>{{car}}</option>
 			{{/each}}
 		</select>
 		<br>
-		<select class="form-control" name="type">
+		<select class="form-control" name="type" required>
 		  <option value="" disabled selected>Select Type</option>	
 		 	{{#each data.style}}  
 				<option>{{s}}</option>
@@ -321,41 +321,47 @@ $(document).ready(function(){
 		<br>
 		<input type="text" name="hmpg" class="form-control" placeholder="Enter Highway MPG..." pattern="^[0-9 ]+$" maxlength="10" required>
 		<br>
-		<select class="form-control" name="engine">
+		<select class="form-control" name="engine" required>
 		  <option value="" disabled selected>Select Engine</option>	
 		 	{{#each data.transmission}}  
 				<option>{{t}}</option>
 			{{/each}}
 		</select>
 		<br>
-		<select class="form-control" name="ecolor">
+		<select class="form-control" name="cylinder" required>
+		  <option value="" disabled selected>Select Cylinder</option>	
+		 	{{#each data.cylinder}}  
+				<option>{{c}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<select class="form-control" name="ecolor" required>
 		  <option value="" disabled selected>Select Exterior Color</option>	
 		 	{{#each data.ecolor}}  
 				<option>{{c}}</option>
 			{{/each}}
 		</select>
 		<br>
-		<select class="form-control" name="icolor">
+		<select class="form-control" name="icolor" required>
 		  <option value="" disabled selected>Select Interior Color</option>	
 		 	{{#each data.icolor}}  
 				<option>{{c}}</option>
 			{{/each}}
 		</select>
 		<br>
+		<input type="text" name="price" class="form-control" placeholder="Enter Price in US Dollars (without commas)..." pattern="^[0-9 ]+$" maxlength="10" required>
+		<br>
 		<input type="submit" class="btn btn-primary btn-lg active" value="Sell this car" id="registratonsubmit">
     <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
 	</div>
 	</form> 
-	  
-	
 </template>
-
 
 <!-- Displays current user data and cars being sold by said user-->
 <template name="profile">
 	<form>
 		<div class="col-xs-4">
-			{{#each seller}} 
+			{{#each profile}} 
 	    		<p>First name: {{fname}}</p>
 				<p>Last name: {{lname}}</p>
 				<p>Email: {{email}}</p>
@@ -383,8 +389,10 @@ $(document).ready(function(){
 			    <p>City MPG: {{cmpg}}</p>
 				<p>Highway MPG: {{hmpg}}</p>
 				<p>Engine: {{engine}}</p>
+				<p>Cylinder: {{cylinder}}</p>
 				<p>Exterior color: {{ecolor}}</p>
-				<p>Interior color: {{icolor}}</p><br><br>
+				<p>Interior color: {{icolor}}</p>
+				<p>Price: ${{price}}</p><br><br>
 			{{/each}}
 		</div>	  
 	</form>	
