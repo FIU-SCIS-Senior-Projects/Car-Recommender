@@ -27,11 +27,10 @@ Router.route('/', function () {
 
 //collections
 //accounts collections containts user information
-//Tasks = new Mongo.Collection("tasks");//this is for the cars collections or the sell collection
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
 SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
-
+ProfileCollection = new Mongo.Collection('profile');
 
 //client side
 if (Meteor.isClient) {
@@ -44,9 +43,11 @@ if (Meteor.isClient) {
 	//brenda change this
 	 Template.sell.events({
     'submit form': function(event) {//insert the user name to database
-    event.preventDefault();
-		var emailVar = Meteor.user().emails[0].address;
+    //event.preventDefault();
+		var emailVar = Meteor.user().emails[0].address;   
+    //var pictureVar = event.target.picture.files[0];
  		var pictureVar = event.target.picture.value;
+	  var priceVar = event.target.price.value;
 		var yearVar = event.target.year.value;
 		var makeVar = event.target.make.value;
 		var typeVar = event.target.type.value;
@@ -55,11 +56,10 @@ if (Meteor.isClient) {
 		var cmpgVar = event.target.cmpg.value;
 		var hmpgVar = event.target.hmpg.value;
 		var engineVar = event.target.engine.value;
+		var cylinderVar = event.target.cylinder.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-    var carIDVar = new Meteor.Collection.ObjectID();
-
-    var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection	  
+    var carIDVar = new Meteor.Collection.ObjectID();    
 
 		CarsCollection.insert({
 			CarID: carIDVar,
@@ -72,22 +72,27 @@ if (Meteor.isClient) {
 			mileage: mileageVar,
 			cmpg: cmpgVar,
 			hmpg: hmpgVar,
+			price: priceVar,
 			engine: engineVar,
+			cylinder: cylinderVar,
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
 
-    //new for the seller collection
-    SellersCollection.insert({
-      CarID: carIDVar,
-      email: Useraccount.email,
-      fname: Useraccount.fname,
-      lname: Useraccount.lname,
-      phone: Useraccount.telephone,
-      address: Useraccount.address,
-      state: Useraccount.state, 
-      zip: Useraccount.zip
-    });
+		var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection
+    alert(Useraccount.fname)	  ;
+		//new for the seller collection
+		SellersCollection.insert({
+		  CarID: carIDVar,
+		  email: Useraccount.email,
+		  fname: Useraccount.fname,
+		  lname: Useraccount.lname,
+		  phone: Useraccount.telephone,
+		  address: Useraccount.address,
+		  state: Useraccount.state, 
+		  zip: Useraccount.zip
+		});
+
 	}});
 		
 	Template.sell.helpers({  
@@ -133,12 +138,22 @@ if (Meteor.isClient) {
 		var stateVar = event.target.registerState.value;
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
-	
+		
+    	ProfileCollection.insert({
+		  email: emailVar,
+		  fname: fnameVar,
+		  lname: lnameVar,
+		  phone: telephoneVar,
+		  address: addressVar,
+		  state: stateVar, 
+		  zip: zipVar
+		});
+
 		Accounts.createUser({
-      		email: emailVar,
+      email: emailVar,
 			fname: fnameVar,
 			lname: lnameVar,
-      		password: passwordVar, 
+      password: passwordVar, 
 			confirm: confirmVar, 
 			address: addressVar,
 			state: stateVar, 
@@ -159,8 +174,7 @@ if (Meteor.isClient) {
        	});
 	}
 });
-	
-		
+			
 	Template.register.helpers({//to present the message in the registration page
 		
 		RegistrationError: function()
@@ -170,9 +184,9 @@ if (Meteor.isClient) {
 	});
 	
 	Template.profile.helpers({//to present the message in the registration page
-		seller: function(){
+		profile: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return SellersCollection.find({ email: emailCurrentUser});
+		   	return ProfileCollection.find({ email: emailCurrentUser});
 		}
 	});
 	
@@ -213,9 +227,9 @@ if (Meteor.isClient) {
 
 	 Template.main.helpers({
 	 
-	   seller: function(){
+	   profile: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return SellersCollection.find({ email: emailCurrentUser});
+		   	return ProfileCollection.find({ email: emailCurrentUser});
 	}
 	 
 	 
@@ -270,7 +284,7 @@ if (Meteor.isClient) {
       {        
         Meteor.call('removePlayerData', useremail, this.CarID);//call server method to remove the like
       }
-     //$(event.currentTarget).addClass("glyphicon glyphicon-check");     
+       
     }
   });
 
@@ -286,8 +300,8 @@ if (Meteor.isClient) {
     },
     popoverdata: function()//this for contact information
     {
-      var item =  SellersCollection.findOne({CarID: this.CarID});
-      var data = "Name: "+item.FirstName+" "+item.LastName+"<br>" + "Email: "+item.SellerEmail+"<br>"+"Phone: "+item.SellerPhone;
+      var item =  SellersCollection.findOne({CarID: this.CarID});      
+      var data = "Name: "+item.fname+" "+item.lname+"<br>" + "Email: "+item.email+"<br>"+"Phone: "+item.phone;
       return data;
     }
 });
@@ -381,4 +395,3 @@ if (Meteor.isServer) {
 });
 	
 }
-
