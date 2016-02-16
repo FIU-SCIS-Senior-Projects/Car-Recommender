@@ -59,7 +59,8 @@ if (Meteor.isClient) {
 		var cylinderVar = event.target.cylinder.value;
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
-    var carIDVar = new Meteor.Collection.ObjectID();    
+    var carIDVar = Random.id();    
+    var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection  
 
 		CarsCollection.insert({
 			CarID: carIDVar,
@@ -78,9 +79,7 @@ if (Meteor.isClient) {
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
-
-		var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection
-    alert(Useraccount.fname)	  ;
+		
 		//new for the seller collection
 		SellersCollection.insert({
 		  CarID: carIDVar,
@@ -299,8 +298,10 @@ if (Meteor.isClient) {
       return (typeof item == 'undefined' || item == null ||typeof this.CarID == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
     },
     popoverdata: function()//this for contact information
-    {
-      var item =  SellersCollection.findOne({CarID: this.CarID});      
+    {  
+      //alert(this.CarID);
+      var item =  SellersCollection.findOne({CarID: this.CarID});
+      //alert(item);
       var data = "Name: "+item.fname+" "+item.lname+"<br>" + "Email: "+item.email+"<br>"+"Phone: "+item.phone;
       return data;
     }
