@@ -133,19 +133,7 @@ if (Meteor.isClient) {
 		var stateVar = event.target.registerState.value;
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
-		
-    //please remove this section
-		// the email will be the Primary Key between the sellers and cars collections
-		SellersCollection.insert({
-			email: emailVar,
-			fname: fnameVar,
-			lname: lnameVar,
-			phone: telephoneVar,
-			address: addressVar,
-			state: stateVar, 
-			zip: zipVar
-		});
-
+	
 		Accounts.createUser({
       		email: emailVar,
 			fname: fnameVar,
@@ -299,7 +287,7 @@ if (Meteor.isClient) {
     popoverdata: function()//this for contact information
     {
       var item =  SellersCollection.findOne({CarID: this.CarID});
-      var data = "Name: "+item.fname+" "+item.lname+"<br>" + "Email: "+item.email+"<br>"+"Phone: "+item.phone;
+      var data = "Name: "+item.FirstName+" "+item.LastName+"<br>" + "Email: "+item.SellerEmail+"<br>"+"Phone: "+item.SellerPhone;
       return data;
     }
 });
