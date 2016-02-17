@@ -28,7 +28,7 @@ Router.route('/', function () {
 //collections
 //accounts collections containts user information
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
-SellersCollection = new Mongo.Collection('seller');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
+SellersCollection = new Mongo.Collection('seller-collection');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
 ProfileCollection = new Mongo.Collection('profile');
 
@@ -60,7 +60,8 @@ if (Meteor.isClient) {
 		var ecolorVar = event.target.ecolor.value;
 		var icolorVar = event.target.icolor.value;
     var carIDVar = Random.id();    
-    var Useraccount = Meteor.users().findOne({email: emailVar});//new for the sellercollection  
+    var Useraccount = ProfileCollection.findOne({email: emailVar});
+//    Meteor.users().findOne({email: emailVar});//new for the sellercollection  
 
 		CarsCollection.insert({
 			CarID: carIDVar,
@@ -79,20 +80,25 @@ if (Meteor.isClient) {
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
-		
+    alert("it got first to this shit");
+    alert(Useraccount);
+    alert(Useraccount.lname);
 		//new for the seller collection
 		SellersCollection.insert({
 		  CarID: carIDVar,
 		  email: Useraccount.email,
 		  fname: Useraccount.fname,
 		  lname: Useraccount.lname,
-		  phone: Useraccount.telephone,
+		  phone: Useraccount.phone,
 		  address: Useraccount.address,
 		  state: Useraccount.state, 
 		  zip: Useraccount.zip
 		});
+    alert("it got to here");
+    alert(Useraccount.fname);
 
-	}});
+	}
+});
 		
 	Template.sell.helpers({  
 	
@@ -298,8 +304,7 @@ if (Meteor.isClient) {
       return (typeof item == 'undefined' || item == null ||typeof this.CarID == 'undefined')?"glyphicon glyphicon-ok":"glyphicon glyphicon-check";
     },
     popoverdata: function()//this for contact information
-    {  
-      //alert(this.CarID);
+    {        
       var item =  SellersCollection.findOne({CarID: this.CarID});
       //alert(item);
       var data = "Name: "+item.fname+" "+item.lname+"<br>" + "Email: "+item.email+"<br>"+"Phone: "+item.phone;
