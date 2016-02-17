@@ -80,9 +80,7 @@ if (Meteor.isClient) {
 			ecolor: ecolorVar,
 			icolor: icolorVar
 		});
-    alert("it got first to this shit");
-    alert(Useraccount);
-    alert(Useraccount.lname);
+
 		//new for the seller collection
 		SellersCollection.insert({
 		  CarID: carIDVar,
@@ -94,8 +92,6 @@ if (Meteor.isClient) {
 		  state: Useraccount.state, 
 		  zip: Useraccount.zip
 		});
-    alert("it got to here");
-    alert(Useraccount.fname);
 
 	}
 });
