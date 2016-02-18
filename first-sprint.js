@@ -314,6 +314,11 @@ if (Meteor.isClient) {
       var useremail = Meteor.user().emails[0].address;
       var item = LikesColllection.find({BuyerEmail: useremail});
       return item;
+    },
+    CarsInfo: function()
+    {
+      var item = CarsCollection.findOne({CarID: this.CarID});
+      return item;
     }
   });
 

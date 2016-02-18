@@ -237,7 +237,7 @@ $(document).ready(function(){
   <tbody>
     <tr class="info">
       <th scope="row">price</th>
-      <td>{{price}}</td>
+      <td>${{price}}</td>
     </tr>
     <tr class="info">
       <th scope="row">make</th>
@@ -277,9 +277,13 @@ $(document).ready(function(){
     <br>
     <legend>Your Car favorites</legend>
     {{#each carFavorites}}
-      <p>carID: {{CarID}}</p>
-      <p>Email: {{BuyerEmail}}</p>
+      {{#with CarsInfo}}
+       <img src="{{picture}}" alt="..." class="img-rounded container" id="favorites" style="width:400px;height:100px;"> 
+      {{>carinfotable}}
+      <a href="" class="btn btn-primary center-block" role="button">Contact</a>          
+      {{/with}}
       <br>
+      <hr>
     {{/each}}
 </div>
 </form>
