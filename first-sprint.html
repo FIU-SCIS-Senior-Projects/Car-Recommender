@@ -272,7 +272,17 @@ $(document).ready(function(){
 </template>
 
 <template name="favorites">
-  <p class="container">favorite template</p>
+  <form>
+  <div class="col-xs-4 container">
+    <br>
+    <legend>Your Car favorites</legend>
+    {{#each carFavorites}}
+      <p>carID: {{CarID}}</p>
+      <p>Email: {{BuyerEmail}}</p>
+      <br>
+    {{/each}}
+</div>
+</form>
 </template>
 
 <template name="sell">

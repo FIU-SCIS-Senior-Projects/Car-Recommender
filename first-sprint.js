@@ -308,6 +308,15 @@ if (Meteor.isClient) {
     }
 });
 
+  Template.favorites.helpers({
+    carFavorites: function()
+    {
+      var useremail = Meteor.user().emails[0].address;
+      var item = LikesColllection.find({BuyerEmail: useremail});
+      return item;
+    }
+  });
+
 
 
 
