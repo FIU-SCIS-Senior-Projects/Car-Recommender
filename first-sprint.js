@@ -208,8 +208,10 @@ if (Meteor.isClient) {
 });
 
  Template.sell.events({
-    'submit form': function(event) {//insert the user name to database    
-    var emailVar = Meteor.user().emails[0].address;       
+    'submit form': function(event) {//insert the user name to database
+    //event.preventDefault();
+    var emailVar = Meteor.user().emails[0].address;   
+    //var pictureVar = event.target.picture.files[0];
     var pictureVar = event.target.picture.value;
     var priceVar = event.target.price.value;
     var yearVar = event.target.year.value;
