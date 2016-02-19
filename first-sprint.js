@@ -39,98 +39,11 @@ if (Meteor.isClient) {
 	Session.set("enemyLogIn", "");//login
 	Session.set("enemyLogOut", "");//registration
     Session.set('selectedTable', null);//to see if someone clicked the info button  
-
-	//brenda change this
-	 Template.sell.events({
-    'submit form': function(event) {//insert the user name to database
-    //event.preventDefault();
-		var emailVar = Meteor.user().emails[0].address;   
-    //var pictureVar = event.target.picture.files[0];
- 		var pictureVar = event.target.picture.value;
-	  var priceVar = event.target.price.value;
-		var yearVar = event.target.year.value;
-		var makeVar = event.target.make.value;
-		var typeVar = event.target.type.value;
-		var modelVar = event.target.model.value;
-		var mileageVar = event.target.mileage.value;
-		var cmpgVar = event.target.cmpg.value;
-		var hmpgVar = event.target.hmpg.value;
-		var engineVar = event.target.engine.value;
-		var cylinderVar = event.target.cylinder.value;
-		var ecolorVar = event.target.ecolor.value;
-		var icolorVar = event.target.icolor.value;
-    var carIDVar = Random.id();    
-    var Useraccount = ProfileCollection.findOne({email: emailVar});
-//    Meteor.users().findOne({email: emailVar});//new for the sellercollection  
-
-		CarsCollection.insert({
-			CarID: carIDVar,
-			email: emailVar,
-			picture: pictureVar,
-			year: yearVar,
-			make: makeVar,
-			type: typeVar,
-			model: modelVar,
-			mileage: mileageVar,
-			cmpg: cmpgVar,
-			hmpg: hmpgVar,
-			price: priceVar,
-			engine: engineVar,
-			cylinder: cylinderVar,
-			ecolor: ecolorVar,
-			icolor: icolorVar
-		});
-
-		//new for the seller collection
-		SellersCollection.insert({
-		  CarID: carIDVar,
-		  email: Useraccount.email,
-		  fname: Useraccount.fname,
-		  lname: Useraccount.lname,
-		  phone: Useraccount.phone,
-		  address: Useraccount.address,
-		  state: Useraccount.state, 
-		  zip: Useraccount.zip
-		});
-
-	}
-});
-		
-	Template.sell.helpers({  
-	
-	data: { 
-		
-	year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
-  		   {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
-		   {y: "1999"}, {y: "1998"}, {y: "1997"}, {y: "1996"}, {y: "1995"}, {y: "1994"}, {y: "1993"}, {y: "1992"}, {y: "1991"},  {y: "1990"}],
-		
-	make: [	{car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"}, 				   	{car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
-		  	{car:"Honda"}, {car:"HUMMER"}, {car:"Hyundai"}, {car:"Infiniti"}, {car:"Isuzu"}, {car:"Jaguar"}, {car:"Jeep"},
-		  	{car:"Kia"}, {car:"Lamborghini"}, {car:"Land Rover"}, {car:"Lexus"}, {car:"Lincoln"}, {car:"Lotus"}, {car:"Maserati"},
-		  	{car:"Maybach"}, {car:"Mazda"}, {car: "Mercedes-Benz"}, {car:"Mercury"}, {car:"MINI"}, {car: "Mitsubishi"},  {car:"Nissan"},	
-		  	{car:"Oldsmobile"}, {car:"Panoz"}, {car:"Pontiac"}, {car:"Porsche"}, {car:"Rolls-Royce"}, {car:"Saab"}, {car:"Saturn"},
-		  	{car:"Scion"}, {car:"Subaru"}, {car:"Suzuki"}, {car:"Toyota"}, {car:"Volkswagen"}, {car:"Volvo"} ],
-		
-	style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
-			{s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
-		
-	cylinder: [	{c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
-	
-	transmission: [	{t: "Automatic"}, {t: "Manual"}],
-		
-	ecolor: [{c: "Black"}, {c: "Blue"}, {c: "Brown"}, {c: "Gold"}, {c: "Gray"}, {c: "Green"}, {c:"Orange"}, {c:"Purple"}, {c:"Red"}, 		
-			{c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],		
-	
-	icolor: [{c: "Black"}, {c: "Gray"}, {c:"Tan"}]
-		
-	}
-	});
-
 	
     Template.register.events({
     'submit form': function(event) {//insert the user name to database
-        event.preventDefault();
-        var fnameVar = event.target.registerFirstName.value;
+    event.preventDefault();
+    var fnameVar = event.target.registerFirstName.value;
 		var lnameVar = event.target.registerLastName.value;
 		var emailVar = event.target.registerEmail.value;
 		var passwordVar = event.target.registerPassword.value;
@@ -184,26 +97,12 @@ if (Meteor.isClient) {
 		}
 	});
 	
-	Template.profile.helpers({//to present the message in the registration page
-		profile: function(){
-			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return ProfileCollection.find({ email: emailCurrentUser});
-		}
-	});
-	
-	Template.inventory.helpers({//to present the message in the registration page
-		cars: function(){
-			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return CarsCollection.find({ email: emailCurrentUser});
-		}
-	});
-	
 	Template.login.events({// 
     'submit form': function(event){//when someone submit hsi login information
         event.preventDefault();
         var emailVar = event.target.loginEmail.value;
         var passwordVar = event.target.loginPassword.value;        
-		Meteor.loginWithPassword(emailVar, passwordVar, function(err)
+		    Meteor.loginWithPassword(emailVar, passwordVar, function(err)
         {
           if(err) //check if we have an error                   
           {
@@ -308,7 +207,105 @@ if (Meteor.isClient) {
     }
 });
 
-  Template.favorites.helpers({
+ Template.sell.events({
+    'submit form': function(event) {//insert the user name to database    
+    var emailVar = Meteor.user().emails[0].address;       
+    var pictureVar = event.target.picture.value;
+    var priceVar = event.target.price.value;
+    var yearVar = event.target.year.value;
+    var makeVar = event.target.make.value;
+    var typeVar = event.target.type.value;
+    var modelVar = event.target.model.value;
+    var mileageVar = event.target.mileage.value;
+    var cmpgVar = event.target.cmpg.value;
+    var hmpgVar = event.target.hmpg.value;
+    var engineVar = event.target.engine.value;
+    var cylinderVar = event.target.cylinder.value;
+    var ecolorVar = event.target.ecolor.value;
+    var icolorVar = event.target.icolor.value;
+    var carIDVar = Random.id();    
+    var Useraccount = ProfileCollection.findOne({email: emailVar});
+
+    CarsCollection.insert({
+      CarID: carIDVar,
+      email: emailVar,
+      picture: pictureVar,
+      year: yearVar,
+      make: makeVar,
+      type: typeVar,
+      model: modelVar,
+      mileage: mileageVar,
+      cmpg: cmpgVar,
+      hmpg: hmpgVar,
+      price: priceVar,
+      engine: engineVar,
+      cylinder: cylinderVar,
+      ecolor: ecolorVar,
+      icolor: icolorVar
+    });
+
+    //new for the seller collection
+    SellersCollection.insert({
+      CarID: carIDVar,
+      email: Useraccount.email,
+      fname: Useraccount.fname,
+      lname: Useraccount.lname,
+      phone: Useraccount.phone,
+      address: Useraccount.address,
+      state: Useraccount.state, 
+      zip: Useraccount.zip
+    });
+
+  }
+});
+    
+  Template.sell.helpers({  
+  
+  data: { 
+    
+  year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
+         {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
+       {y: "1999"}, {y: "1998"}, {y: "1997"}, {y: "1996"}, {y: "1995"}, {y: "1994"}, {y: "1993"}, {y: "1992"}, {y: "1991"},  {y: "1990"}],
+    
+  make: [ {car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"},             {car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
+        {car:"Honda"}, {car:"HUMMER"}, {car:"Hyundai"}, {car:"Infiniti"}, {car:"Isuzu"}, {car:"Jaguar"}, {car:"Jeep"},
+        {car:"Kia"}, {car:"Lamborghini"}, {car:"Land Rover"}, {car:"Lexus"}, {car:"Lincoln"}, {car:"Lotus"}, {car:"Maserati"},
+        {car:"Maybach"}, {car:"Mazda"}, {car: "Mercedes-Benz"}, {car:"Mercury"}, {car:"MINI"}, {car: "Mitsubishi"},  {car:"Nissan"},  
+        {car:"Oldsmobile"}, {car:"Panoz"}, {car:"Pontiac"}, {car:"Porsche"}, {car:"Rolls-Royce"}, {car:"Saab"}, {car:"Saturn"},
+        {car:"Scion"}, {car:"Subaru"}, {car:"Suzuki"}, {car:"Toyota"}, {car:"Volkswagen"}, {car:"Volvo"} ],
+    
+  style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
+      {s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
+    
+  cylinder: [ {c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
+  
+  transmission: [ {t: "Automatic"}, {t: "Manual"}],
+    
+  ecolor: [{c: "Black"}, {c: "Blue"}, {c: "Brown"}, {c: "Gold"}, {c: "Gray"}, {c: "Green"}, {c:"Orange"}, {c:"Purple"}, {c:"Red"},    
+      {c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],   
+  
+  icolor: [{c: "Black"}, {c: "Gray"}, {c:"Tan"}]
+    
+  }
+  });
+
+
+  Template.profile.helpers({//to present the message in the registration page
+    profile: function(){
+      var emailCurrentUser = Meteor.user().emails[0].address;
+        return ProfileCollection.find({ email: emailCurrentUser});
+    }
+  });
+  
+  Template.inventory.helpers({//to present the message in the registration page
+    cars: function(){
+      var emailCurrentUser = Meteor.user().emails[0].address;
+        return CarsCollection.find({ email: emailCurrentUser});
+    }
+  });
+  
+
+  Template.favorites.helpers({//favorites template
     carFavorites: function()
     {
       var useremail = Meteor.user().emails[0].address;
@@ -325,7 +322,7 @@ if (Meteor.isClient) {
 
 
 
-//start of sh section - please ingnore
+//start of bulshit section - please ingnore
 	/* client/accounts/recover-password.js */
 
 	// Ensure we have the token to pass into the template when it's present
@@ -385,7 +382,7 @@ if (Meteor.isClient) {
 		return false;
 	  }
 	});
-//end of this sh section
+//end of this bulshit section
 	
 }
 

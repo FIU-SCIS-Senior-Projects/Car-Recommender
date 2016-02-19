@@ -1,13 +1,5 @@
 <template name="main">
-	{{#if currentUser}}
-		{{#each profile}} 
-		<br><h4 style="margin-left:65em;font-family:verdana;color: silver;text-align: right;"><b>Welcome, {{fname}} {{lname}}</b></h4>
-		{{/each}}
-		<img src="http://i.imgur.com/lr0uNjw.jpg" style="width:900px;height:100px;display: block;margin: 0 auto;">
-	{{else}}
-		<br><br><br><img src="http://i.imgur.com/lr0uNjw.jpg" style="width:900px;height:100px;display: block;margin: 0 auto;">
-	{{/if}}
-	
+<img src="http://i.imgur.com/lr0uNjw.jpg" style="width:900px;height:100px;display: block;margin: 0 auto;">	
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -204,8 +196,6 @@ $(document).ready(function(){
 </script> 
 
 </template>
-
-
 
 <template name="slidercars2">
     <div class="item active">
