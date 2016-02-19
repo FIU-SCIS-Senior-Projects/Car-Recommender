@@ -318,6 +318,11 @@ if (Meteor.isClient) {
     {
       var item = CarsCollection.findOne({CarID: this.CarID});
       return item;
+    },
+    ContactInfo: function()
+    {
+      var item =  SellersCollection.findOne({CarID: this.CarID});
+      return item;
     }
   });
 
