@@ -335,7 +335,7 @@ if (Meteor.isClient) {
 
 
 
-//start of bulshit section - please ingnore
+//start of unfinisheed section - please ingnore
 	/* client/accounts/recover-password.js */
 
 	// Ensure we have the token to pass into the template when it's present
@@ -395,7 +395,7 @@ if (Meteor.isClient) {
 		return false;
 	  }
 	});
-//end of this bulshit section
+//end of this unfinisheed section
 	
 	 Template.updateprofile.helpers({//to present the message in the registration page
     profile: function(){
