@@ -302,13 +302,14 @@ $(document).ready(function(){
     <legend>Your Car favorites</legend>
     {{#each carFavorites}}
       {{#with CarsInfo}}
-       <img src="{{picture}}" alt="..." class="img-rounded container" id="favorites" style="width:400px;height:100px;"> 
-      {{>carinfotable}}
-        {{#with ContactInfo}}
-        {{>Contacttable}}
+       <img src="{{picture}}" alt="..." class="img-rounded container" id="favorites" style="width:420px;height:150px;">       
+        <div id="FavoritesInformation1">{{>carinfotable}}</div>
+        {{#with ContactInfo}}        
+        <div id="FavoritesInformation2">{{>Contacttable}}</div>
         {{/with}}
       {{/with}}
       <br>
+      <button type="button" id = "favoritesshow" class="btn btn-primary btn-lg btn-block btn-info">Full Info</button>
       <hr>
     {{/each}}
 </div>

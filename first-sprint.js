@@ -312,6 +312,13 @@ if (Meteor.isClient) {
     }
   });
   
+  Template.favorites.events({
+    'click #favoritesshow': function(event)
+    {
+      $(event.target).prevAll("#FavoritesInformation1").first().show();
+      $(event.target).prevAll("#FavoritesInformation2").first().show();
+    }
+  });
 
   Template.favorites.helpers({//favorites template
     carFavorites: function()

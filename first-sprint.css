@@ -146,3 +146,11 @@ form {
   width: 700px;
   height: 300px;
 }
+
+
+#FavoritesInformation1{
+  display: none;  
+}
+#FavoritesInformation2{
+  display: none;  
+}
