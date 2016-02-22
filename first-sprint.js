@@ -24,6 +24,12 @@ Router.route('/', function () {
     this.render('login');
     this.render('home', {to: 'aside'});
 });
+Router.route('/updateprofile',function(){
+  this.render('updateprofile', {to: 'aside'});
+});
+Router.route('/changepassword',function(){
+  this.render('changepassword', {to: 'aside'});
+});
 
 //collections
 //accounts collections containts user information
@@ -390,6 +396,14 @@ if (Meteor.isClient) {
 	  }
 	});
 //end of this bulshit section
+	
+	 Template.updateprofile.helpers({//to present the message in the registration page
+    profile: function(){
+      var emailCurrentUser = Meteor.user().emails[0].address;
+        return ProfileCollection.find({ email: emailCurrentUser});
+    }
+  });
+  
 	
 }
 
