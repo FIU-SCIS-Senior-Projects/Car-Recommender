@@ -332,7 +332,7 @@ $(document).ready(function(){
 		</script>
 		<input type="text" name="picture" class="form-control" placeholder="image link..."  onchange="displayImage()" required>
     <a href="http://postimage.org/" class="btn btn-primary btn-xs" target="popup" onclick="window.open('http://postimage.org/','name','width=600,height=400')">Get Img Link</a><br>    
-		<img src="https://www.volkswagen.co.uk/vw-testdrive/images/cars/summary-angled-transparent/no-selection.png" id="carPic" style="width:250px;height:100px;">
+		<img src="https://www.volkswagen.co.uk/vw-testdrive/images/cars/summary-angled-transparent/no-selection.png" id="carPic" style="width:200px;height:100px;">
 		<br><br>
 		
 		<select class="form-control" name="year" required>
@@ -406,7 +406,7 @@ $(document).ready(function(){
 		<div class="col-xs-3"><br><br>
 			{{#each profile}} 
 			<div class="row">
-				<div class="panel panel-info panel-transparent">
+				<div class="panel panel-default panel-transparent">
             		<div class="panel-heading">
 						<h3 class="panel-title">{{fname}} {{lname}}</h3>
                     </div>
@@ -450,21 +450,22 @@ $(document).ready(function(){
 		<div class="col-xs-3">
 			<h3>Update Your Data</h3>
 			{{#each profile}} 
-			<small>*All fields can be updated except for email</small><br>
+			<small>*No need to fill all fields</small><br>
 			<label>First Name</label>
-			<input type="text" class="form-control" placeholder={{fname}}>
+			<input type="text" name="firstName" class="form-control" placeholder={{fname}}>
 			<label>Last Name</label>
-			<input type="text" class="form-control" placeholder={{lname}}>
+			<input type="text" name="lastName" class="form-control" placeholder={{lname}}>
 			<label>Address</label>
-			<input type="text" class="form-control" placeholder={{address}}>
+			<input type="text" name="address" class="form-control" placeholder={{address}}>
 			<label>State</label>
-			<input type="text" class="form-control" placeholder={{state}}>
+			<input type="text" name="state" class="form-control" placeholder={{state}}>
 			<label>Zipcode</label>
-			<input type="text" class="form-control" placeholder={{zip}}>
+			<input type="text" name="zipcode" class="form-control" placeholder={{zip}}>
 			<label>Phone Number</label>
-			<input type="text" class="form-control" placeholder={{phone}}>
+			<input type="text" name="phone" class="form-control" placeholder={{phone}}>
 			{{/each}} 
 			<br><input type="submit" class="btn btn-primary btn-lg active" value="Update" id="updatesubmit">
+			<a href="/profile" class="btn btn-secondary btn-lg active" role="button">Back</a> 
 		</div>
 	</form>		
 </template>
@@ -474,35 +475,104 @@ $(document).ready(function(){
 		<div class="col-xs-3">
 			<h3>Change Your Password</h3>
 			<label>Enter Old Password</label>
-			<input type="password" class="form-control">
+			<input type="password" class="form-control" name="oldPassword" minlength="6" maxlength="30" required>
 			<label>Enter New Password</label>
-			<input type="password" class="form-control">
+			<input type="password" class="form-control" id="pswd" name="newPassword" minlength="6" maxlength="30" required>
 			<label>Confirm New Password</label>
-			<input type="password" class="form-control" />
+			<input type="password" class="form-control" id="npswd" name="confirmNewPassword" minlength="6" maxlength="30"  onkeyup="checkPass()" required>
+			<script>
+			function checkPass() 
+			{
+				var password = document.getElementById("pswd");
+				var confirm_password = document.getElementById("npswd");
+					function validatePassword()
+					{
+						if(password.value != confirm_password.value) 
+						{
+							confirm_password.setCustomValidity("Passwords Don't Match");
+						} 
+						else 
+						{
+							confirm_password.setCustomValidity('');
+						}
+					}
+				password.onchange = validatePassword;
+				confirm_password.onkeyup = validatePassword;
+			}  
+		</script>	
 			<br><input type="submit" class="btn btn-info btn-lg active" value="Change Password" id="changepasswordsubmit">
+			<a href="/profile" class="btn btn-secondary btn-lg active" role="button">Back</a> 
 		</div>
 	</form>		
 </template>	
 
+
 <template name="inventory">
-  <form>
-		<div class="col-xs-4">
-				{{#each cars}}
-			    <p>Picture: {{picture}}</p>
-			    <!--<p>carID: {{carID}}</p>-->
-			    <p>Year: {{year}}</p>
-				<p>Make: {{make}}</p>
-				<p>Type: {{type}}</p>
-				<p>Model: {{model}}</p>
-				<p>Mileage: {{mileage}}</p>
-			    <p>City MPG: {{cmpg}}</p>
-				<p>Highway MPG: {{hmpg}}</p>
-				<p>Engine: {{engine}}</p>
-				<p>Cylinder: {{cylinder}}</p>
-				<p>Exterior color: {{ecolor}}</p>
-				<p>Interior color: {{icolor}}</p>
-				<p>Price: ${{price}}</p><br><br>
+	<form>
+		<div class="col-xs-3"><br><br>
+			{{#each cars}}
+				<div class="panel panel-default panel-transparent">
+            		<div class="panel-heading">
+						<h3 class="panel-title">{{year}} {{make}} {{model}}</h3>
+                    </div>
+					<div class="panel-body">
+              			<table class="table table-user-information">
+								<tbody>
+									  <tr align="center"><img src={{picture}} style="width:200px;height:120px;"></tr>
+									  <tr>
+										<td><p>Price</p></td>
+										<td>${{price}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Type</p></td>
+										<td>{{type}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Mileage</p></td>
+										<td>{{mileage}}</td>
+									  </tr>
+									  <tr>
+										<td><p>City MPG</p></td>
+										<td>{{cmpg}}</td>
+									  </tr>
+									  <tr>	
+										<td><p>Highway MPG</p></td>
+										<td>{{hmpg}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Engine</p></td>
+										<td>{{engine}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Cylinder</p></td>
+										<td>{{cylinder}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Exterior color</p></td>
+										<td>{{ecolor}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Interior color</p></td>
+										<td>{{icolor}}</td>
+									  </tr>
+								</tbody>
+						  <a href=/updatecars><input type="submit" class="btn btn-primary btn-lg active" value="Update"></a>
+						</table>
+                  	</div>	
+				</div>	
+			<br>
 			{{/each}}
-		</div>	  
-	</form>	
+		</div>
+	</form>		 
+</template>
+
+
+<template name="updatecars">
+	<form>
+		<div class="col-xs-3">
+			<h3>Update Your Inventory</h3>
+			<br><input type="submit" class="btn btn-primary btn-lg active" value="Update" id="updatesubmit">
+			<a href="/inventory" class="btn btn-secondary btn-lg active" role="button">Back</a> 
+		</div>
+	</form>		
 </template>

@@ -27,6 +27,9 @@ Router.route('/', function () {
 Router.route('/updateprofile',function(){
   this.render('updateprofile', {to: 'aside'});
 });
+Router.route('/updatecars',function(){
+  this.render('updatecars', {to: 'aside'});
+});
 Router.route('/changepassword',function(){
   this.render('changepassword', {to: 'aside'});
 });
@@ -70,15 +73,16 @@ if (Meteor.isClient) {
 		});
 
 		Accounts.createUser({
-      email: emailVar,
+			email: emailVar,
 			fname: fnameVar,
 			lname: lnameVar,
-      password: passwordVar, 
+			password: passwordVar, 
 			confirm: confirmVar, 
 			address: addressVar,
 			state: stateVar, 
 			zip: zipVar,
-			telephone: telephoneVar 
+			telephone: telephoneVar
+
         },				
         function(err)//in case we have error, such as existing user
 		    {
@@ -305,6 +309,16 @@ if (Meteor.isClient) {
     }
   });
   
+  Template.inventory.events({
+	   'submit form': function(event) {
+    	event.preventDefault();
+		  var carIDVar = event.target.carID.value;
+		   console.log(carIDVar);
+		   console.log('damnit');
+		   alert(carIDVar);
+	   }
+   });
+	
   Template.inventory.helpers({//to present the message in the registration page
     cars: function(){
       var emailCurrentUser = Meteor.user().emails[0].address;
@@ -312,7 +326,7 @@ if (Meteor.isClient) {
     }
   });
   
-  Template.favorites.events({
+ Template.favorites.events({
     'click #favoritesshow': function(event)
     {
       $(event.target).prevAll("#FavoritesInformation1").first().show();
@@ -339,7 +353,85 @@ if (Meteor.isClient) {
     }
   });
 
-
+	
+Template.updateprofile.events({
+	  'submit form': function(event) {
+		  var fnameVar = event.target.firstName.value;  
+	   	  var lnameVar = event.target.lastName.value;
+	   	  var addressVar = event.target.address.value;
+	      var stateVar = event.target.state.value;	
+	      var zipVar = event.target.zipcode.value;
+	      var phoneVar = event.target.phone.value;	  
+         
+		  // get current user profile
+	      var emailCurrentUser = Meteor.user().emails[0].address;	  
+	      var item =  ProfileCollection.findOne({email: emailCurrentUser});
+		  // item_id stores current user profile ID
+		  // Meteor.userId() fetches the current account user ID
+		  
+		  if (fnameVar.length) 
+		  {  
+		  	ProfileCollection.update(item._id, {$set: {fname: fnameVar}});
+			Meteor.users.update(Meteor.userId(), {$set: {'profile.fname': fnameVar}});  
+		  }
+		  if (lnameVar.length) 
+		  {  
+       		ProfileCollection.update(item._id, {$set: {lname: lnameVar}});
+			Meteor.users.update(Meteor.userId(), {$set: {'profile.lname': lnameVar}});   
+		  }
+	   	  if (addressVar.length) 
+		  {  
+		  	ProfileCollection.update(item._id, {$set: {address: addressVar}});
+			Meteor.users.update(Meteor.userId(), {$set: {'profile.address': addressVar}});   
+		  }
+		  if (stateVar.length) 
+		  {  
+       		ProfileCollection.update(item._id, {$set: {state: stateVar}});
+			Meteor.users.update(Meteor.userId(), {$set: {'profile.state': stateVar}});   
+		  }
+		  if (zipVar.length) 
+		  {  
+		  	ProfileCollection.update(item._id, {$set: {zip: zipVar}});
+			Meteor.users.update(Meteor.userId(), {$set: {'profile.zip': zipVar}});  
+		  }
+		  if (phoneVar.length) 
+		  {  
+       		ProfileCollection.update(item._id, {$set: {phone: phoneVar}});
+			Meteor.users.update(Meteor.userId(), {$set: {'profile.telephone': phoneVar}});   
+		  }
+	  }
+  });
+	
+ Template.updateprofile.helpers({
+    profile: function(){
+      var emailCurrentUser = Meteor.user().emails[0].address;
+        return ProfileCollection.find({ email: emailCurrentUser});
+    }
+  });
+  
+ Template.changepassword.events({
+	  'submit form': function(event) {
+	  	  var oldPasswordVar = event.target.oldPassword.value;  
+	   	  var newPasswordVar = event.target.newPassword.value;
+	   	  var confirmNewPasswordVar = event.target.confirmNewPassword.value;
+		  Accounts.changePassword(oldPasswordVar, newPasswordVar, function(err)
+		  {
+			  if (err) {
+				alert("Error changing password");
+			  } 
+			  else { 
+				alert("Password succesfully changed");
+			  }
+		   });						  
+	}
+ });
+	
+Template.updatecars.helpers({//to present the message in the registration page
+    cars: function(){
+      var emailCurrentUser = Meteor.user().emails[0].address;
+        return CarsCollection.find({ email: emailCurrentUser});
+    }
+  });	
 
 
 //start of unfinisheed section - please ingnore
@@ -404,12 +496,6 @@ if (Meteor.isClient) {
 	});
 //end of this unfinisheed section
 	
-	 Template.updateprofile.helpers({//to present the message in the registration page
-    profile: function(){
-      var emailCurrentUser = Meteor.user().emails[0].address;
-        return ProfileCollection.find({ email: emailCurrentUser});
-    }
-  });
   
 	
 }
