@@ -62,15 +62,7 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-    	ProfileCollection.insert({
-		  email: emailVar,
-		  fname: fnameVar,
-		  lname: lnameVar,
-		  phone: telephoneVar,
-		  address: addressVar,
-		  state: stateVar, 
-		  zip: zipVar
-		});
+
 
 		Accounts.createUser({
 			email: emailVar,
@@ -90,6 +82,15 @@ if (Meteor.isClient) {
             	Session.set("enemyLogOut", "Error: email is already taken");
           	else
            	{ 
+            ProfileCollection.insert({
+              email: emailVar,
+              fname: fnameVar,
+              lname: lnameVar,
+              phone: telephoneVar,
+              address: addressVar,
+              state: stateVar, 
+              zip: zipVar
+            });              
 			    //otherwise, change the message, we succed to store the user
             	Session.set("enemyLogOut", "");
             	Session.set("enemyLogIn", "");
