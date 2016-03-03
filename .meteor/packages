@@ -24,3 +24,7 @@ iron:router
 accounts-base
 twbs:bootstrap
 random
+meteorhacks:npm
+
+
+npm-container

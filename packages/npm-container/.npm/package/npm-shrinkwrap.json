@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "svm": {
+      "version": "0.1.1"
+    }
+  }
+}

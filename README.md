@@ -1,6 +1,6 @@
 # Car Recommendation System
 
-visit http://crsystem.meteor.com/ or car-recommender.meteor.com
+visit http://crsystem.meteor.com/ or http://car-recommender.meteor.com/
 
 Features implemented:
 Login,
