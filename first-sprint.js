@@ -528,10 +528,10 @@ if (Meteor.isServer) {
       rbfsigma: 0.5
       }         
       var items = LikesColllection.find({BuyerEmail: useremail}).fetch();
-      var zeev =[[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[0,1,1],[5,10,6],[7,0,0],[1,1,0],[5,2,6]];
-      var zeevl =  [1, 1,-1,1,1,1,1,-1,-1,-1,-1,-1];
-      SVM.train(zeev, zeevl, options);         
-      console.log(SVM.predict([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[6,0,0],[2,0,4],[0,0,1],[1003234323,321312542324,919192943242]]));            
+      //var zeev =[[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[0,1,1],[5,10,6],[7,0,0],[1,1,0],[5,2,6]];
+      //var zeevl =  [1, 1,1,1,1,1,1,1,1,1,1,1];
+      //SVM.train(zeev, zeevl, options);         
+      //console.log(SVM.predict([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[6,0,0],[2,0,4],[0,0,1],[1003234323,321312542324,919192943242]]));            
       
       var array = [];
       var testArray= [];
@@ -551,13 +551,41 @@ if (Meteor.isServer) {
         labels.push(1);
         array = [];        
       }
+      //now adding for label -1, we will add from the last
+      var len = items.length;
+      var count = 0;
+      var index = 0;
+      array = [];  
+      items = CarsCollection.find({}).fetch();
+      var len2 = items.length;         
+      while(count < len && index < len2)
+      {
+         index++;
+         i = items[len2 - index - 1];                  
+         var carItem = LikesColllection.findOne({BuyerEmail: useremail,CarID: i.CarID});
+          if(typeof carItem == 'undefined' || carItem ==null)
+          {
+            count++;
+            var Caritems = CarsCollection.findOne({CarID: i.CarID},{fields: {'_id':0 , 'CarID':0,'picture':0}});
+            for(var z in Caritems) 
+            {
+              if(typeof Caritems[z] == 'undefined' || Caritems[z] == null)
+               array.push(0) ;
+             else
+              array.push(hashCode(Caritems[z]));
+            }
+            testArray.push(array);
+            labels.push(-1);
+            array = [];
+          }
+      }            
       console.log(testArray);
       console.log(labels);
-      SVM.train(testArray,labels,options);     
+      SVM.train(testArray,labels,options);
+      var result = SVM.predict([[801848403,2015,1442395159,2007408851,3619,19,100,1000,60000,617328117,1644574353,69066467,64266207]]);
+      console.log(result[0]);     
     }
 });
-	
-}
 
 //external helper function
 //hash function from string to a number
@@ -573,3 +601,6 @@ function hashCode(str)
     }
     return Math.abs(hash);
 }
+	
+}
+
