@@ -81,7 +81,7 @@
 	    <div class="col-xs-4">
 		  <br><br><br>
 		  <legend>Login</legend>
-      <p >{{LogError}}</p>      
+           <p >{{LogError}}</p>      
 
           <label class="sr-only" for="form-useremail"> Email </label>	  
           <input type="email" name="loginEmail" placeholder="Email..." class="form-control" id="form-useremail" required>
@@ -179,9 +179,9 @@
       <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
       <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<font color='Black'>seller Contact</font>" data-content="<font color='Black'>{{popoverdata}}</font>" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
       {{#if selected}}
-      <div name="zeevtable" class="zeevtable" id="zeevtable">
-      {{>carinfotable}}
-      </div> 
+      		<div name="zeevtable" class="zeevtable" id="zeevtable">
+      			{{>carinfotable}}
+      		</div> 
       {{/if}}     
       </div>
     </div>
@@ -448,7 +448,7 @@ $(document).ready(function(){
 <template name="updateprofile">
 	<form>
 		<div class="col-xs-3">
-			<h3>Update Your Data</h3>
+			<legend>Update Your Data</legend>
 			{{#each profile}} 
 			<small>*No need to fill all fields</small><br>
 			<label>First Name</label>
@@ -473,7 +473,7 @@ $(document).ready(function(){
 <template name="changepassword">
 	<form>
 		<div class="col-xs-3">
-			<h3>Change Your Password</h3>
+			<legend>Change Your Password</legend>
 			<label>Enter Old Password</label>
 			<input type="password" class="form-control" name="oldPassword" minlength="6" maxlength="30" required>
 			<label>Enter New Password</label>
@@ -508,12 +508,13 @@ $(document).ready(function(){
 
 
 <template name="inventory">
-	<form>
-		<div class="col-xs-3"><br><br>
-			{{#each cars}}
-				<div class="panel panel-default panel-transparent">
-            		<div class="panel-heading">
-						<h3 class="panel-title">{{year}} {{make}} {{model}}</h3>
+	<br>
+	<div class="container">
+	{{#each cars}}
+	<div style="float: left; clear: none;padding: 25px;"> 
+		<div class="panel panel-default panel-transparent">
+       		<div class="panel-heading">
+				<h3 class="panel-title">{{year}} {{make}} {{model}}</h3>
                     </div>
 					<div class="panel-body">
               			<table class="table table-user-information">
@@ -521,58 +522,143 @@ $(document).ready(function(){
 									  <tr align="center"><img src={{picture}} style="width:200px;height:120px;"></tr>
 									  <tr>
 										<td><p>Price</p></td>
-										<td>${{price}}</td>
+										  <td><p><b>${{price}}</b></p></td>
 									  </tr>
 									  <tr>
 										<td><p>Type</p></td>
-										<td>{{type}}</td>
+										<td><p>{{type}}</p></td>
 									  </tr>
 									  <tr>
 										<td><p>Mileage</p></td>
-										<td>{{mileage}}</td>
+										<td><p>{{mileage}}</p></td>
 									  </tr>
 									  <tr>
 										<td><p>City MPG</p></td>
-										<td>{{cmpg}}</td>
+										<td><p>{{cmpg}}</p></td>
 									  </tr>
 									  <tr>	
 										<td><p>Highway MPG</p></td>
-										<td>{{hmpg}}</td>
+										<td><p>{{hmpg}}</p></td>
 									  </tr>
 									  <tr>
 										<td><p>Engine</p></td>
-										<td>{{engine}}</td>
+										<td><p>{{engine}}</p></td>
 									  </tr>
 									  <tr>
 										<td><p>Cylinder</p></td>
-										<td>{{cylinder}}</td>
+										<td><p>{{cylinder}}</p></td>
 									  </tr>
 									  <tr>
 										<td><p>Exterior color</p></td>
-										<td>{{ecolor}}</td>
+										<td><p>{{ecolor}}</p></td>
 									  </tr>
 									  <tr>
 										<td><p>Interior color</p></td>
-										<td>{{icolor}}</td>
+										<td><p>{{icolor}}</p></td>
 									  </tr>
 								</tbody>
-						  <a href=/updatecars><input type="submit" class="btn btn-primary btn-lg active" value="Update"></a>
+							<a href="/updatecars"><input type="submit" class="btn btn-info btn-lg active" value="Update" id="updatecarbutton"></a>
 						</table>
                   	</div>	
 				</div>	
 			<br>
-			{{/each}}
 		</div>
-	</form>		 
+	{{/each}}
+	</div>	
 </template>
 
 
 <template name="updatecars">
-	<form>
-		<div class="col-xs-3">
-			<h3>Update Your Inventory</h3>
-			<br><input type="submit" class="btn btn-primary btn-lg active" value="Update" id="updatesubmit">
-			<a href="/inventory" class="btn btn-secondary btn-lg active" role="button">Back</a> 
+	<form action="/inventory">
+		 <div class="col-xs-4">
+			<legend>Update Inventory</legend>  
+			<small>*No need to fill all fields</small><br> 
+		    {{#with cars}}
+			<script>
+		var displayImage = function() {
+			var carPic = document.getElementById('carPic');
+			//carPic.src = URL.createObjectURL(event.target.files[0]);
+            carPic.src = event.target.value;
+		  };
+		</script>
+		<input type="text" name="picture" class="form-control" placeholder="Select Image..."  onchange="displayImage()">
+    <a href="http://postimage.org/" class="btn btn-primary btn-xs" target="popup" onclick="window.open('http://postimage.org/','name','width=600,height=400')">Get Img Link</a><br>    
+		<img src="{{picture}}" id="carPic" style="width:200px;height:100px;">
+		<br><br>
+		<label>Year</label>
+		<select class="form-control" name="year">
+		  <option value="" disabled selected>{{year}}</option>	
+		 	{{#each data.year}}  
+				<option>{{y}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Make</label>	 
+		<select class="form-control" name="make">
+		  <option value="" disabled selected>{{make}}</option>	
+		 	{{#each data.make}}  
+				<option>{{car}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Type</label>	 
+	    <select class="form-control" name="type">
+		  <option value="" disabled selected>{{type}}</option>	
+		 	{{#each data.style}}  
+				<option>{{s}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Model</label>	 
+	 	<input type="text" name="model" class="form-control" placeholder="{{model}}" maxlength="50">
+		<br>
+		<label>Mileage</label>	 
+	    <input type="text" name="mileage" class="form-control" placeholder="{{mileage}}" pattern="^[0-9 ]+$" maxlength="10">
+		<br>
+		<label>City MPG</label>	 
+	    <input type="text" name="cmpg" class="form-control" placeholder="{{cmpg}}" pattern="^[0-9 ]+$" maxlength="10">
+		<br>
+		<label>Highway MPG</label>	 
+	    <input type="text" name="hmpg" class="form-control" placeholder="{{hmpg}}" pattern="^[0-9 ]+$" maxlength="10">
+		<br>
+		<label>Engine</label>	 	 
+		<select class="form-control" name="engine">
+		  <option value="" disabled selected>{{engine}}</option>	
+		 	{{#each data.transmission}}  
+				<option>{{t}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Cylinder</label>	 	 
+		<select class="form-control" name="cylinder">
+		  <option value="" disabled selected>{{cylinder}}</option>	
+		 	{{#each data.cylinder}}  
+				<option>{{c}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Exterior Color</label>	 		 
+		<select class="form-control" name="ecolor">
+		  <option value="" disabled selected>{{ecolor}}</option>	
+		 	{{#each data.ecolor}}  
+				<option>{{c}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Interior Color</label>	 
+		<select class="form-control" name="icolor">
+		  <option value="" disabled selected>{{icolor}}</option>	
+		 	{{#each data.icolor}}  
+				<option>{{c}}</option>
+			{{/each}}
+		</select>
+		<br>
+		<label>Price (USD)</label> 
+		<input type="text" name="price" class="form-control" placeholder="${{price}}" pattern="^[0-9 ]+$" maxlength="10">
+		<br>
+		<br><input type="submit" class="btn btn-primary btn-lg active" value="Update" id="updatesubmit" onClick="/inventory">
+		<a href="/inventory" class="btn btn-secondary btn-lg active" role="button">Back</a> 	 
+		{{/with}}
 		</div>
 	</form>		
 </template>
