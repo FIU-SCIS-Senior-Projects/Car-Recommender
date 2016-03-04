@@ -524,22 +524,47 @@ if (Meteor.isServer) {
       var svm = Meteor.npmRequire('svm');
       var SVM = new svm.SVM();  
       var options = {
-      kernel: 'linear',
+      kernel: 'rbf',
       rbfsigma: 0.5
       }         
       var items = LikesColllection.find({BuyerEmail: useremail}).fetch();
-      SVM.train([['2','z'],['3','c'],['4','d']], [1, 1,-1], options);         
-      console.log(SVM.predict([['2','z'],['3','c'],['4','d']]));            
+      SVM.train([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[0,1,1],[5,10,6],[7,0,0],[1,1,0],[5,2,6]], [1, 1,-1,1,1,1,1,-1,-1,-1,-1,-1], options);         
+      console.log(SVM.predict([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[6,0,0],[2,0,4],[0,0,1],[1003234323,321312542324,919192943242]]));            
       
       var x = [];
+      var xx= [];
       for (_i = 0, _len = items.length; _i < _len; _i++) 
       {
         i = items[_i];
         var carItem = CarsCollection.findOne({CarID: i.CarID},{fields: {'_id':0 , 'CarID':0,'picture':0}});
-        console.log(carItem);
-      }  
+        console.log('carItem.price');
+        for(var z in carItem)
+        {            
+           // console.log(hashCode(carItem[z]));
+           x.push(hashCode(carItem[z]));
+        }
+        //console.log(x);
+        xx.push(x);
+        x = [];        
+      }
+      console.log(xx);
 
     }
 });
 	
+}
+
+//external helper function
+//hash function from string to a number
+function hashCode(str)
+{
+  if(isNaN(str)==false)return Math.abs(str);
+    var hash = 0;
+    if (str.length == 0) return hash;
+    for (i = 0; i < str.length; i++) {
+        char = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
 }
