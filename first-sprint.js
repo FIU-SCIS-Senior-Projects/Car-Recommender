@@ -166,7 +166,9 @@ if (Meteor.isClient) {
 	Template.home.helpers({
     cars: function()
     {
-      return CarsCollection.find({});//get values in the car collections Sellcar
+      var useremail = Meteor.user().emails[0].address;
+      Meteor.call('Recomandation', useremail);//checking if recomandation works      
+      return CarsCollection.find({});//get values in the car collections Sellcar       
     }
   });
 	
@@ -495,10 +497,7 @@ Template.updatecars.helpers({//to present the message in the registration page
 		return false;
 	  }
 	});
-//end of this unfinisheed section
-	
-  
-	
+//end of this unfinisheed section	  	
 }
 
 
@@ -519,7 +518,28 @@ if (Meteor.isServer) {
     'removePlayerData': function(userEmail,carId){     
      //   alert("its got to this section")   ;
         LikesColllection.remove({BuyerEmail: userEmail,CarID:carId});
-    }      
+    },
+    'Recomandation': function(useremail)
+    {
+      var svm = Meteor.npmRequire('svm');
+      var SVM = new svm.SVM();  
+      var options = {
+      kernel: 'linear',
+      rbfsigma: 0.5
+      }         
+      var items = LikesColllection.find({BuyerEmail: useremail}).fetch();
+      SVM.train([['2','z'],['3','c'],['4','d']], [1, 1,-1], options);         
+      console.log(SVM.predict([['2','z'],['3','c'],['4','d']]));            
+      
+      var x = [];
+      for (_i = 0, _len = items.length; _i < _len; _i++) 
+      {
+        i = items[_i];
+        var carItem = CarsCollection.findOne({CarID: i.CarID},{fields: {'_id':0 , 'CarID':0,'picture':0}});
+        console.log(carItem);
+      }  
+
+    }
 });
 	
 }
