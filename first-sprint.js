@@ -528,27 +528,32 @@ if (Meteor.isServer) {
       rbfsigma: 0.5
       }         
       var items = LikesColllection.find({BuyerEmail: useremail}).fetch();
-      SVM.train([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[0,1,1],[5,10,6],[7,0,0],[1,1,0],[5,2,6]], [1, 1,-1,1,1,1,1,-1,-1,-1,-1,-1], options);         
+      var zeev =[[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[0,1,1],[5,10,6],[7,0,0],[1,1,0],[5,2,6]];
+      var zeevl =  [1, 1,-1,1,1,1,1,-1,-1,-1,-1,-1];
+      SVM.train(zeev, zeevl, options);         
       console.log(SVM.predict([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[6,0,0],[2,0,4],[0,0,1],[1003234323,321312542324,919192943242]]));            
       
-      var x = [];
-      var xx= [];
+      var array = [];
+      var testArray= [];
+      var labels = [];
       for (_i = 0, _len = items.length; _i < _len; _i++) 
       {
         i = items[_i];
         var carItem = CarsCollection.findOne({CarID: i.CarID},{fields: {'_id':0 , 'CarID':0,'picture':0}});
-        console.log('carItem.price');
+        //console.log('carItem.price');
         for(var z in carItem)
         {            
            // console.log(hashCode(carItem[z]));
-           x.push(hashCode(carItem[z]));
+           array.push(hashCode(carItem[z]));
         }
         //console.log(x);
-        xx.push(x);
-        x = [];        
+        testArray.push(array);
+        labels.push(1);
+        array = [];        
       }
-      console.log(xx);
-
+      console.log(testArray);
+      console.log(labels);
+      SVM.train(testArray,labels,options);     
     }
 });
 	
