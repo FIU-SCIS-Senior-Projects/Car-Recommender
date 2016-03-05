@@ -626,11 +626,14 @@ if (Meteor.isServer) {
       for (_i = 0, _len = items.length; _i < _len; _i++) 
       {
         i = items[_i];
+        if(typeof i.CarID == 'undefined') continue;
         var carItem = CarsCollection.findOne({CarID: i.CarID},{fields: {'_id':0 , 'CarID':0,'picture':0}});
         //console.log('carItem.price');
         for(var z in carItem)
         {            
-           // console.log(hashCode(carItem[z]));
+          if(typeof carItem[z] == 'undefined' || carItem[z] == null)
+           array.push(0) ;           
+         else
            array.push(hashCode(carItem[z]));
         }
         //console.log(x);
@@ -648,7 +651,8 @@ if (Meteor.isServer) {
       while(count < len && index < len2)
       {
          index++;
-         i = items[len2 - index - 1];                  
+         i = items[len2 - index - 1];
+         if(typeof i == 'undefined'|| typeof i.CarID == 'undefined') continue;                  
          var carItem = LikesColllection.findOne({BuyerEmail: useremail,CarID: i.CarID});
           if(typeof carItem == 'undefined' || carItem ==null)
           {
@@ -707,7 +711,7 @@ function CreatePrediction(SVM)//recomandation algorithm done by Zeev Feldbeine, 
       }
                  
 }
-
+//helper function to insert to the tempory collections
 function InsertToSVMCollection(carItem,result)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
 {      
       SVMCollection.insert({
