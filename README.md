@@ -8,5 +8,9 @@ Logout,
 Registration,
 cars display,
 cars info,
-selling form
+selling form,
+Recomandation algorithm,
+editing profile,
+editing car sells
+
 
