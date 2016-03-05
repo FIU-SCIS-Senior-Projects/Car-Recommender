@@ -613,7 +613,12 @@ if (Meteor.isServer) {
       var options = {
       kernel: 'rbf',
       rbfsigma: 0.5
-      }         
+      }
+      //check if user does not have any likes
+      if(LikesColllection.find({BuyerEmail: useremail}).count() <= 0 )
+      {
+        return CarsCollection.find({}).fetch();
+      }
       var items = LikesColllection.find({BuyerEmail: useremail}).fetch();
       var array = [];
       var testArray= [];
