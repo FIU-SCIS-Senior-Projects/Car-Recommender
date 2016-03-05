@@ -40,7 +40,7 @@ LikesColllection = new Mongo.Collection("likes-collection");//this is the like c
 SellersCollection = new Mongo.Collection('seller-collection');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
 ProfileCollection = new Mongo.Collection('profile');
-SVMCollection = new Mongo.Collection(null);
+SVMCollection = new Mongo.Collection(null);//this is client only collection
 
 //client side
 if (Meteor.isClient) {
@@ -163,8 +163,8 @@ if (Meteor.isClient) {
       return template === currentRoute.lookupTemplate().toLowerCase() ? 'active' : '';
     }
   });
-	
-  Template.home.onCreated(function () {
+	//home on created , it calls the recomandation algorithm
+  Template.home.onCreated(function () {//recomandation algorithm done by Zeev Feldbeine, Copy Rights
      var useremail = Meteor.user().emails[0].address;
      Meteor.call('Recomandation',useremail, function(err, res) {
         //console.log(res);
@@ -175,7 +175,7 @@ if (Meteor.isClient) {
   });
 
   //helpers for the home template
-	Template.home.helpers({
+	Template.home.helpers({//recomandation algorithm done by Zeev Feldbeine, Copy Rights
     cars: function()
     {
       //var useremail = Meteor.user().emails[0].address;
@@ -727,7 +727,7 @@ function InsertToSVMCollection(carItem,result)//recomandation algorithm done by 
 
 //external helper function
 //hash function from string to a number
-function hashCode(str)
+function hashCode(str)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
 {
   if(isNaN(str)==false)return Math.abs(str);
     var hash = 0;
