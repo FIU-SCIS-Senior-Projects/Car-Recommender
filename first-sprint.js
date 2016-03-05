@@ -294,11 +294,11 @@ if (Meteor.isClient) {
   
   data: { 
     
-  year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
+  	year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
          {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
        {y: "1999"}, {y: "1998"}, {y: "1997"}, {y: "1996"}, {y: "1995"}, {y: "1994"}, {y: "1993"}, {y: "1992"}, {y: "1991"},  {y: "1990"}],
     
-  make: [ {car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"},             {car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
+  	make: [ {car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"},             		  {car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
         {car:"Honda"}, {car:"HUMMER"}, {car:"Hyundai"}, {car:"Infiniti"}, {car:"Isuzu"}, {car:"Jaguar"}, {car:"Jeep"},
         {car:"Kia"}, {car:"Lamborghini"}, {car:"Land Rover"}, {car:"Lexus"}, {car:"Lincoln"}, {car:"Lotus"}, {car:"Maserati"},
         {car:"Maybach"}, {car:"Mazda"}, {car: "Mercedes-Benz"}, {car:"Mercury"}, {car:"MINI"}, {car: "Mitsubishi"},  {car:"Nissan"},  
@@ -306,18 +306,19 @@ if (Meteor.isClient) {
         {car:"Scion"}, {car:"Subaru"}, {car:"Suzuki"}, {car:"Toyota"}, {car:"Volkswagen"}, {car:"Volvo"} ],
     
   style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
-      {s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
+      	  {s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
     
   cylinder: [ {c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
   
   transmission: [ {t: "Automatic"}, {t: "Manual"}],
     
   ecolor: [{c: "Black"}, {c: "Blue"}, {c: "Brown"}, {c: "Gold"}, {c: "Gray"}, {c: "Green"}, {c:"Orange"}, {c:"Purple"}, {c:"Red"},    
-      {c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],   
+      	   {c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],   
   
   icolor: [{c: "Black"}, {c: "Gray"}, {c:"Tan"}]
     
   }
+	 
   });
 
 
@@ -329,14 +330,12 @@ if (Meteor.isClient) {
   });
   
   Template.inventory.events({
-	   'submit form': function(event) {
-    	event.preventDefault();
-		  var carIDVar = event.target.carID.value;
-		   console.log(carIDVar);
-		   console.log('damnit');
-		   alert(carIDVar);
-	   }
-   });
+	  'click #updatecarbutton': function(event)//if user clicked 'like' respond accordinally
+      {
+      	event.preventDefault;        
+        Session.set('key', this.CarID);
+      }
+ });
 	
   Template.inventory.helpers({//to present the message in the registration page
     cars: function(){
@@ -445,12 +444,83 @@ Template.updateprofile.events({
 	}
  });
 	
+Template.updatecars.events({
+ 	'submit form': function(event) {
+		   	//event.preventDefault();
+		    var pictureVar = event.target.picture.value;
+		    var makeVar = event.target.make.value;
+		    var modelVar = event.target.model.value;
+		    var yearVar = event.target.year.value;
+		    var priceVar = event.target.price.value;
+	   	  	var typeVar = event.target.type.value;
+	   	  	var mileageVar = event.target.mileage.value;
+	        var cmpgVar = event.target.cmpg.value;	
+	        var hmpgVar = event.target.hmpg.value;
+		    var engineVar = event.target.engine.value;
+		    var cylinderVar = event.target.cylinder.value;
+		    var ecolorVar = event.target.ecolor.value;
+		    var icolorVar = event.target.icolor.value;
+		     
+		    //get the CarID
+		    var carIDVar = Session.get('key');
+		    //find the corresponding car collection
+		    var item = CarsCollection.findOne({CarID: carIDVar});
+		   
+		    if (pictureVar.length) 
+		  		CarsCollection.update(item._id, {$set: {picture: pictureVar}});
+		    if (makeVar.length) 
+		  		CarsCollection.update(item._id, {$set: {make: makeVar}});
+		    if (modelVar.length) 
+		  		CarsCollection.update(item._id, {$set: {model: modelVar}});
+		  	if (yearVar.length)
+		  		CarsCollection.update(item._id, {$set: {year: yearVar}});
+		  	if (priceVar.length) 
+		  		CarsCollection.update(item._id, {$set: {price: priceVar}});
+		  	if (typeVar.length) 
+		  		CarsCollection.update(item._id, {$set: {type: typeVar}});
+		  	if (mileageVar.length) 
+		  		CarsCollection.update(item._id, {$set: {mileage: mileageVar}});
+		  	if (cmpgVar.length) 
+		  		CarsCollection.update(item._id, {$set: {cmpg: cmpgVar}});
+		  	if (hmpgVar.length) 
+		  		CarsCollection.update(item._id, {$set: {hmpg: hmpgVar}});
+		  	if (engineVar.length) 
+		  		CarsCollection.update(item._id, {$set: {engine: engineVar}});
+		 	if (cylinderVar.length) 
+		  		CarsCollection.update(item._id, {$set: {cylinder: cylinderVar}});
+		 	if (ecolorVar.length) 
+		  		CarsCollection.update(item._id, {$set: {ecolor: ecolorVar}});
+		 	if (icolorVar.length) 
+		  		CarsCollection.update(item._id, {$set: {icolor: icolorVar}});
+	 	}
+});	
+	
 Template.updatecars.helpers({//to present the message in the registration page
     cars: function(){
-      var emailCurrentUser = Meteor.user().emails[0].address;
-        return CarsCollection.find({ email: emailCurrentUser});
-    }
-  });	
+      var temp = Session.get('key');
+        return CarsCollection.findOne({ CarID: temp});
+    },
+	
+  	data: { 
+    	year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
+         {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
+       {y: "1999"}, {y: "1998"}, {y: "1997"}, {y: "1996"}, {y: "1995"}, {y: "1994"}, {y: "1993"}, {y: "1992"}, {y: "1991"},  {y: "1990"}],
+    	make: [ {car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"},             		  {car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
+        {car:"Honda"}, {car:"HUMMER"}, {car:"Hyundai"}, {car:"Infiniti"}, {car:"Isuzu"}, {car:"Jaguar"}, {car:"Jeep"},
+        {car:"Kia"}, {car:"Lamborghini"}, {car:"Land Rover"}, {car:"Lexus"}, {car:"Lincoln"}, {car:"Lotus"}, {car:"Maserati"},
+        {car:"Maybach"}, {car:"Mazda"}, {car: "Mercedes-Benz"}, {car:"Mercury"}, {car:"MINI"}, {car: "Mitsubishi"},  {car:"Nissan"},  
+        {car:"Oldsmobile"}, {car:"Panoz"}, {car:"Pontiac"}, {car:"Porsche"}, {car:"Rolls-Royce"}, {car:"Saab"}, {car:"Saturn"},
+        {car:"Scion"}, {car:"Subaru"}, {car:"Suzuki"}, {car:"Toyota"}, {car:"Volkswagen"}, {car:"Volvo"} ],
+    	style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
+      	  {s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
+    	cylinder: [ {c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
+  		transmission: [ {t: "Automatic"}, {t: "Manual"}],
+    	ecolor: [{c: "Black"}, {c: "Blue"}, {c: "Brown"}, {c: "Gold"}, {c: "Gray"}, {c: "Green"}, {c:"Orange"}, {c:"Purple"}, {c:"Red"},    
+      	   {c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],   
+ 		icolor: [{c: "Black"}, {c: "Gray"}, {c:"Tan"}]
+   }
+});
+
 
 
 //start of unfinisheed section - please ingnore

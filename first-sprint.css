@@ -17,9 +17,15 @@ body {
 }
 
 p, li {
-	color: silver;
+	color: whitesmoke;
 	font-size: 120%;
 }
+
+.p1{
+	color: white;
+	font-size: 120%;
+}
+
 
 h1 {
    	font-family: Script MT;
