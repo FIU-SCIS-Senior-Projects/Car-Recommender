@@ -164,22 +164,27 @@ if (Meteor.isClient) {
     }
   });
 	
+  Template.home.onCreated(function () {
+     var useremail = Meteor.user().emails[0].address;
+     Meteor.call('Recomandation',useremail, function(err, res) {
+        //console.log(res);
+       Session.set('smartArray',res);
+        //return res;
+      });  
+
+  });
+
   //helpers for the home template
 	Template.home.helpers({
     cars: function()
     {
-      var useremail = Meteor.user().emails[0].address;
+      //var useremail = Meteor.user().emails[0].address;
       //var x = Meteor.call('Recomandation', useremail);//checking if recomandation works
       //console.log(x);      
-      Meteor.call('Recomandation',useremail, function(err, res) {
-        console.log(res);
-       //Session.set('smartArray',res);
-        //return res;
-      });   
-      //var x =Session.get('smartArray');
+      var x =Session.get('smartArray');
       //console.log(x);
-      //return x;
-      return CarsCollection.find({});//get values in the car collections Sellcar       
+      return x;
+     // return CarsCollection.find({});//get values in the car collections Sellcar       
     }
   });
 	
@@ -530,7 +535,7 @@ if (Meteor.isServer) {
      //   alert("its got to this section")   ;
         LikesColllection.remove({BuyerEmail: userEmail,CarID:carId});
     },
-    'Recomandation': function(useremail)
+    'Recomandation': function(useremail)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
     {
       SVMCollection.remove({});
       var svm = Meteor.npmRequire('svm');
@@ -588,19 +593,18 @@ if (Meteor.isServer) {
       }            
       //console.log(testArray);
       //console.log(labels);
-      SVM.train(testArray,labels,options);
-      var result = SVM.predict([[801848403,2015,1442395159,2007408851,3619,19,100,1000,60000,617328117,1644574353,69066467,64266207]]);
+      SVM.train(testArray,labels,options);     
       //console.log(result);
       //now we put create a cleint arry and put the correct value on them to predict
       CreatePrediction(SVM);
 //      console.log(SVMCollection.find({}).count()); 
       //return SVMCollection.find({});
-       return SVMCollection.find({}, {sort: {rank: -1}});
+       return SVMCollection.find({}, {sort: {rank: -1}}).fetch();
     }
 });
 
 //using SVM to predict all the ther results
-function CreatePrediction(SVM)
+function CreatePrediction(SVM)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
 {
       var Parray = [];
       var Prediction = [];
@@ -629,7 +633,7 @@ function CreatePrediction(SVM)
                  
 }
 
-function InsertToSVMCollection(carItem,result)
+function InsertToSVMCollection(carItem,result)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
 {      
       SVMCollection.insert({
       CarID: carItem.CarID,
