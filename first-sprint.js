@@ -40,6 +40,7 @@ LikesColllection = new Mongo.Collection("likes-collection");//this is the like c
 SellersCollection = new Mongo.Collection('seller-collection');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
 ProfileCollection = new Mongo.Collection('profile');
+SVMCollection = new Mongo.Collection(null);
 
 //client side
 if (Meteor.isClient) {
@@ -47,7 +48,8 @@ if (Meteor.isClient) {
   //message for login and registration
 	Session.set("enemyLogIn", "");//login
 	Session.set("enemyLogOut", "");//registration
-    Session.set('selectedTable', null);//to see if someone clicked the info button  
+  Session.set('selectedTable', null);//to see if someone clicked the info button
+  Session.set('smartArray',null);
 	
     Template.register.events({
     'submit form': function(event) {//insert the user name to database
@@ -167,7 +169,16 @@ if (Meteor.isClient) {
     cars: function()
     {
       var useremail = Meteor.user().emails[0].address;
-      Meteor.call('Recomandation', useremail);//checking if recomandation works      
+      //var x = Meteor.call('Recomandation', useremail);//checking if recomandation works
+      //console.log(x);      
+      Meteor.call('Recomandation',useremail, function(err, res) {
+        console.log(res);
+       //Session.set('smartArray',res);
+        //return res;
+      });   
+      //var x =Session.get('smartArray');
+      //console.log(x);
+      //return x;
       return CarsCollection.find({});//get values in the car collections Sellcar       
     }
   });
@@ -521,6 +532,7 @@ if (Meteor.isServer) {
     },
     'Recomandation': function(useremail)
     {
+      SVMCollection.remove({});
       var svm = Meteor.npmRequire('svm');
       var SVM = new svm.SVM();  
       var options = {
@@ -528,11 +540,6 @@ if (Meteor.isServer) {
       rbfsigma: 0.5
       }         
       var items = LikesColllection.find({BuyerEmail: useremail}).fetch();
-      //var zeev =[[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[0,1,1],[5,10,6],[7,0,0],[1,1,0],[5,2,6]];
-      //var zeevl =  [1, 1,1,1,1,1,1,1,1,1,1,1];
-      //SVM.train(zeev, zeevl, options);         
-      //console.log(SVM.predict([[1,2,3],[3,3,0],[1,1,1],[2,2,2],[3,0,3],[0,3,3],[5,1,0],[6,0,0],[2,0,4],[0,0,1],[1003234323,321312542324,919192943242]]));            
-      
       var array = [];
       var testArray= [];
       var labels = [];
@@ -579,13 +586,70 @@ if (Meteor.isServer) {
             array = [];
           }
       }            
-      console.log(testArray);
-      console.log(labels);
+      //console.log(testArray);
+      //console.log(labels);
       SVM.train(testArray,labels,options);
       var result = SVM.predict([[801848403,2015,1442395159,2007408851,3619,19,100,1000,60000,617328117,1644574353,69066467,64266207]]);
-      console.log(result[0]);     
+      //console.log(result);
+      //now we put create a cleint arry and put the correct value on them to predict
+      CreatePrediction(SVM);
+//      console.log(SVMCollection.find({}).count()); 
+      //return SVMCollection.find({});
+       return SVMCollection.find({}, {sort: {rank: -1}});
     }
 });
+
+//using SVM to predict all the ther results
+function CreatePrediction(SVM)
+{
+      var Parray = [];
+      var Prediction = [];
+      items = CarsCollection.find({}).fetch();      
+      for (_i = 0, _len = items.length; _i < _len; _i++) 
+      {
+        i = items[_i];
+        if(typeof i.CarID == 'undefined') continue;        
+        var carItem = CarsCollection.findOne({CarID: i.CarID});        
+        for(var z in carItem) 
+        {
+          if(!(z == '_id' || z == 'CarID' || z == 'picture'))
+          {
+              if(typeof carItem[z] == 'undefined' || carItem[z] == null)
+               Parray.push(0) ;
+             else
+              Parray.push(hashCode(carItem[z]));            
+          }
+        }        
+        Prediction.push(Parray);
+        var result = SVM.predict(Prediction);
+        InsertToSVMCollection(carItem,result);        
+        Prediction = [];
+        Parray = [];
+      }
+                 
+}
+
+function InsertToSVMCollection(carItem,result)
+{      
+      SVMCollection.insert({
+      CarID: carItem.CarID,
+      email: carItem.email,
+      picture: carItem.picture,
+      year: carItem.year,
+      make: carItem.make,
+      type: carItem.type,
+      model: carItem.model,
+      mileage: carItem.mileage,
+      cmpg: carItem.cmpg,
+      hmpg: carItem.hmpg,
+      price: carItem.price,
+      engine: carItem.engine,
+      cylinder: carItem.cylinder,
+      ecolor: carItem.ecolor,
+      icolor: carItem.icolor,
+      rank: result
+    });
+}
 
 //external helper function
 //hash function from string to a number
