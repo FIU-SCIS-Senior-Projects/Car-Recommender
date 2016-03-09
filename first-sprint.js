@@ -163,6 +163,7 @@ if (Meteor.isClient) {
       return template === currentRoute.lookupTemplate().toLowerCase() ? 'active' : '';
     }
   });
+
 	//home on created , it calls the recomandation algorithm
   Template.home.onCreated(function () {//recomandation algorithm done by Zeev Feldbeine, Copy Rights
      var useremail = Meteor.user().emails[0].address;
@@ -591,7 +592,7 @@ if (Meteor.isServer) {
     // code here will only be run on the server
 
     Meteor.methods({
-    'insertLikeData': function(userEmail,carId){
+    'insertLikeData': function(userEmail,carId){//recomandation algorithm done by Zeev Feldbeine, Copy Rights
         var item = LikesColllection.findOne({BuyerEmail: userEmail,CarID:carId});
         if(typeof item == 'undefined' || item ==null)
         {
@@ -601,7 +602,7 @@ if (Meteor.isServer) {
           });
         }
     },
-    'removePlayerData': function(userEmail,carId){     
+    'removePlayerData': function(userEmail,carId){//recomandation algorithm done by Zeev Feldbeine, Copy Rights     
      //   alert("its got to this section")   ;
         LikesColllection.remove({BuyerEmail: userEmail,CarID:carId});
     },
@@ -747,6 +748,22 @@ function hashCode(str)//recomandation algorithm done by Zeev Feldbeine, Copy Rig
         hash = hash & hash; // Convert to 32bit integer
     }
     return Math.abs(hash);
+}
+
+//external helper function
+//calculate navigation distance between two points of latitude and longitude
+//this function is Haversine formula, which is a famous navigation algorithm to calculate distance between two points in the map
+//developed and implemented by Zeev Feldbeine, Copy Rights
+function haversine(lat1,lng1,lat2,lng2) {
+    r = 6371; // average radius of the earth in km
+    dLat = Math.toRadians(lat2 - lat1);
+    dLon = Math.toRadians(lng2 - lng1);
+    double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+       Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) 
+      * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    double d = r * c;
+    return d;
 }
 	
 }
