@@ -758,11 +758,9 @@ function haversine(lat1,lng1,lat2,lng2) {
     r = 6371; // average radius of the earth in km
     dLat = Math.toRadians(lat2 - lat1);
     dLon = Math.toRadians(lng2 - lng1);
-    double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-       Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) 
-      * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    double d = r * c;
+    a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))  * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    d = r * c;
     return d;
 }
 	
