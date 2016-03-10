@@ -11,6 +11,11 @@ cars info,
 selling form,
 Recomandation algorithm,
 editing profile,
-editing car sells
+editing car sells,
+Distance Recomandation Algorithm
 
+
+Developers:
+Zeev Feldbeine,
+Brenda Izquierdo
 
