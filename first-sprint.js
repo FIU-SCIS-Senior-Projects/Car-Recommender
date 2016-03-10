@@ -37,6 +37,7 @@ Router.route('/changepassword',function(){
 //collections
 //accounts collections containts user information
 LikesColllection = new Mongo.Collection("likes-collection");//this is the like collection, containts CARID and EMailBuyer
+//**************pls delete SellersCollections collection, it will be usless since we allready have a profile collection and a car collection, *********
 SellersCollection = new Mongo.Collection('seller-collection');//this is the seller collection, contains CARID,SellerEmail,Sellername,Seller Last name,SellerPhone
 CarsCollection = new Mongo.Collection('cars');//this is the cars collection, contains car images, year, make, type, model, mpg, engine and color 
 ProfileCollection = new Mongo.Collection('profile');
@@ -256,7 +257,7 @@ if (Meteor.isClient) {
     var ecolorVar = event.target.ecolor.value;
     var icolorVar = event.target.icolor.value;
     var carIDVar = Random.id();    
-    var Useraccount = ProfileCollection.findOne({email: emailVar});
+    var Useraccount = ProfileCollection.findOne({email: emailVar});//this can be derived, 
 
     CarsCollection.insert({
       CarID: carIDVar,
@@ -276,6 +277,7 @@ if (Meteor.isClient) {
       icolor: icolorVar
     });
 
+    //this section  can be derived from the profilecollection
     //new for the seller collection
     SellersCollection.insert({
       CarID: carIDVar,
@@ -286,7 +288,7 @@ if (Meteor.isClient) {
       address: Useraccount.address,
       state: Useraccount.state, 
       zip: Useraccount.zip
-    });
+    });//
 
   }
 });
@@ -762,6 +764,15 @@ function haversine(lat1,lng1,lat2,lng2) {
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     d = r * c;
     return d;
+}
+
+//calculate distance based on based on harversine and database history
+function GetDistanceZip(CarItem,useremail)
+{
+  var profileUser1= ProfileCollection.findOne({ email: useremail});
+  var profileUser2= ProfileCollection.findOne({ email: CarItem.email});
+  var zipcodes = Meteor.npmRequire('zipcodes');
+  return zipcodes.distance(profileUser1.zip, profileUser2.zip); //In Miles
 }
 	
 }
