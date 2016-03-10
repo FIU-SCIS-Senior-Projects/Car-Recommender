@@ -679,15 +679,15 @@ if (Meteor.isServer) {
       SVM.train(testArray,labels,options);     
       //console.log(result);
       //now we put create a cleint arry and put the correct value on them to predict
-      CreatePrediction(SVM);
+      CreatePrediction(SVM,useremail);
 //      console.log(SVMCollection.find({}).count()); 
       //return SVMCollection.find({});
-       return SVMCollection.find({}, {sort: {rank: -1}}).fetch();
+       return SVMCollection.find({}, {sort: {rank: -1,distance: 1}}).fetch();
     }
 });
 
 //using SVM to predict all the ther results
-function CreatePrediction(SVM)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
+function CreatePrediction(SVM,useremail)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
 {
       var Parray = [];
       var Prediction = [];
@@ -708,15 +708,16 @@ function CreatePrediction(SVM)//recomandation algorithm done by Zeev Feldbeine, 
           }
         }        
         Prediction.push(Parray);
-        var result = SVM.predict(Prediction);
-        InsertToSVMCollection(carItem,result);        
+        var result = SVM.predict(Prediction);        
+        var DistanceResult = GetDistanceZip(carItem.email,useremail);//new shit        
+        InsertToSVMCollection(carItem,result,DistanceResult);        
         Prediction = [];
         Parray = [];
       }
                  
 }
 //helper function to insert to the tempory collections
-function InsertToSVMCollection(carItem,result)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
+function InsertToSVMCollection(carItem,result,DistanceResult)//recomandation algorithm done by Zeev Feldbeine, Copy Rights
 {      
       SVMCollection.insert({
       CarID: carItem.CarID,
@@ -734,6 +735,7 @@ function InsertToSVMCollection(carItem,result)//recomandation algorithm done by 
       cylinder: carItem.cylinder,
       ecolor: carItem.ecolor,
       icolor: carItem.icolor,
+      distance: DistanceResult,
       rank: result
     });
 }
