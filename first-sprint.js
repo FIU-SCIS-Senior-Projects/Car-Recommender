@@ -671,7 +671,7 @@ if (Meteor.isServer) {
             testArray.push(array);
             labels.push(-1);
             array = [];
-          }
+          }          
       }            
       //console.log(testArray);
       //console.log(labels);
@@ -767,12 +767,14 @@ function haversine(lat1,lng1,lat2,lng2) {
 }
 
 //calculate distance based on based on harversine and database history
-function GetDistanceZip(CarItem,useremail)
+function GetDistanceZip(CarItem,useremail)//developed and implemented by Zeev Feldbeine, Copy Rights
 {
   var profileUser1= ProfileCollection.findOne({ email: useremail});
   var profileUser2= ProfileCollection.findOne({ email: CarItem.email});
   var zipcodes = Meteor.npmRequire('zipcodes');
-  return zipcodes.distance(profileUser1.zip, profileUser2.zip); //In Miles
+  var zip1 = Math.abs(profileUser1.zip);
+  var zip2 = Math.abs(profileUser2.zip);
+  return zipcodes.distance(zip1, zip2); //In Miles
 }
 	
 }
