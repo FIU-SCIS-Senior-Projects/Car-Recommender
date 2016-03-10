@@ -643,6 +643,7 @@ if (Meteor.isServer) {
         testArray.push(array);
         labels.push(1);
         array = [];        
+                    
       }
       //now adding for label -1, we will add from the last
       var len = items.length;
@@ -671,7 +672,7 @@ if (Meteor.isServer) {
             testArray.push(array);
             labels.push(-1);
             array = [];
-          }          
+          }
       }            
       //console.log(testArray);
       //console.log(labels);
@@ -767,13 +768,17 @@ function haversine(lat1,lng1,lat2,lng2) {
 }
 
 //calculate distance based on based on harversine and database history
-function GetDistanceZip(CarItem,useremail)//developed and implemented by Zeev Feldbeine, Copy Rights
-{
+function GetDistanceZip(Selleremail,useremail)//developed and implemented by Zeev Feldbeine, Copy Rights
+{    
+  if(typeof Selleremail == 'undefined' ||typeof useremail == 'undefined' || Selleremail == null || useremail == null) return Number.MAX_VALUE;
   var profileUser1= ProfileCollection.findOne({ email: useremail});
-  var profileUser2= ProfileCollection.findOne({ email: CarItem.email});
-  var zipcodes = Meteor.npmRequire('zipcodes');
+  var profileUser2= ProfileCollection.findOne({ email: Selleremail});  
+  if(typeof profileUser1 == 'undefined' ||typeof profileUser2 == 'undefined' ) return Number.MAX_VALUE;
+  var zipcodes = Meteor.npmRequire('zipcodes');  
   var zip1 = Math.abs(profileUser1.zip);
+  if(typeof zipcodes.lookup(zip1) == 'undefined') return Number.MAX_VALUE;
   var zip2 = Math.abs(profileUser2.zip);
+  if(typeof zipcodes.lookup(zip2) == 'undefined') return Number.MAX_VALUE;
   return zipcodes.distance(zip1, zip2); //In Miles
 }
 	
