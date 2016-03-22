@@ -19,3 +19,6 @@ Developers:
 Zeev Feldbeine,
 Brenda Izquierdo
 
+Contact Information:
+zfeld003@gmail.edu
+bizqu002@fiu.edu
