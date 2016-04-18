@@ -2,7 +2,7 @@
 Router.configure({
     layoutTemplate: 'main'
 });
-Router.route('/RecoverPassword');
+Router.route('/password');
 Router.route('/register');
 Router.route('/dashboard');
 Router.route('/profile',function()
@@ -30,9 +30,16 @@ Router.route('/updateprofile',function(){
 Router.route('/updatecars',function(){
   this.render('updatecars', {to: 'aside'});
 });
+Router.route('/details',function(){
+  this.render('details', {to: 'aside'});
+});
 Router.route('/changepassword',function(){
   this.render('changepassword', {to: 'aside'});
 });
+Router.route('/contactseller',function(){
+  this.render('contactseller', {to: 'aside'});
+});
+
 
 //collections
 //accounts collections containts user information
@@ -65,9 +72,7 @@ if (Meteor.isClient) {
 		var zipVar = event.target.registerZip.value;
 		var telephoneVar = event.target.registerTelephone.value;
 		
-
-
-		Accounts.createUser({
+      	Accounts.createUser({
 			email: emailVar,
 			fname: fnameVar,
 			lname: lnameVar,
@@ -100,9 +105,11 @@ if (Meteor.isClient) {
                Router.go('/');
 			       }
        	});
+		
 	}
 });
-			
+
+	 
 	Template.register.helpers({//to present the message in the registration page
 		
 		RegistrationError: function()
@@ -143,7 +150,8 @@ if (Meteor.isClient) {
 	 
 	   profile: function(){
 			var emailCurrentUser = Meteor.user().emails[0].address;
-		   	return ProfileCollection.find({ email: emailCurrentUser});
+		   	 	return ProfileCollection.find({ email: emailCurrentUser});
+		  //return Meteor.users.findOne({'emails.0.address': emailCurrentUser});
 	}
 	 
 	 
@@ -202,6 +210,11 @@ if (Meteor.isClient) {
         Session.set('selectedTable', null);
       }
     },
+	 'click #contactbutton': function(event)
+      {
+      	event.preventDefault;        
+		Session.set('carID', this.CarID);  
+	  },   
     'click #likebutton': function(event)//if user clicked 'like' respond accordinally
     {
       event.preventDefault;        
@@ -238,24 +251,38 @@ if (Meteor.isClient) {
     }
 });
 
- Template.sell.events({
+Template.sell.events({
     'submit form': function(event) {//insert the user name to database
     //event.preventDefault();
     var emailVar = Meteor.user().emails[0].address;   
     //var pictureVar = event.target.picture.files[0];
     var pictureVar = event.target.picture.value;
-    var priceVar = event.target.price.value;
-    var yearVar = event.target.year.value;
-    var makeVar = event.target.make.value;
-    var typeVar = event.target.type.value;
-    var modelVar = event.target.model.value;
-    var mileageVar = event.target.mileage.value;
-    var cmpgVar = event.target.cmpg.value;
-    var hmpgVar = event.target.hmpg.value;
-    var engineVar = event.target.engine.value;
-    var cylinderVar = event.target.cylinder.value;
-    var ecolorVar = event.target.ecolor.value;
-    var icolorVar = event.target.icolor.value;
+    var makeVar = event.target.selectMake.value;
+    var modelVar = event.target.selectModel.value;
+	var yearVar = event.target.selectYear.value;
+	var styleVar = event.target.selectStyle.value;
+	var colorVar = event.target.selectColor.value;
+	var mileageVar = event.target.mileage.value;
+	var priceVar = event.target.price.value;
+	var mpgCityVar = event.target.mpg_city.value;
+	var mpgHighwayVar =	event.target.mpg_highway.value;
+	var marketVar = event.target.market.value;
+	var vehicleSizeVar = event.target.vehicleSize.value;
+	var vehicleStyleVar = event.target.vehicleStyle.value;
+	var vehicleTypeVar = event.target.vehicleType.value;
+	var horsepowerVar =	event.target.horsepower.value;
+	var configurationVar =	event.target.configuration.value;
+	var cylinderVar = event.target.cylinder.value;
+	var fuelTypeVar = event.target.fuelType.value;
+	var typeVar = event.target.type.value;
+	var numOfDoorsVar =	event.target.numOfDoors.value;
+	var squishVinVar = event.target.squishVin.value;
+	var equipmentTypeVar = event.target.equipmentType.value;
+	var transmissionTypeVar	= event.target.transmissionType.value;
+	var trimVar = event.target.trim.value;
+	var submodelBodyVar = event.target.submodel_body.value;
+	var submodelModelNameVar = event.target.submodel_modelName.value;	
+	var moreOptionsVar = event.target.options.value;	
     var carIDVar = Random.id();    
     var Useraccount = ProfileCollection.findOne({email: emailVar});//this can be derived, 
 
@@ -265,16 +292,30 @@ if (Meteor.isClient) {
       picture: pictureVar,
       year: yearVar,
       make: makeVar,
-      type: typeVar,
       model: modelVar,
       mileage: mileageVar,
-      cmpg: cmpgVar,
-      hmpg: hmpgVar,
+	  style: styleVar,
       price: priceVar,
-      engine: engineVar,
+      color: colorVar,
+	  mpgCity: mpgCityVar, 
+	  mpgHighway: mpgHighwayVar,
+	  market: marketVar, 
+	  vehicleSize: vehicleSizeVar,
+	  vehicleStyle: vehicleStyleVar,
+      vehicleType: vehicleTypeVar, 
+      horsepower: horsepowerVar,
+      configuration: configurationVar,
       cylinder: cylinderVar,
-      ecolor: ecolorVar,
-      icolor: icolorVar
+      fuelType: fuelTypeVar,
+      type: typeVar,
+      numOfDoors: numOfDoorsVar,
+	  squishVin: squishVinVar, 
+	  equipmentType: equipmentTypeVar, 
+	  transmissionType: transmissionTypeVar,
+	  trim: trimVar, 
+	  submodelBody: submodelBodyVar, 
+	  submodelModelName: submodelModelNameVar,
+	  moreOptions: moreOptionsVar	
     });
 
     //this section  can be derived from the profilecollection
@@ -292,53 +333,51 @@ if (Meteor.isClient) {
 
   }
 });
-    
-  Template.sell.helpers({  
-  
-  data: { 
-    
-  	year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
-         {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
-       {y: "1999"}, {y: "1998"}, {y: "1997"}, {y: "1996"}, {y: "1995"}, {y: "1994"}, {y: "1993"}, {y: "1992"}, {y: "1991"},  {y: "1990"}],
-    
-  	make: [ {car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"},             		  {car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
-        {car:"Honda"}, {car:"HUMMER"}, {car:"Hyundai"}, {car:"Infiniti"}, {car:"Isuzu"}, {car:"Jaguar"}, {car:"Jeep"},
-        {car:"Kia"}, {car:"Lamborghini"}, {car:"Land Rover"}, {car:"Lexus"}, {car:"Lincoln"}, {car:"Lotus"}, {car:"Maserati"},
-        {car:"Maybach"}, {car:"Mazda"}, {car: "Mercedes-Benz"}, {car:"Mercury"}, {car:"MINI"}, {car: "Mitsubishi"},  {car:"Nissan"},  
-        {car:"Oldsmobile"}, {car:"Panoz"}, {car:"Pontiac"}, {car:"Porsche"}, {car:"Rolls-Royce"}, {car:"Saab"}, {car:"Saturn"},
-        {car:"Scion"}, {car:"Subaru"}, {car:"Suzuki"}, {car:"Toyota"}, {car:"Volkswagen"}, {car:"Volvo"} ],
-    
-  style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
-      	  {s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
-    
-  cylinder: [ {c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
-  
-  transmission: [ {t: "Automatic"}, {t: "Manual"}],
-    
-  ecolor: [{c: "Black"}, {c: "Blue"}, {c: "Brown"}, {c: "Gold"}, {c: "Gray"}, {c: "Green"}, {c:"Orange"}, {c:"Purple"}, {c:"Red"},    
-      	   {c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],   
-  
-  icolor: [{c: "Black"}, {c: "Gray"}, {c:"Tan"}]
-    
-  }
+	
+ Template.profile.events({
+	  'click #deleteprofilebutton': function(event)
+      {
+			 alert("We're sorry to see you go. To reactivate your account, register again with the same email, your account data (such as profile information, favorites list, car inventory, etc.) will be fully restored.");	
+		    Meteor.users.remove({ _id: Meteor.userId() }, function (error, result) {
+			if (error) {
+			  console.log("Error removing user: ", error);
+			} else {
+			  console.log("Number of users removed: " + result);
+			}
+		  });
+      }
 	 
-  });
-
-
-  Template.profile.helpers({//to present the message in the registration page
+ });	
+	
+ Template.profile.helpers({//to present the message in the registration page
     profile: function(){
       var emailCurrentUser = Meteor.user().emails[0].address;
-        return ProfileCollection.find({ email: emailCurrentUser});
+        return ProfileCollection.findOne({ email: emailCurrentUser});
     }
   });
   
+
   Template.inventory.events({
-	  'click #updatecarbutton': function(event)//if user clicked 'like' respond accordinally
+	  'click #updatecarbutton': function(event)
       {
       	event.preventDefault;        
         Session.set('key', this.CarID);
+      },
+	  'click #details': function(event)
+      {
+      	event.preventDefault;        
+        Session.set('key', this.CarID);
+      },
+	  	
+	  'click #deletecarbutton': function(event)
+      {
+      	event.preventDefault;        
+  	    var item = CarsCollection.findOne({CarID: this.CarID});
+		CarsCollection.remove(item._id);
       }
  });
+	
+	  
 	
   Template.inventory.helpers({//to present the message in the registration page
     cars: function(){
@@ -347,6 +386,27 @@ if (Meteor.isClient) {
     }
   });
   
+  Template.details.events({
+	  'click #updatecarbutton': function(event)
+      {
+      	event.preventDefault;        
+        Session.set('key', this.CarID);
+      },
+	  'click #deletecarbutton': function(event)
+      {
+      	event.preventDefault;  
+		var temp = Session.get('key');
+  	    var item = CarsCollection.findOne({CarID: temp});
+		CarsCollection.remove(item._id);
+      }
+ });
+	
+Template.details.helpers({
+	cars: function(){
+      var temp = Session.get('key');
+        return CarsCollection.findOne({ CarID: temp});
+    }
+});	
  Template.favorites.events({
     'click #favoritesshow': function(event)
     {
@@ -374,6 +434,7 @@ if (Meteor.isClient) {
     }
   });
 
+
 	
 Template.updateprofile.events({
 	  'submit form': function(event) {
@@ -392,7 +453,7 @@ Template.updateprofile.events({
 		  
 		  if (fnameVar.length) 
 		  {  
-		  	ProfileCollection.update(item._id, {$set: {fname: fnameVar}});
+		  	ProfileCollection.update(item._id, {$set: {fname: fnameVar}});  
 			Meteor.users.update(Meteor.userId(), {$set: {'profile.fname': fnameVar}});  
 		  }
 		  if (lnameVar.length) 
@@ -417,7 +478,7 @@ Template.updateprofile.events({
 		  }
 		  if (phoneVar.length) 
 		  {  
-       		ProfileCollection.update(item._id, {$set: {phone: phoneVar}});
+       		ProfileCollection.update(item._id, {$set: {phone: phoneVar}});  
 			Meteor.users.update(Meteor.userId(), {$set: {'profile.telephone': phoneVar}});   
 		  }
 	  }
@@ -426,7 +487,7 @@ Template.updateprofile.events({
  Template.updateprofile.helpers({
     profile: function(){
       var emailCurrentUser = Meteor.user().emails[0].address;
-        return ProfileCollection.find({ email: emailCurrentUser});
+        return ProfileCollection.findOne({ email: emailCurrentUser});
     }
   });
   
@@ -435,166 +496,308 @@ Template.updateprofile.events({
 	  	  var oldPasswordVar = event.target.oldPassword.value;  
 	   	  var newPasswordVar = event.target.newPassword.value;
 	   	  var confirmNewPasswordVar = event.target.confirmNewPassword.value;
-		  Accounts.changePassword(oldPasswordVar, newPasswordVar, function(err)
-		  {
-			  if (err) {
-				alert("Error changing password");
-			  } 
-			  else { 
-				alert("Password succesfully changed");
-			  }
-		   });						  
+		  alert("ALERT: You are about to be automatically logged out. Login to your account using your new brand password.");
+		  Accounts.changePassword(oldPasswordVar, newPasswordVar);
+		  accountsClient.logout(); 
 	}
  });
 	
 Template.updatecars.events({
- 	'submit form': function(event) {
+ 	'submit form': function(event) 
+  {
 		   	//event.preventDefault();
-		    var pictureVar = event.target.picture.value;
-		    var makeVar = event.target.make.value;
-		    var modelVar = event.target.model.value;
-		    var yearVar = event.target.year.value;
-		    var priceVar = event.target.price.value;
-	   	  	var typeVar = event.target.type.value;
-	   	  	var mileageVar = event.target.mileage.value;
-	        var cmpgVar = event.target.cmpg.value;	
-	        var hmpgVar = event.target.hmpg.value;
-		    var engineVar = event.target.engine.value;
-		    var cylinderVar = event.target.cylinder.value;
-		    var ecolorVar = event.target.ecolor.value;
-		    var icolorVar = event.target.icolor.value;
-		     
+		  var pictureVar = event.target.picture.value;
+			var makeVar = event.target.selectMake.value;
+			var modelVar = event.target.selectModel.value;
+			var yearVar = event.target.selectYear.value;
+			var styleVar = event.target.selectStyle.value;
+			var colorVar = event.target.selectColor.value;
+			var mileageVar = event.target.mileage.value;
+			var priceVar = event.target.price.value;
+			var mpgCityVar = event.target.mpg_city.value;
+			var mpgHighwayVar =	event.target.mpg_highway.value;
+			var marketVar = event.target.market.value;
+			var vehicleSizeVar = event.target.vehicleSize.value;
+			var vehicleStyleVar = event.target.vehicleStyle.value;
+			var vehicleTypeVar = event.target.vehicleType.value;
+			var horsepowerVar =	event.target.horsepower.value;
+			var configurationVar =	event.target.configuration.value;
+			var cylinderVar = event.target.cylinder.value;
+			var fuelTypeVar = event.target.fuelType.value;
+			var typeVar = event.target.type.value;
+			var numOfDoorsVar =	event.target.numOfDoors.value;
+			var squishVinVar = event.target.squishVin.value;
+			var equipmentTypeVar = event.target.equipmentType.value;
+			var transmissionTypeVar	= event.target.transmissionType.value;
+			var trimVar = event.target.trim.value;
+			var submodelBodyVar = event.target.submodel_body.value;
+			var submodelModelNameVar = event.target.submodel_modelName.value;	
+			var moreOptionsVar = event.target.options.value;	
+				     
 		    //get the CarID
 		    var carIDVar = Session.get('key');
 		    //find the corresponding car collection
 		    var item = CarsCollection.findOne({CarID: carIDVar});
-		   
+			if (trimVar.length) 
+		  		CarsCollection.update(item._id, {$set: {trim: trimVar}});
+			if (submodelBodyVar.length) 
+					CarsCollection.update(item._id, {$set: {submodelBody: submodelBodyVar}});
+			if (submodelModelNameVar.length) 
+					CarsCollection.update(item._id, {$set: {submodelModelName: submodelModelNameVar}});
+			if (moreOptionsVar.length) 
+					CarsCollection.update(item._id, {$set: {moreOptions: moreOptionsVar}});		
+			if (typeVar.length) 
+					CarsCollection.update(item._id, {$set: {type: typeVar}});
+			if (numOfDoorsVar.length) 
+					CarsCollection.update(item._id, {$set: {numOfDoors: numOfDoorsVar}});
+			if (squishVinVar.length) 
+					CarsCollection.update(item._id, {$set: {squishVin: squishVinVar}});
+			if (equipmentTypeVar.length) 
+					CarsCollection.update(item._id, {$set: {equipmentType: equipmentTypeVar}});
+			if (transmissionTypeVar.length) 
+					CarsCollection.update(item._id, {$set: {transmissionType: transmissionTypeVar}});		   
+			if (vehicleTypeVar.length) 
+					CarsCollection.update(item._id, {$set: {vehicleType: vehicleTypeVar}});
+			if (horsepowerVar.length) 
+					CarsCollection.update(item._id, {$set: {horsepower: horsepowerVar}});
+			if (configurationVar.length) 
+					CarsCollection.update(item._id, {$set: {configuration: configurationVar}});
+			if (cylinderVar.length) 
+					CarsCollection.update(item._id, {$set: {cylinder: cylinderVar}});
+			if (fuelTypeVar.length) 
+					CarsCollection.update(item._id, {$set: {fuelType: fuelTypeVar}});		
 		    if (pictureVar.length) 
-		  		CarsCollection.update(item._id, {$set: {picture: pictureVar}});
+		  			CarsCollection.update(item._id, {$set: {picture: pictureVar}});
 		    if (makeVar.length) 
-		  		CarsCollection.update(item._id, {$set: {make: makeVar}});
+		  			CarsCollection.update(item._id, {$set: {make: makeVar}});
 		    if (modelVar.length) 
-		  		CarsCollection.update(item._id, {$set: {model: modelVar}});
+		  			CarsCollection.update(item._id, {$set: {model: modelVar}});
 		  	if (yearVar.length)
-		  		CarsCollection.update(item._id, {$set: {year: yearVar}});
+		  			CarsCollection.update(item._id, {$set: {year: yearVar}});
 		  	if (priceVar.length) 
-		  		CarsCollection.update(item._id, {$set: {price: priceVar}});
-		  	if (typeVar.length) 
-		  		CarsCollection.update(item._id, {$set: {type: typeVar}});
+		  			CarsCollection.update(item._id, {$set: {price: priceVar}});
+		  	if (styleVar.length) 
+		  			CarsCollection.update(item._id, {$set: {style: styleVar}});
 		  	if (mileageVar.length) 
-		  		CarsCollection.update(item._id, {$set: {mileage: mileageVar}});
-		  	if (cmpgVar.length) 
-		  		CarsCollection.update(item._id, {$set: {cmpg: cmpgVar}});
-		  	if (hmpgVar.length) 
-		  		CarsCollection.update(item._id, {$set: {hmpg: hmpgVar}});
-		  	if (engineVar.length) 
-		  		CarsCollection.update(item._id, {$set: {engine: engineVar}});
-		 	if (cylinderVar.length) 
-		  		CarsCollection.update(item._id, {$set: {cylinder: cylinderVar}});
-		 	if (ecolorVar.length) 
-		  		CarsCollection.update(item._id, {$set: {ecolor: ecolorVar}});
-		 	if (icolorVar.length) 
-		  		CarsCollection.update(item._id, {$set: {icolor: icolorVar}});
-	 	}
+		  			CarsCollection.update(item._id, {$set: {mileage: mileageVar}});
+		  	if (colorVar.length) 
+		  			CarsCollection.update(item._id, {$set: {color: colorVar}});
+		  	if (mpgCityVar.length) 
+		  			CarsCollection.update(item._id, {$set: {mpgCity: mpgCityVar}});
+		  	if (mpgHighwayVar.length) 
+		  			CarsCollection.update(item._id, {$set: {mpgHighway:  mpgHighwayVar}});
+		 	if (marketVar.length) 
+		  			CarsCollection.update(item._id, {$set: {market: marketVar}});
+		 	if (vehicleSizeVar.length) 
+		  			CarsCollection.update(item._id, {$set: {vehicleSize: vehicleSizeVar}});
+		 	if (vehicleStyleVar.length) 
+		  			CarsCollection.update(item._id, {$set: {vehicleStyle: vehicleStyleVar}});
+	}
 });	
 	
 Template.updatecars.helpers({//to present the message in the registration page
     cars: function(){
       var temp = Session.get('key');
         return CarsCollection.findOne({ CarID: temp});
-    },
-	
-  	data: { 
-    	year: [{y: "2016"}, {y: "2015"}, {y: "2014"}, {y: "2013"}, {y: "2012"}, {y: "2011"}, {y: "2010"}, 
-         {y: "2009"}, {y: "2008"}, {y: "2007"}, {y: "2006"}, {y: "2005"}, {y: "2004"}, {y: "2003"}, {y: "2002"}, {y: "2001"},  {y: "2000"},
-       {y: "1999"}, {y: "1998"}, {y: "1997"}, {y: "1996"}, {y: "1995"}, {y: "1994"}, {y: "1993"}, {y: "1992"}, {y: "1991"},  {y: "1990"}],
-    	make: [ {car: "Acura"}, {car: "Alfa Romeo"}, {car: "Aston Martin"}, {car: "Audi"}, {car: "Bentley"}, {car:"BMW"}, {car: "Buick"},             		  {car:"Cadillac"}, {car:"Chevrolet"}, {car:"Chrysler"}, {car:"Dodge"}, {car:"Ferrari"}, {car:"Ford"}, {car:"GMC"},
-        {car:"Honda"}, {car:"HUMMER"}, {car:"Hyundai"}, {car:"Infiniti"}, {car:"Isuzu"}, {car:"Jaguar"}, {car:"Jeep"},
-        {car:"Kia"}, {car:"Lamborghini"}, {car:"Land Rover"}, {car:"Lexus"}, {car:"Lincoln"}, {car:"Lotus"}, {car:"Maserati"},
-        {car:"Maybach"}, {car:"Mazda"}, {car: "Mercedes-Benz"}, {car:"Mercury"}, {car:"MINI"}, {car: "Mitsubishi"},  {car:"Nissan"},  
-        {car:"Oldsmobile"}, {car:"Panoz"}, {car:"Pontiac"}, {car:"Porsche"}, {car:"Rolls-Royce"}, {car:"Saab"}, {car:"Saturn"},
-        {car:"Scion"}, {car:"Subaru"}, {car:"Suzuki"}, {car:"Toyota"}, {car:"Volkswagen"}, {car:"Volvo"} ],
-    	style: [{s:"Convertible"}, {s:"Coupe"}, {s: "Crossover"}, {s: "Diesel"}, {s:"Hatchback"}, {s: "Hybrid/Electric"}, {s: "Luxury"}, 
-      	  {s: "Minivan/Van"}, {s: "Sedan"}, {s: "SUV"}, {s: "Truck"}, {s: "Wagon"}],
-    	cylinder: [ {c: "2-Cylinder"}, {c: "4-Cylinder"}, {c: "6-Cylinder"}, {c: "8-Cylinder"}, {c: "10-Cylinder"}, {c: "12-Cylinder"}],
-  		transmission: [ {t: "Automatic"}, {t: "Manual"}],
-    	ecolor: [{c: "Black"}, {c: "Blue"}, {c: "Brown"}, {c: "Gold"}, {c: "Gray"}, {c: "Green"}, {c:"Orange"}, {c:"Purple"}, {c:"Red"},    
-      	   {c:"Silver"}, {c:"Tan"}, {c:"White"}, {c:"Yellow"} ],   
- 		icolor: [{c: "Black"}, {c: "Gray"}, {c:"Tan"}]
-   }
+    }
 });
 
 
-
-//start of unfinisheed section - please ingnore
-	/* client/accounts/recover-password.js */
-
-	// Ensure we have the token to pass into the template when it's present
-	if (Accounts._resetPasswordToken) {  
-	  Session.set('resetPasswordToken', Accounts._resetPasswordToken);
-	}
-
-	Template.RecoverPassword.helpers({  
-	  resetPassword: function() {
-		return Session.get('resetPasswordToken');
-	  }
-	});
-
-	Template.RecoverPassword.events({  
-	  'submit #forgot-password': function(event, template) {
-		var email = template.find('#user-email'),
-		  message;
-
-		// You will probably want more robust validation than this!
-		if (email) {
-		  // This will send a link to the address which, upon clicking, prompts the
-		  //user to enter a new password.
-		  Accounts.forgotPassword(email);
-		  message = 'Sent a reset password link to ' + email + '.';
-		} else {
-		  message = 'Please enter a valid email address.'
-		}
-
-		// Inform the user.
-		template.find('#form-messages').html(message);
-
-		return false;
+  Template.homelayoutview.events({//copyrights zeev feldbeine
+   //Brenda's part
+	  'click #contactbutton': function(event)
+      {
+      	event.preventDefault;        
+		Session.set('carID', this.CarID);  
 	  },
-	  'submit #set-new-password': function (event, template) {
-		// Proper decoupled validation would be much nicer than this
-		var password = template.find('#new-password').value,
-		  passwordTest = new RegExp("(?=.{6,}).*", "g");
+	  // end of Brenda's part
+	 'click #likebutton': function(event)//if user clicked 'like' respond accordinally
+    {
+      event.preventDefault;        
+      //alert(Meteor.user().emails[0].address);
+      var useremail = Meteor.user().emails[0].address;
+      var item = LikesColllection.findOne({BuyerEmail: useremail,CarID: this.CarID});
+      if(typeof item == 'undefined' || item ==null)
+      {
+       Meteor.call('insertLikeData', useremail, this.CarID);//call server method to insert a like into the collection
+      }else
+      {        
+        Meteor.call('removePlayerData', useremail, this.CarID);//call server method to remove the like
+      }       
+    },
+    'click #mapbutton': function(event)
+    {
+      Session.set('mapID',this.CarID);
+      
+      var useremail = Meteor.user().emails[0].address;      
+      Meteor.call('GetLocation', useremail, function(err, res) {        
+        Session.set('orgin',res);
+      });//call server method to remove the like                   
+       
+       Meteor.call('GetLocation', this.email, function(err, res) {        
+        Session.set('dest',res);
+      });       
+      $("#myModal").on("shown.bs.modal", function () {
+      google.maps.event.trigger(map, "resize");
+      var x= Session.get('dest');
+      var y= Session.get('orgin');
+      map.setCenter({lat: y.latitude, lng: y.longitude});
+      map.setZoom(6);
 
-		// If the password is valid, we can reset it.
-		if (passwordTest.test(password)) {
-		  Accounts.resetPassword(
-			Session.get('resetPasswordToken'),
-			password,
-			function (error) {
-			  if (err) {
-				template.find('#form-messages').html('There was a problem resetting your password.');
+        // Set destination, origin and travel mode.
+      request = {
+        destination: {lat: x.latitude, lng: x.longitude},
+        origin: {lat: y.latitude, lng: y.longitude},
+        travelMode: google.maps.TravelMode.DRIVING
+      };
+
+      // Pass the directions request to the directions service.
+      directionsService = new google.maps.DirectionsService();
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          // Display the route on the map.
+          directionsDisplay.setDirections(response);
+        }
+
+      });      
+
+      });
+    }     
+  });
+  //helpers for the home template
+  Template.homelayoutview.helpers({//recomandation algorithm done by Zeev Feldbeine, Copy Rights
+    cars: function()
+    {
+      var x =Session.get('smartArray');
+      return x;     
+    },
+    likesign: function(){//to show the like sign accordinally, based on the like collection
+      var useremail = Meteor.user().emails[0].address;
+      var item = LikesColllection.findOne({BuyerEmail: useremail,CarID: this.CarID}); 
+      //alert(useremail);
+      return (typeof item == 'undefined' || item == null ||typeof this.CarID == 'undefined')?"Like":"Dislike";
+    },
+    popoverdata: function()//this for contact information
+    {        
+      var item =  SellersCollection.findOne({CarID: this.CarID});
+      //alert(item);
+      var data = "Name: "+item.fname+" "+item.lname+"<br>" + "Email: "+item.email+"<br>"+"Phone: "+item.phone;
+      return data;
+    }    
+  });
+
+  Template.templatemodle.helpers({
+    Cars: function()
+    {
+      var x = Session.get('mapID');
+      return CarsCollection.findOne({CarID:x});
+    },
+    destination: function()
+    {
+      return Session.get('dest');           
+    },
+    origin: function()
+    {
+       return Session.get('orgin');
+    }    
+
+  });
+
+ Template.password.events({
+	  'submit form': function(event) {
+		  event.preventDefault();
+	  	  var emailCurrentUser = event.target.email.value;  
+		  Accounts.forgotPassword({email: emailCurrentUser},function(err) {
+			if (err) {
+			  if (err.message === 'User not found [403]') {
+				alert('This email does not exist.');
 			  } else {
-				// Get rid of the token so the forms render properly when they come back.
-				Session.set('resetPasswordToken', null);
+				alert('We are sorry but something went wrong.');
 			  }
-			})
-		  } else {
-		  // Looks like they blew it
-		  template.find('#form-messages').html('Your password is too weak!');
-		}
-
-		return false;
+			} else {
+			  alert('Email Sent. Check your mailbox.');
+			}
+      });
 	  }
-	});
-//end of this unfinisheed section	  	
+
+ });
+	
+Template.contactseller.events({  
+	'submit form': function(event) {
+    //event.preventDefault();
+    var buyerNameVar = event.target.buyername.value;
+	console.log("FROM: " + buyerNameVar);	
+	var buyerEmailVar = event.target.buyeremail.value;		
+	var buyerPhoneVar = event.target.buyerphone.value;
+	var subjectVar = event.target.subject.value;		
+	var messageVar = event.target.message.value;	
+	var sellerEmailVar = event.target.selleremail.value;	
+	
+	var finalSubject = "CRS: I am interested in your " + subjectVar + "!";
+	var finalMessage = "Hello,\n\nMy name is " + buyerNameVar + ". " + messageVar + " You can reach out to me at " + buyerPhoneVar + " or by email.\n\nHope to hear from you soon.";	
+	Meteor.call('sendEmail',
+            sellerEmailVar,
+            buyerEmailVar,
+            finalSubject,
+            finalMessage);	
+      alert('Your message has been sent.');
+	}
+});
+	
+  Template.contactseller.helpers({  
+     cars: function(){
+		var car_id = Session.get('carID');  
+			return CarsCollection.findOne({CarID: car_id}); 
+	},
+	  profile: function(){
+			return ProfileCollection.findOne({email: Meteor.user().emails[0].address}); 
+	}
+  
+  });	
+ 
+
+//end of client 
 }
 
+	
 
-if (Meteor.isServer) {
+if (Meteor.isServer) 
+{
     // code here will only be run on the server
+	 Meteor.users.allow({remove: function () { return true; }});
+	
+	Meteor.startup( function() {
+		process.env.MAIL_URL =  'smtp://postmaster%40sandbox71546b4e0f2a44b4a19fb25a281ae0c7.mailgun.org:f37fbd3c612983aa87a538bff80911f2@smtp.mailgun.org:587';
+		Accounts.config({sendVerificationEmail: true, forbidClientAccountCreation: false}) 
+	});
+	
+    Meteor.methods({	
+		'sendEmail': function (to, from, subject, text) {
+		//check([to, from, subject, text], [String]);
 
-    Meteor.methods({
-    'insertLikeData': function(userEmail,carId){//recomandation algorithm done by Zeev Feldbeine, Copy Rights
+		// Let other method calls from the same client start running,
+		// without waiting for the email sending to complete.
+		this.unblock();
+
+		Email.send({
+		  to: to,
+		  from: from,
+		  subject: subject,
+		  text: text
+		});
+		
+		var new_subject = "From a CRS Seller";	
+		var new_text = "Thank you! I received your inquiry. I will be contacting you soon.";
+		this.unblock();	
+		Email.send({
+		  to: from,
+		  from: to,
+		  subject: new_subject,
+		  text: new_text
+		});	
+  },
+	
+  'insertLikeData': function(userEmail,carId){//recomandation algorithm done by Zeev Feldbeine, Copy Rights
         var item = LikesColllection.findOne({BuyerEmail: userEmail,CarID:carId});
         if(typeof item == 'undefined' || item ==null)
         {
@@ -683,6 +886,10 @@ if (Meteor.isServer) {
 //      console.log(SVMCollection.find({}).count()); 
       //return SVMCollection.find({});
        return SVMCollection.find({}, {sort: {rank: -1,distance: 1}}).fetch();
+    },
+    'GetLocation': function(emailuser)//get zip location done by Zeev Feldbeine, Copy Rights
+    {
+      return GetUserLocation(emailuser);
     }
 });
 
@@ -728,13 +935,13 @@ function InsertToSVMCollection(carItem,result,DistanceResult)//recomandation alg
       type: carItem.type,
       model: carItem.model,
       mileage: carItem.mileage,
-      cmpg: carItem.cmpg,
-      hmpg: carItem.hmpg,
+      mpgCity: carItem.mpgCity,
+      mpgHighway: carItem.mpgHighway,
       price: carItem.price,
-      engine: carItem.engine,
+      horsepower: carItem.horsepower,
       cylinder: carItem.cylinder,
-      ecolor: carItem.ecolor,
-      icolor: carItem.icolor,
+      color: carItem.color,
+      style: carItem.style,
       distance: DistanceResult,
       rank: result
     });
@@ -759,7 +966,8 @@ function hashCode(str)//recomandation algorithm done by Zeev Feldbeine, Copy Rig
 //calculate navigation distance between two points of latitude and longitude
 //this function is Haversine formula, which is a famous navigation algorithm to calculate distance between two points in the map
 //developed and implemented by Zeev Feldbeine, Copy Rights
-function haversine(lat1,lng1,lat2,lng2) {
+function haversine(lat1,lng1,lat2,lng2) 
+{
     r = 6371; // average radius of the earth in km
     dLat = Math.toRadians(lat2 - lat1);
     dLon = Math.toRadians(lng2 - lng1);
@@ -783,6 +991,19 @@ function GetDistanceZip(Selleremail,useremail)//developed and implemented by Zee
   if(typeof zipcodes.lookup(zip2) == 'undefined') return Number.MAX_VALUE;
   return zipcodes.distance(zip1, zip2); //In Miles
 }
-	
+
+//returns the location of user by email
+function GetUserLocation(useremail)//developed and implemented by Zeev Feldbeine, Copy Rights
+{    
+//  if(typeof useremail == 'undefined' || useremail == null) return Number.MAX_VALUE;
+  var profileUser1= ProfileCollection.findOne({ email: useremail});  
+  if(typeof profileUser1 == 'undefined') return null;
+  var zipcodes = Meteor.npmRequire('zipcodes');  
+  var zip1 = Math.abs(profileUser1.zip);
+  var location = zipcodes.lookup(zip1);
+  if(typeof location == 'undefined') return zipcodes.lookup(33180);
+  return location;
 }
 
+	
+}
