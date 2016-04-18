@@ -12,12 +12,10 @@ selling form,
 Recomandation algorithm,
 editing profile,
 editing car sells,
-Distance Recomandation Algorithm
-
-
-Developers:
-Zeev Feldbeine,
-Brenda Izquierdo
+Distance Recomandation Algorithm,
+list view,
+map,
+delete car
 
 Contact Information:
 zfeld003@gmail.edu
