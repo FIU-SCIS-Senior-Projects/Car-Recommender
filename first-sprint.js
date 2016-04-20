@@ -726,7 +726,7 @@ Template.contactseller.events({
 	'submit form': function(event) {
     //event.preventDefault();
     var buyerNameVar = event.target.buyername.value;
-	console.log("FROM: " + buyerNameVar);	
+	//console.log("FROM: " + buyerNameVar);	
 	var buyerEmailVar = event.target.buyeremail.value;		
 	var buyerPhoneVar = event.target.buyerphone.value;
 	var subjectVar = event.target.subject.value;		
