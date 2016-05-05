@@ -1,0 +1,1435 @@
+<template name="main">
+<br><img src="logo.png" style="width:750px;height:100px;display: block;margin: 0 auto;"><br>	
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+ <body>
+ {{#if loggingIn}}
+    <!--<p>Loading...</p>-->
+  {{else}}
+    {{#if currentUser}}     
+       <header> {{> dashboard}} </header>      
+
+    <aside>
+        {{> yield "aside"}}
+    </aside>
+    {{else}}
+    {{> yield}}<!--tables and forms including the registration and the log in forms-->
+    {{/if}}
+  {{/if}}
+
+  </body>
+	
+</template>
+
+
+<template name="register">
+ 	<form>
+	<div class="col-xs-4">
+		<br>
+		<legend>Registration</legend>
+		<small>To create an account, fill the form below:</small>
+
+    <p>{{RegistrationError}}</P>
+		<input type="text" name="registerFirstName" placeholder="First Name..." class="form-control" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+		<br>
+		<input type="text" name="registerLastName" placeholder="Last Name..." class="form-control" pattern="^[a-zA-Z ]+$"  maxlength="20" required>
+		<br>
+		<input type="email" name="registerEmail" placeholder="Email..." class="form-control" required>
+		<br>
+		<input type="password" id="registerPassword" name="registerPassword" placeholder="Password..." class="form-control" minlength="6" maxlength="30" required>
+		<br>
+		<input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password..." onkeyup="checkPass()" class="form-control" minlength="6" maxlength="30" required>
+		<script>
+		function checkPass() 
+		{
+			var password = document.getElementById("registerPassword");
+			var confirm_password = document.getElementById("confirmPassword");
+				function validatePassword()
+				{
+		  			if(password.value != confirm_password.value) 
+					{
+						confirm_password.setCustomValidity("Passwords Don't Match");
+		  			} 
+					else 
+					{
+						confirm_password.setCustomValidity('');
+		  			}
+				}
+			password.onchange = validatePassword;
+			confirm_password.onkeyup = validatePassword;
+		}  
+		</script>	
+		<br>
+		<input type="text" name="registerAddress" placeholder="Address..." class="form-control" maxlength="300" required>
+		<br>
+		<input type="text" name="registerState" placeholder="State..." class="form-control" attern="^[a-zA-Z ]+$"  maxlength="20" required>
+		<br>
+		<input type="text" name="registerZip" placeholder="Zip Code..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required>
+		<br>
+		<input type="tel" name="registerTelephone" placeholder="Phone Number..." class="form-control" pattern="^[0-9 ]+$" maxlength="35" required>
+	    <br>
+		<input type="submit" class="btn btn-primary btn-lg active" value="Register" id="registratonsubmit">
+    <a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
+	</div>
+	</form>
+
+</template>
+
+<template name="login">
+    <form data-toggle="validator" role="form">
+	    <div class="col-xs-4">
+		  <br><br><br>
+		  <legend>Login</legend>
+           <p >{{LogError}}</p>      
+
+          <label class="sr-only" for="form-useremail"> Email </label>	  
+          <input type="email" name="loginEmail" placeholder="Email..." class="form-control" id="form-useremail" required>
+          <br>
+		      <label class="sr-only" for="form-password">Password</label>
+          <input type="password" name="loginPassword" placeholder="Password..." class="form-control" id="form-password" required>
+		      <br>
+          <input type="submit" class="btn btn-primary btn-lg btn-block" value="Login" id="submitlogin"><br>
+          <a href="/password">Forgot your password?</a> 
+          <br>
+		  <a href="/register" >Don't have an account yet? Register for free</a>
+		  </div>	
+    </form>
+</template>
+
+<template name="password">  
+    <form>
+		  <div class="col-xs-4">
+		  <br><br><br>	
+		  <legend>Recover Password</legend>	  	  
+		  <input type="text" id="email" placeholder="Enter Email..." class="form-control" required>
+		  <br>	
+		  <input type="submit" class="btn btn-primary btn-lg active" value="Get Reset Password Instructions">
+		  <p id="form-messages"></p>
+	  </div>	  
+    </form>
+</template>  
+
+
+<template name="dashboard">
+    <div class="container">
+         <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">       
+        <nav>
+          <ul class="nav nav-tabs nav-justified">
+			<li class="{{ activeIfTemplateIs '' }}"><a href="/">Home</a></li>
+            <li class="{{ activeIfTemplateIs 'favorites' }}"><a href="/favorites">Favorites</a></li>
+            <li class="{{ activeIfTemplateIs 'sell' }}" id="sellmenu"><a href="/sell">Sell</a></li>            
+            <li class="{{ activeIfTemplateIs 'profile' }}"><a href="/profile">Profile</a></li>
+            <li class="{{ activeIfTemplateIs 'inventory' }}"><a href="/inventory">Inventory</a></li>
+            <li><a href="/" class="logout" id= "logoutmenu">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+</template>
+
+<template name="home">
+  <br><br><br>  
+  <div id="carousel-example-generic" class="carousel slide container" data-ride="carousel">
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+   {{> slidercars2}}
+  {{#each cars}}
+        {{> slidercars}}         
+  {{/each}}
+  
+  </div>
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>  
+  <legend>System Recomandations</legend>  
+</div>
+
+<!--new stuff-->
+{{> homelayoutview}}
+
+</template>
+
+<template name="slidercars">
+    <div class="item">
+      <img src="{{picture}}" alt="..." class="img-rounded container" id="carpicture" style="width:700px;height:300px;">      
+      <div class="carousel-caption" >      
+      <p class="">Price:${{price}}</p>
+      <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton" ><i class={{likesign}}></i></button>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton"><i class="glyphicon glyphicon-info-sign"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="contactbutton" data-toggle="popover" title="<a href='/contactseller'><font color='Black'>Contact Seller</font></a>" data-content="<font color='Black'>{{popoverdata}}</font>" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>  
+      {{#if selected}}
+      		<div name="zeevtable" class="zeevtable" id="zeevtable">
+      			{{>carinfotable}}
+      		</div> 
+      {{/if}}     
+      </div>
+    </div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script> 
+
+</template>
+
+<template name="slidercars2">
+    <div class="item active">
+      <img src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/glowing-green-neon-icons-arrows/110949-glowing-green-neon-icon-arrows-arrow1-left-right1.png" alt="..." class="img-rounded container"  style="width:700px;height:300px;">      
+      <div class="carousel-caption">              
+      <p>Price:</p>
+      <button type="button" class="btn btn-success btn-circle btn-lg" id="likebutton"><i class="glyphicon glyphicon-ok"></i></button>
+      <button type="button" class="btn btn-info btn-circle btn-lg" id="infobutton" ><i class="glyphicon glyphicon-info-sign"></i></button>
+      <button type="button" class="btn btn-danger btn-circle btn-lg" id="Contactbutton" data-toggle="popover" title="<a href='/contactseller'><font color='Black'>Seller Contact</font></a>" data-content="<font color='Black'>name: zeev feldbeine <br> Email: zfeld003@fiu.edu <br> Phone: 3059342453 <br>" data-html="true"><i class="glyphicon glyphicon-earphone"></i></button>
+      </div>
+    </div> 
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+</template>
+
+
+<template name="carinfotable">
+<table class="table table-bordered container" style="color:black; text-align:center; width:70%;">
+  <thead>
+    <tr class="active">
+      <th>properties</th>
+      <th>values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="info">
+      <th scope="row">price</th>
+      <td>${{price}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">make</th>
+      <td>{{make}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">model</th>
+      <td>{{model}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">year</th>
+      <td>{{year}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">style</th>
+      <td>{{style}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">color</th>
+      <td>{{color}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">cylinder</th>
+      <td>{{cylinder}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">mileage</th>
+      <td>{{mileage}}</td>
+    </tr>
+  </tbody>
+</table>
+</template>
+
+<template name="Contacttable">
+<table class="table table-bordered container" style="color:black; text-align:center; width:70%;">
+  <thead>
+    <tr class="active">
+      <th>properties</th>
+      <th>Contact info</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="info">
+      <th scope="row">First Name</th>
+      <td>{{fname}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">Last Name</th>
+      <td>{{fname}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">Email</th>
+      <td>{{email}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">phone</th>
+      <td>{{phone}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">State</th>
+      <td>{{state}}</td>
+    </tr>
+    <tr class="info">
+      <th scope="row">Zip Code</th>
+      <td>{{zip}}</td>
+    </tr>
+  </tbody>
+</table>
+</template>
+
+<template name="favorites">
+  <form>
+  <div class="col-xs-4 container">
+    <br>
+    <legend>Your Car favorites</legend>
+    {{#each carFavorites}}
+      {{#with CarsInfo}}
+       <img src="{{picture}}" alt="..." class="img-rounded container" id="favorites" style="width:420px;height:150px;">       
+        <div id="FavoritesInformation1">{{>carinfotable}}</div>
+        {{#with ContactInfo}}        
+        <div id="FavoritesInformation2">{{>Contacttable}}</div>
+        {{/with}}
+      {{/with}}
+      <br>
+      <button type="button" id = "favoritesshow" class="btn btn-primary btn-lg btn-block btn-info">Full Info</button>
+      <hr>
+    {{/each}}
+</div>
+</form>
+</template>
+
+
+<template name="sell">
+  	<form action="/inventory">
+		<div class="col-xs-4">
+			<script>	
+			  var request = new XMLHttpRequest();
+			  request.open('GET', 'http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n', true);		  
+			  request.onload = function() 
+			  {
+					if (this.status >= 200 && this.status < 400) 
+					{
+						 var resp = JSON.parse(this.response); 
+						 console.log(resp);
+						 var select_make = document.getElementById('selectMake');
+						 for(var i = 0; i < resp.makesCount; i++)
+						 {
+							 var opt = document.createElement('option');
+							 opt.value = resp.makes[i].name;
+							 opt.innerHTML = resp.makes[i].name;
+							 select_make.appendChild(opt); 
+						 }
+					} 
+					else { //error
+					}
+			  };
+			  request.onerror = function() {
+				// There was a connection error of some sort
+			  };
+			  request.send();
+				
+			  var select_model = document.getElementById('selectModel');
+			  var opt = document.createElement('option');	
+			  opt.value = "Select Model";
+			  opt.innerHTML = "Select Model";
+			  select_model.appendChild(opt); 
+			  document.getElementById('selectModel').options[0].disabled = true;
+			  var select_year = document.getElementById('selectYear');
+			  var opt = document.createElement('option');
+			  opt.value = "Select Year";
+			  opt.innerHTML = "Select Year";
+			  select_year.appendChild(opt); 
+			  document.getElementById('selectYear').options[0].disabled = true;
+			  var select_style = document.getElementById('selectStyle');
+			  var opt = document.createElement('option');	
+			  opt.value = "Select Style";
+			  opt.innerHTML = "Select Style";
+			  select_style.appendChild(opt); 
+			  document.getElementById('selectStyle').options[0].disabled = true;
+			  var select_color = document.getElementById('selectColor');
+			  var opt = document.createElement('option');	
+			  opt.value = "Select Color";
+			  opt.innerHTML = "Select Color";
+			  select_color.appendChild(opt); 
+			  document.getElementById('selectColor').options[0].disabled = true;
+			</script>	
+			<br>
+			<!--<p color="white">{{currentUser.emails.[0].address}}</p>-->
+			<legend>To sell a car, fill the form below:</legend>
+			<small>*All fields are required</small><br><br>
+			<script>
+			var displayImage = function() {
+				var carPic = document.getElementById('carPic');
+				//carPic.src = URL.createObjectURL(event.target.files[0]);
+			 carPic.src = event.target.value;
+			  };
+			</script>
+			<input type="text" name="picture" class="form-control" placeholder="Image Link..."  onchange="displayImage()" required>
+		<a href="http://postimage.org/" class="btn btn-primary btn-xs" target="popup" onclick="window.open('http://postimage.org/','name','width=600,height=400')">Get Img Link</a><br>    
+			<img src="https://www.volkswagen.co.uk/vw-testdrive/images/cars/summary-angled-transparent/no-selection.png" id="carPic" style="width:200px;height:100px;">
+			<br><br>
+			<select class="form-control" required id="selectMake" onchange="getModel()">
+					<option selected="selected" disabled>Select Make</option>
+			</select>
+			<br>
+			<script>
+			function getModel()
+			{
+				var select_model = document.getElementById('selectModel');
+				while (select_model.childElementCount > 1) {//faster option
+					select_model.removeChild(select_model.lastChild);
+				}
+				var make = document.getElementById("selectMake").value;
+				var request = new XMLHttpRequest();
+				var request_url = "https://api.edmunds.com/api/vehicle/v2/" + make + "/models?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 //var select_model = document.getElementById('selectModel');
+							 for(var i = 0; i < resp.modelsCount; i++)
+							 {
+								 var opt = document.createElement('option');
+								 opt.value = resp.models[i].name;
+								 opt.innerHTML = resp.models[i].name;
+								 select_model.appendChild(opt); 
+							 }
+						} 
+						else { //error
+						}
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+			}
+			</script>
+			<select class="form-control" required id="selectModel" onchange="getYear()"></select>
+			<br>
+			<script>
+			function getYear()
+			{
+				var select_year = document.getElementById('selectYear');
+				while (select_year.childElementCount > 1) {//faster option
+					select_year.removeChild(select_year.lastChild);
+				}
+				var model = document.getElementById("selectModel").value;
+				var make = document.getElementById("selectMake").value;
+				var request = new XMLHttpRequest();
+				var request_url = "http://api.edmunds.com/api/vehicle/v2/" + make +"/" + model +"/years?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 //var select_model = document.getElementById('selectModel');
+							 for(var i = 0; i < resp.yearsCount; i++)
+							 {
+								 var opt = document.createElement('option');
+								 opt.value = resp.years[i].year;
+								 opt.innerHTML = resp.years[i].year;
+								 select_year.appendChild(opt); 
+							 }
+						} 
+						else { //error
+						}
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+			}
+			</script>
+			<select class="form-control" required id="selectYear" onchange="getStyle()"></select>
+			<br>
+			<script>
+			function getStyle()
+			{
+				var select_style = document.getElementById('selectStyle');
+				while (select_style.childElementCount > 1) {//faster option
+					select_style.removeChild(select_style.lastChild);
+				}
+				var model = document.getElementById("selectModel").value;
+				var make = document.getElementById("selectMake").value;
+				var year = document.getElementById("selectYear").value;
+				var request = new XMLHttpRequest();
+				var request_url = "https://api.edmunds.com/api/vehicle/v2/" + make + "/" + model +"/" + year + "/styles?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n&view=full";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 for(var i = 0; i < resp.stylesCount; i++)
+							 {
+								 var opt = document.createElement('option');
+								 opt.value = resp.styles[i].name;
+								 opt.innerHTML = resp.styles[i].name;
+								 select_style.appendChild(opt);
+							 }
+						} 
+						else { //error
+						}
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+				
+			}			
+			</script>
+			<select class="form-control" required id="selectStyle" onchange="getAttributes()"></select>
+			<br> 
+			<input type="hidden" id="mpg_city">
+			<input type="hidden" id="mpg_highway">
+			<input type="hidden" id="market">
+			<input type="hidden" id="vehicleSize">
+			<input type="hidden" id="vehicleStyle">
+			<input type="hidden" id="vehicleType">
+			<input type="hidden" id="horsepower">
+			<input type="hidden" id="configuration">
+			<input type="hidden" id="cylinder">
+			<input type="hidden" id="fuelType">
+			<input type="hidden" id="type">
+			<input type="hidden" id="numOfDoors">
+			<input type="hidden" id="squishVin">
+			<input type="hidden" id="equipmentType">
+			<input type="hidden" id="transmissionType">
+			<input type="hidden" id="trim">
+			<input type="hidden" id="submodel_body">
+			<input type="hidden" id="submodel_modelName">
+			<input type="hidden" id="options">
+			<p id="optionList" hidden></p>
+			<script>
+			function getAttributes()
+			{
+				var style = document.getElementById("selectStyle").value;
+				var model = document.getElementById("selectModel").value;
+				var make = document.getElementById("selectMake").value;
+				var year = document.getElementById("selectYear").value;
+				var styleID = "";
+				var request = new XMLHttpRequest();
+				var request_url = "https://api.edmunds.com/api/vehicle/v2/" + make + "/" + model +"/" + year + "/styles?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n&view=full";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 for(var i = 0; i < resp.stylesCount; i++)
+							 {
+								if(style == resp.styles[i].name)
+								{	 
+									styleID = resp.styles[i].id;
+									for(var j = 0; j < resp.styles[i].options.length; j++)
+									{
+										var node = document.createElement("P");
+										var content = document.createTextNode(resp.styles[i].options[j].category + ":");
+										node.appendChild(content);
+ 										document.getElementById("optionList").appendChild(node);										
+										for(var k = 0; k < resp.styles[i].options[j].options.length; k++)
+										{
+											var node_list = document.createElement("LI");
+											var content_list = document.createTextNode(resp.styles[i].options[j].options[k].name);
+											node_list.appendChild(content_list);
+											document.getElementById("optionList").appendChild(node_list);	
+										}
+    								}									 
+									var x = document.getElementById("optionList").innerHTML;
+									var str = x.replace(/"/g, " inch");
+									document.getElementById("options").value = str; 
+									if(typeof(resp.styles[i].MPG) != "undefined")
+									{
+										document.getElementById("mpg_city").value = resp.styles[i].MPG.city;
+										document.getElementById("mpg_highway").value = resp.styles[i].MPG.highway;
+									}
+									if(typeof(resp.styles[i].categories) != "undefined")
+									{
+										document.getElementById("market").value = resp.styles[i].categories.market;
+										document.getElementById("vehicleSize").value = resp.styles[i].categories.vehicleSize;
+										document.getElementById("vehicleStyle").value = resp.styles[i].categories.vehicleStyle;
+										document.getElementById("vehicleType").value = resp.styles[i].categories.vehicleType;
+									}
+								    if(typeof(resp.styles[i].engine) != "undefined")
+									{
+										document.getElementById("horsepower").value = resp.styles[i].engine.horsepower;
+										document.getElementById("configuration").value = resp.styles[i].engine.configuration;
+										document.getElementById("cylinder").value = resp.styles[i].engine.cylinder;
+										document.getElementById("fuelType").value = resp.styles[i].engine.fuelType;
+										document.getElementById("type").value = resp.styles[i].engine.type;
+									}
+									document.getElementById("numOfDoors").value = resp.styles[i].numOfDoors;
+									document.getElementById("squishVin").value = resp.styles[i].squishVins[0];
+									if(typeof(resp.styles[i].transmission) != "undefined")
+									{
+										document.getElementById("equipmentType").value = resp.styles[i].transmission.equipmentType;
+										document.getElementById("transmissionType").value = resp.styles[i].transmission.transmissionType;
+									}
+									document.getElementById("trim").value = resp.styles[i].trim;
+									if(typeof(resp.styles[i].submodel) != "undefined")
+									{
+										document.getElementById("submodel_body").value = resp.styles[i].submodel.body;
+										document.getElementById("submodel_modelName").value = resp.styles[i].submodel.modelName;
+									}
+								}
+							 }
+							 function colorFunction()
+							 {
+								 var select_color = document.getElementById('selectColor');
+								 while (select_color.childElementCount > 1) {//faster option
+										select_color.removeChild(select_color.lastChild);
+								 }
+								 var color_request = new XMLHttpRequest();
+								 var color_request_url = "https://api.edmunds.com/api/vehicle/v2/styles/" + styleID + "/colors?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n";
+								 console.log(color_request_url);	
+								 color_request.open('GET', color_request_url, true);		  
+								 color_request.onload = function() 
+								 {
+										if (this.status >= 200 && this.status < 400) 
+										{
+											var color_resp = JSON.parse(this.response); 
+							 				console.log(color_resp);
+											for(var i = 0; i < color_resp.colorsCount; i++)
+											{
+												 var opt = document.createElement('option');
+												 opt.value = color_resp.colors[i].name;
+												 opt.innerHTML = color_resp.colors[i].name;
+												 select_color.appendChild(opt);
+											}
+										}
+									 else {//error
+									 }
+								 };
+								 color_request.onerror = function() {
+									// There was a connection error of some sort
+								};
+								color_request.send();
+								 
+							  }
+							  colorFunction();
+						  }
+						  else { //error
+						  }
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+				
+			}			
+			</script>
+			<select class="form-control" required id="selectColor"></select>
+			<br>			
+			<small>*For the section below, enter only numeric characters</small><br>
+			<input type="text" id="mileage" class="form-control" placeholder="Mileage" pattern="^[0-9 ]+$" maxlength="10" required>
+			<br>					
+			<input type="text" id="price" class="form-control" placeholder="Price in US Dollars" pattern="^[0-9 ]+$" maxlength="10" required>
+			<br>
+			<input type="submit" class="btn btn-primary btn-lg active" value="Sell Car" id="registratonsubmit">
+		<a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>        
+		</div>
+	</form> 
+</template>
+
+
+<!-- Displays current user data and cars being sold by said user-->
+<template name="profile">
+	<form>
+		<div class="col-xs-3"><br><br>
+			{{#with profile}} 
+			<div class="row">
+				<div class="panel panel-default panel-transparent">
+            		<div class="panel-heading">
+						<h3 class="panel-title">{{fname}} {{lname}}</h3>
+                    </div>
+					<div class="panel-body">
+              			<table class="table table-user-information">
+								<tbody>
+									  <tr>
+										<td><p>Email</p></td>
+										<td>{{email}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Phone</p></td>
+										<td>{{phone}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Address</p></td>
+										<td>{{address}}</td>
+									  </tr>
+									  <tr>	
+										<td><p>State</p></td>
+										<td>{{state}}</td>
+									  </tr>
+									  <tr>
+										<td><p>Zip Code</p></td>
+										<td>{{zip}}</td>
+									  </tr>
+								  </tbody>
+						  </table>
+                  	</div>	
+				</div>
+				<a href="/updateprofile"><input type="submit" class="btn btn-primary btn-lg active" value="Update"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/changepassword"><input type="submit" class="btn btn-info btn-lg active" value="Change Password"></a><br><br><a href="/#"><input type="submit" class="btn btn-danger btn-lg active" value="Delete Account" id="deleteprofilebutton"></a>
+			</div>	
+			{{/with}}
+		</div>
+	</form>		
+</template>
+
+<template name="updateprofile">
+	<form action="/profile">
+		<div class="col-xs-3">
+			<legend>Update Your Data</legend>
+			{{#with profile}} 
+			<small>*No need to fill all fields</small><br>
+			<label>First Name</label>
+			<input type="text" name="firstName" class="form-control" placeholder={{fname}}>
+			<label>Last Name</label>
+			<input type="text" name="lastName" class="form-control" placeholder={{lname}}>
+			<label>Address</label>
+			<input type="text" name="address" class="form-control" placeholder={{address}}>
+			<label>State</label>
+			<input type="text" name="state" class="form-control" placeholder={{state}}>
+			<label>Zipcode</label>
+			<input type="text" name="zipcode" class="form-control" placeholder={{zip}}>
+			<label>Phone Number</label>
+			<input type="text" name="phone" class="form-control" placeholder={{phone}}>
+			{{/with}} 
+			<br><input type="submit" class="btn btn-primary btn-lg active" value="Update" id="updatesubmit">
+			<a href="/profile" class="btn btn-secondary btn-lg active" role="button">Back</a> 
+		</div>
+	</form>		
+</template>
+	
+<template name="changepassword">
+	<form action="/#">
+		<div class="col-xs-3">
+			<legend>Change Your Password</legend>
+			<label>Enter Old Password</label>
+			<input type="password" class="form-control" name="oldPassword" minlength="6" maxlength="30" required>
+			<label>Enter New Password</label>
+			<input type="password" class="form-control" id="pswd" name="newPassword" minlength="6" maxlength="30" required>
+			<label>Confirm New Password</label>
+			<input type="password" class="form-control" id="npswd" name="confirmNewPassword" minlength="6" maxlength="30"  onkeyup="checkPass()" required>
+			<script>
+			function checkPass() 
+			{
+				var password = document.getElementById("pswd");
+				var confirm_password = document.getElementById("npswd");
+					function validatePassword()
+					{
+						if(password.value != confirm_password.value) 
+						{
+							confirm_password.setCustomValidity("Passwords Don't Match");
+						} 
+						else 
+						{
+							confirm_password.setCustomValidity('');
+						}
+					}
+				password.onchange = validatePassword;
+				confirm_password.onkeyup = validatePassword;
+		    }  
+		    </script>	
+			<br><input type="submit" class="btn btn-info btn-lg active" value="Change Password" id="changepasswordsubmit">
+			<a href="/profile" class="btn btn-secondary btn-lg active" role="button">Back</a> 
+		</div>
+	</form>		
+</template>	
+
+
+<template name="inventory">
+	<br>
+	<div class="container">
+	{{#each cars}}
+	<div style="float: left; clear: none;padding: 25px;"> 
+		<div class="panel panel-default panel-transparent">
+       		<div class="panel-heading">
+				<h3 class="panel-title">{{year}} {{make}} {{model}}</h3>
+                    </div>
+					<div class="panel-body">
+              			<table class="table table-user-information">
+								<tbody>
+									  <tr><img align="middle" src={{picture}} style="width:200px;height:120px;"></tr>
+									  <tr>
+										<td><p>Price</p></td>
+										<td><p><b>${{price}}</b></p></td>
+									  </tr>
+									  <tr>
+										<td><p>Style</p></td>
+										<td><p>{{style}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Mileage</p></td>
+										<td><p>{{mileage}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Color</p></td>
+										<td><p>{{color}}</p></td>
+									  </tr>
+								</tbody>
+							<a href="/details"><input type="submit" class="btn btn-secondary btn-lg active" value="See Details" id="details"></a>
+							&nbsp;&nbsp;<a href="/updatecars"><input type="submit" class="btn btn-success btn-lg active" value="Update" id="updatecarbutton"></a>&nbsp;&nbsp;<input type="submit" class="btn btn-danger btn-lg active" value="Delete" id="deletecarbutton">
+						</table>
+                  	</div>	
+				</div>	
+			<br>
+		</div>
+	{{/each}}
+	</div>	
+</template>
+
+<template name="contactseller">
+	<form action="/">
+		<div class="col-xs-4">
+		 <div class="form-group"> 
+      	  	<br><br>
+			<p>Name</p> 
+			{{#with profile}}
+      	    <input type="text" class="form-control" id="buyername" value="{{fname}} {{lname}}">
+			<br> 
+			<p>Email</p>  
+    	    <input type="email" class="form-control" id="buyeremail" value="{{email}}">
+			<br> 
+			<p>Phone Number</p>  
+    	    <input type="text" class="form-control" id="buyerphone" value="{{phone}}"> 
+		    <br> 
+			{{/with}} 
+			{{#with cars}} 
+			<p>Message</p>  
+			<textarea class="form-control" rows="5" id="message" value="I am interested in the {{color}} {{year}} {{make}} {{model}} {{style}} that you are selling."></textarea>
+			<br>  
+    	    <input class="form-control" id="selleremail" value="{{email}}" type="hidden"> 
+			  <input class="form-control" id="subject" value="{{year}} {{make}} {{model}}" type="hidden">  
+			<input type="submit" class="btn btn-primary btn-lg active" value="Send" id="contactsellersubmit">
+			<a href="/" class="btn btn-secondary btn-lg active" role="button">Back</a>         
+			{{/with}}
+		 </div>		 
+		</div>
+	</form>
+</template>
+
+<template name="details">
+	<form>
+	<br><br>	
+	{{#with cars}}
+	<div class="col-xs-4">
+	  <a href="/inventory" class="btn btn-primary btn-lg active" role="button">Back</a>&nbsp;&nbsp;
+	  <a href="/updatecars"><input type="submit" class="btn btn-success btn-lg active" value="Update" id="updatecarbutton"></a>&nbsp;&nbsp;
+	  <a href="/inventory"><input type="submit" class="btn btn-danger btn-lg active" value="Delete" id="deletecarbutton"></a><br><br> 
+		<div class="panel panel-default panel-transparent">
+       		<div class="panel-heading">
+				<h3 class="panel-title">{{year}} {{make}} {{model}}</h3>
+                    </div>
+					<div class="panel-body">
+              			<table class="table table-user-information">
+								<tbody>
+									  <tr><img src={{picture}} align="middle" style="width:400px;height:240px;"></tr>
+									  <tr>
+										<td><h4>Price</h4></td>
+										<td><h4><b>${{price}}</b></h4></td>
+									  </tr>
+									  <tr>
+										<td><p>Style</p></td>
+										<td><p>{{style}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Mileage</p></td>
+										<td><p>{{mileage}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Color</p></td>
+										<td><p>{{color}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>City MPG</p></td>
+										<td><p>{{mpgCity}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Highway MPG</p></td>
+										<td><p>{{mpgHighway}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Market</p></td>
+										<td><p>{{market}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Vehicle Size</p></td>
+										<td><p>{{vehicleSize}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Vehicle Style</p></td>
+										<td><p>{{vehicleStyle}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Vehicle Type</p></td>
+										<td><p>{{vehicleType}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Horsepower</p></td>
+										<td><p>{{horsepower}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Configuration</p></td>
+										<td><p>{{configuration}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Cylinder</p></td>
+										<td><p>{{cylinder}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Fuel Type</p></td>
+										<td><p>{{fuelType}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Type</p></td>
+										<td><p>{{type}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Number of Doors</p></td>
+										<td><p>{{numOfDoors}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Squish Vin</p></td>
+										<td><p>{{squishVin}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Equipment Type</p></td>
+										<td><p>{{equipmentType}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Transmission Type</p></td>
+										<td><p>{{transmissionType}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Trim</p></td>
+										<td><p>{{trim}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Submodel Body</p></td>
+										<td><p>{{submodelBody}}</p></td>
+									  </tr>
+									  <tr>
+										<td><p>Submodel Name</p></td>
+										<td><p>{{submodelModelName}}</p></td>
+									  </tr>
+								</tbody>
+							  <script>
+									document.getElementById("moreOptions").innerHTML = "{{moreOptions}}";
+							  </script>
+							  <p id="moreOptions" style="font-size:14px"></p>	
+						</table>
+                  	</div>	
+				</div>	
+			<br>
+		    <a href="/inventory" class="btn btn-primary btn-lg active" role="button">Back</a>&nbsp;&nbsp;
+	  	    <a href="/updatecars"><input type="submit" class="btn btn-success btn-lg active" value="Update" id="updatecarbutton"></a>&nbsp;&nbsp;
+	  	    <a href="/inventory"><input type="submit" class="btn btn-danger btn-lg active" value="Delete" id="deletecarbutton"></a> 
+		</div>
+	{{/with}}
+	</form>
+</template>
+
+
+<template name="updatecars">
+	<form action="/inventory">
+		 <div class="col-xs-4">
+			{{#with cars}}
+			<script>	
+			  var request = new XMLHttpRequest();
+			  request.open('GET', 'http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n', true);		  
+			  request.onload = function() 
+			  {
+					if (this.status >= 200 && this.status < 400) 
+					{
+						 var resp = JSON.parse(this.response); 
+						 console.log(resp);
+						 var select_make = document.getElementById('selectMake');
+						 for(var i = 0; i < resp.makesCount; i++)
+						 {
+							 var opt = document.createElement('option');
+							 opt.value = resp.makes[i].name;
+							 opt.innerHTML = resp.makes[i].name;
+							 select_make.appendChild(opt); 
+						 }
+					} 
+					else { //error
+					}
+			  };
+			  request.onerror = function() {
+				// There was a connection error of some sort
+			  };
+			  request.send();
+			  var select_model = document.getElementById('selectModel');
+			  var opt = document.createElement('option');
+			  opt.value = "{{model}}";
+			  opt.innerHTML = "{{model}}";
+			  select_model.appendChild(opt); 
+			  document.getElementById('selectModel').options[0].disabled = true;
+			  var select_year = document.getElementById('selectYear');
+			  var opt = document.createElement('option');
+			  opt.value = "{{year}}";
+			  opt.innerHTML = "{{year}}";
+			  select_year.appendChild(opt); 
+			  document.getElementById('selectYear').options[0].disabled = true;	
+			  var select_style = document.getElementById('selectStyle');
+			  var opt = document.createElement('option');
+			  opt.value = "{{style}}";
+			  opt.innerHTML = "{{style}}";
+			  select_style.appendChild(opt); 
+			  document.getElementById('selectStyle').options[0].disabled = true;	
+			  var select_color = document.getElementById('selectColor');
+			  var opt = document.createElement('option');
+			  opt.value = "{{color}}";
+			  opt.innerHTML = "{{color}}";
+			  select_color.appendChild(opt); 
+			  document.getElementById('selectColor').options[0].disabled = true;	
+			</script>	
+			<br><p>Select Image:</p>
+			<script>
+			var displayImage = function() {
+				var carPic = document.getElementById('carPic');
+				//carPic.src = URL.createObjectURL(event.target.files[0]);
+			 carPic.src = event.target.value;
+			  };
+			</script>
+			<input type="text" name="picture" class="form-control" value="{{picture}}" onchange="displayImage()" required>
+		<a href="http://postimage.org/" class="btn btn-primary btn-xs" target="popup" onclick="window.open('http://postimage.org/','name','width=600,height=400')">Get Img Link</a><br>    
+			<img src="{{picture}}" id="carPic" style="width:200px;height:100px;">
+			<br><br>
+			<p>Select Make:</p>
+			<select class="form-control" required id="selectMake" onchange="getModel()">
+				<option selected="selected" disabled>{{make}}</option>
+			</select>
+			<br>
+			<script>
+			function getModel()
+			{
+				var select_model = document.getElementById('selectModel');
+			    while (select_model.childElementCount > 1) {//faster option
+					select_model.removeChild(select_model.lastChild);
+				}
+				var make = document.getElementById("selectMake").value;
+				var request = new XMLHttpRequest();
+				var request_url = "https://api.edmunds.com/api/vehicle/v2/" + make + "/models?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 //var select_model = document.getElementById('selectModel');
+							 for(var i = 0; i < resp.modelsCount; i++)
+							 {
+								 var opt = document.createElement('option');
+								 opt.value = resp.models[i].name;
+								 opt.innerHTML = resp.models[i].name;
+								 select_model.appendChild(opt); 
+							 }
+						} 
+						else { //error
+						}
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+			}
+			</script>
+			<p>Select Model:</p>
+			<select class="form-control" required id="selectModel" onchange="getYear()"></select>
+			<br>
+			<script>
+			function getYear()
+			{
+				var select_year = document.getElementById('selectYear');
+				 while (select_year.childElementCount > 1) {//faster option
+					select_year.removeChild(select_year.lastChild);
+				}
+				var model = document.getElementById("selectModel").value;
+				var make = document.getElementById("selectMake").value;
+				var request = new XMLHttpRequest();
+				var request_url = "http://api.edmunds.com/api/vehicle/v2/" + make +"/" + model +"/years?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 //var select_model = document.getElementById('selectModel');
+							 for(var i = 0; i < resp.yearsCount; i++)
+							 {
+								 var opt = document.createElement('option');
+								 opt.value = resp.years[i].year;
+								 opt.innerHTML = resp.years[i].year;
+								 select_year.appendChild(opt); 
+							 }
+						} 
+						else { //error
+						}
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+			}
+			</script>
+			<p>Select Year:</p>
+			<select class="form-control" required id="selectYear" onchange="getStyle()"></select>
+			<br>
+			<script>
+			function getStyle()
+			{
+				var select_style = document.getElementById('selectStyle');
+				while (select_style.childElementCount > 1) {//faster option
+					select_style.removeChild(select_style.lastChild);
+				}
+				var model = document.getElementById("selectModel").value;
+				var make = document.getElementById("selectMake").value;
+				var year = document.getElementById("selectYear").value;
+				var request = new XMLHttpRequest();
+				var request_url = "https://api.edmunds.com/api/vehicle/v2/" + make + "/" + model +"/" + year + "/styles?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n&view=full";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 for(var i = 0; i < resp.stylesCount; i++)
+							 {
+								 var opt = document.createElement('option');
+								 opt.value = resp.styles[i].name;
+								 opt.innerHTML = resp.styles[i].name;
+								 select_style.appendChild(opt);
+							 }
+						} 
+						else { //error
+						}
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+				
+			}			
+			</script>
+			<p>Select Style:</p>
+			<select class="form-control" required id="selectStyle" onchange="getAttributes()"></select>
+			<br> 
+			<input type="hidden" id="mpg_city">
+			<input type="hidden" id="mpg_highway">
+			<input type="hidden" id="market">
+			<input type="hidden" id="vehicleSize">
+			<input type="hidden" id="vehicleStyle">
+			<input type="hidden" id="vehicleType">
+			<input type="hidden" id="horsepower">
+			<input type="hidden" id="configuration">
+			<input type="hidden" id="cylinder">
+			<input type="hidden" id="fuelType">
+			<input type="hidden" id="type">
+			<input type="hidden" id="numOfDoors">
+			<input type="hidden" id="squishVin">
+			<input type="hidden" id="equipmentType">
+			<input type="hidden" id="transmissionType">
+			<input type="hidden" id="trim">
+			<input type="hidden" id="submodel_body">
+			<input type="hidden" id="submodel_modelName">
+			<input type="hidden" id="options">
+			<p id="optionList" hidden></p>
+			<script>
+			function getAttributes()
+			{
+				var style = document.getElementById("selectStyle").value;
+				var model = document.getElementById("selectModel").value;
+				var make = document.getElementById("selectMake").value;
+				var year = document.getElementById("selectYear").value;
+				document.getElementById("optionList").innerHTML = "";
+				var styleID = "";
+				var request = new XMLHttpRequest();
+				var request_url = "https://api.edmunds.com/api/vehicle/v2/" + make + "/" + model +"/" + year + "/styles?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n&view=full";
+				console.log(request_url);	
+				request.open('GET', request_url, true);		  
+				request.onload = function() 
+				{
+						if (this.status >= 200 && this.status < 400) 
+						{
+							 var resp = JSON.parse(this.response); 
+							 console.log(resp);
+							 for(var i = 0; i < resp.stylesCount; i++)
+							 {
+								if(style == resp.styles[i].name)
+								{	 
+									styleID = resp.styles[i].id;
+									for(var j = 0; j < resp.styles[i].options.length; j++)
+									{
+										var node = document.createElement("P");
+										var content = document.createTextNode(resp.styles[i].options[j].category + ":");
+										node.appendChild(content);
+ 										document.getElementById("optionList").appendChild(node);										
+										for(var k = 0; k < resp.styles[i].options[j].options.length; k++)
+										{
+											var node_list = document.createElement("LI");
+											var content_list = document.createTextNode(resp.styles[i].options[j].options[k].name);
+											node_list.appendChild(content_list);
+											document.getElementById("optionList").appendChild(node_list);	
+										}
+    								}									 
+									var x = document.getElementById("optionList").innerHTML;
+									var str = x.replace(/"/g, " inch");
+									document.getElementById("options").value = str; 
+									if(typeof(resp.styles[i].MPG) != "undefined")
+									{
+										document.getElementById("mpg_city").value = resp.styles[i].MPG.city;
+										document.getElementById("mpg_highway").value = resp.styles[i].MPG.highway;
+									}
+									if(typeof(resp.styles[i].categories) != "undefined")
+									{
+										document.getElementById("market").value = resp.styles[i].categories.market;
+										document.getElementById("vehicleSize").value = resp.styles[i].categories.vehicleSize;
+										document.getElementById("vehicleStyle").value = resp.styles[i].categories.vehicleStyle;
+										document.getElementById("vehicleType").value = resp.styles[i].categories.vehicleType;
+									}
+								    if(typeof(resp.styles[i].engine) != "undefined")
+									{
+										document.getElementById("horsepower").value = resp.styles[i].engine.horsepower;
+										document.getElementById("configuration").value = resp.styles[i].engine.configuration;
+										document.getElementById("cylinder").value = resp.styles[i].engine.cylinder;
+										document.getElementById("fuelType").value = resp.styles[i].engine.fuelType;
+										document.getElementById("type").value = resp.styles[i].engine.type;
+									}
+									document.getElementById("numOfDoors").value = resp.styles[i].numOfDoors;
+									document.getElementById("squishVin").value = resp.styles[i].squishVins[0];
+									if(typeof(resp.styles[i].transmission) != "undefined")
+									{
+										document.getElementById("equipmentType").value = resp.styles[i].transmission.equipmentType;
+										document.getElementById("transmissionType").value = resp.styles[i].transmission.transmissionType;
+									}
+									document.getElementById("trim").value = resp.styles[i].trim;
+									if(typeof(resp.styles[i].submodel) != "undefined")
+									{
+										document.getElementById("submodel_body").value = resp.styles[i].submodel.body;
+										document.getElementById("submodel_modelName").value = resp.styles[i].submodel.modelName;
+									}
+								}
+							 }
+							 function colorFunction()
+							 {
+								 var select_color = document.getElementById('selectColor');
+								 while (select_color.childElementCount > 1) {//faster option
+										select_color.removeChild(select_color.lastChild);
+								 }
+								 var color_request = new XMLHttpRequest();
+								 var color_request_url = "https://api.edmunds.com/api/vehicle/v2/styles/" + styleID + "/colors?fmt=json&api_key=jnwuxve2gfa59urqkgg8925n";
+								 console.log(color_request_url);	
+								 color_request.open('GET', color_request_url, true);		  
+								 color_request.onload = function() 
+								 {
+										if (this.status >= 200 && this.status < 400) 
+										{
+											var color_resp = JSON.parse(this.response); 
+							 				console.log(color_resp);
+											for(var i = 0; i < color_resp.colorsCount; i++)
+											{
+												 var opt = document.createElement('option');
+												 opt.value = color_resp.colors[i].name;
+												 opt.innerHTML = color_resp.colors[i].name;
+												 select_color.appendChild(opt);
+											}
+										}
+									 else {//error
+									 }
+								 };
+								 color_request.onerror = function() {
+									// There was a connection error of some sort
+								};
+								color_request.send();
+								 
+							  }
+							  colorFunction();
+						  }
+						  else { //error
+						  }
+				};
+				request.onerror = function() {
+					// There was a connection error of some sort
+				};
+				request.send();
+				
+			}			
+			</script>
+			<p>Select Color:</p>
+			<select class="form-control" required id="selectColor"></select>
+			<br>			
+			<small>*For the section below, enter only numeric characters</small><br>
+			<p>Mileage:</p> 
+			<input type="text" id="mileage" class="form-control" value="{{mileage}}" pattern="^[0-9 ]+$" maxlength="10" required>
+			<br>
+			<p>Price (USD):</p> 
+			<input type="text" id="price" class="form-control" value="{{price}}" pattern="^[0-9 ]+$" maxlength="10" required>
+			<br>
+			<br><input type="submit" class="btn btn-primary btn-lg active" value="Update" id="updatesubmit" onClick="/inventory">
+			<a href="/inventory" class="btn btn-secondary btn-lg active" role="button">Back</a> 	 
+		{{/with}}
+		</div>
+	</form>		
+</template>
+
+<template name="homelayoutview">
+  <br>
+  <div class="container">
+  {{#each cars}}
+  <div style="float: left; clear: none;padding: 10px;"> 
+    <div class="panel panel-default panel-transparent">
+          <div class="panel-heading">
+        <h3 class="panel-title">{{make}} {{model}} {{year}} </h3>
+          </div>
+          <div class="panel-body">
+            <span align="center"><img src={{picture}} style="width:300px;height:150px;" class="img-rounded"></span>
+                <table class="table table-user-information">
+                <tbody>                    
+                    <tr>
+                    <td><p>Price</p></td>
+                    <td><p><b>${{price}}</b></p></td>
+                    </tr>
+                    <tr>
+                    <td><p>Type</p></td>
+                    <td><p>{{type}}</p></td>
+                    </tr>
+                    <tr>
+                    <td><p>Mileage</p></td>
+                    <td><p>{{mileage}}</p></td>
+                    </tr>
+                    <tr>
+                    <td><p>City MPG</p></td>
+                    <td><p>{{mpgCity}}</p></td>
+                    </tr>
+                    <tr>  
+                    <td><p>Highway MPG</p></td>
+                    <td><p>{{mpgHighway}}</p></td>
+                    </tr>
+                    <tr>  
+                    <td><p>Highway MPG</p></td>
+                    <td><p>{{mpgHighway}}</p></td>
+                    </tr>
+                    <tr>
+                    <td><p>Horsepower</p></td>
+                    <td><p>{{horsepower}}</p></td>
+                    </tr>
+                    <tr>
+                    <td><p>Cylinder</p></td>
+                    <td><p>{{cylinder}}</p></td>
+                    </tr>
+                    <tr>
+                    <td><p>Color</p></td>
+                    <td><p>{{color}}</p></td>
+                    </tr>
+                    <tr>
+                    <td><p><button  type="button" class="btn btn-primary btn-lg btn-block btn-success" value="Like" id="likebutton">{{likesign}}</button></p></td>
+                    <td><p> <button  type="button" class="btn btn-primary btn-lg btn-block btn-danger" value="Contact" id="contactbutton">Contact Info</button></p></td>	
+                    </tr>					
+					<tr>					
+					<td><p><a href="/contactseller"><input type="submit" class="btn btn-secondary btn-lg active" id="contactbutton" value="Send Email to Seller"></a></p></td>	 
+        			<td><p><button  type="button" class="btn btn-primary btn-lg btn-block " value="Map" id="mapbutton" data-toggle="modal" data-target="#myModal">Map</button></p></td>		
+					</tr>
+                </tbody>				 	
+            	</table>
+             </div>  
+        </div>  
+    </div>
+  {{/each}}
+  </div>     
+    {{> templatemodle}}    
+</template>
+
+<template name="templatemodle">
+  {{#with Cars}}
+  <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Map - {{Cars.make}} {{Cars.model}} {{Cars.year}}</h4>
+      </div>
+      <div class="modal-body">                
+      <div id="map"></div>
+    <script>
+    var map;
+    var directionsDisplay;
+    var request;
+    var directionsService;
+
+function initMap() {  
+  var chicago = {lat: 41.85, lng: -87.65};
+  var indianapolis = {lat: 39.79, lng: -86.14};    
+  map = new google.maps.Map(document.getElementById('map'), {    
+    zoom: 10,
+    center: chicago,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+  
+
+   directionsDisplay = new google.maps.DirectionsRenderer({
+    map: map
+  });
+
+  // Set destination, origin and travel mode.
+  request = {
+    destination: indianapolis,
+    origin: chicago,
+    travelMode: google.maps.TravelMode.DRIVING
+  };
+
+  // Pass the directions request to the directions service.
+  directionsService = new google.maps.DirectionsService();
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      // Display the route on the map.
+      directionsDisplay.setDirections(response);
+    }
+
+  });
+
+}
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuH_oLGBXOfCpORd5K1jzYlbo3z-bMuIo&callback=initMap" async defer></script>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{{/with}}
+</template>

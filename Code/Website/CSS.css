@@ -1,0 +1,169 @@
+/* CSS declarations go here */
+
+/* Main marketing message and sign up button */
+
+body {
+  background: url(pic.jpg) no-repeat center center fixed;
+	background-size: 100% 100%;  
+ 
+}
+
+.panel-transparent {
+	background: none;
+}
+
+.panel-transparent .panel-body{
+    background: rgba(46, 51, 56, 0.2)!important;
+}
+
+p, li {
+	color: whitesmoke;
+	font-size: 120%;
+}
+
+.p1{
+	color: white;
+	font-size: 120%;
+}
+
+
+h1 {
+   	font-family: Script MT;
+	-webkit-text-stroke: 1px black;
+   color: whitesmoke;
+   font-size: 400%;
+   text-shadow:
+       3px 3px 0 #000,
+     -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+}
+
+legend {
+	font-family: Script MT;
+	font-size: 180%;
+	color: whitesmoke;
+}
+	
+form {
+    margin-left: 34%;
+    margin-right:25%;
+    width: 100%;
+	color: white;
+}
+
+.form-control {
+	color:black;
+}
+
+.nav-justified {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.nav-justified > li > a {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 0;
+  font-weight: bold;
+  color: #777;
+  text-align: center;
+  background-color: #e5e5e5; /* Old browsers */
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#e5e5e5));
+  background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #e5e5e5 100%);
+  background-image:      -o-linear-gradient(top, #f5f5f5 0%, #e5e5e5 100%);
+  background-image:         linear-gradient(to bottom, #f5f5f5 0%,#e5e5e5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+  background-repeat: repeat-x; /* Repeat the gradient */
+  border-bottom: 1px solid #d5d5d5;
+}
+.nav-justified > .active > a,
+.nav-justified > .active > a:hover,
+.nav-justified > .active > a:focus {
+  background-color: #ddd;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.15);
+          box-shadow: inset 0 3px 7px rgba(0,0,0,.15);
+}
+.nav-justified > li:first-child > a {
+  border-radius: 5px 5px 0 0;
+}
+.nav-justified > li:last-child > a {
+  border-bottom: 0;
+  border-radius: 0 0 5px 5px;
+}
+
+@media (min-width: 768px) {
+  .nav-justified {
+    max-height: 52px;
+  }
+  .nav-justified > li > a {
+    border-right: 1px solid #d5d5d5;
+    border-left: 1px solid #fff;
+  }
+  .nav-justified > li:first-child > a {
+    border-left: 0;
+    border-radius: 5px 0 0 5px;
+  }
+  .nav-justified > li:last-child > a {
+    border-right: 0;
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+
+.carousel{
+  /*background: #fff;   */
+    background-image:none;
+    width: 700px;
+    height: auto;
+}
+
+
+.carousel-caption {
+    position: relative;
+    left: auto;
+    right: auto;
+}
+
+.carousel-control.right, .carousel-control.left {
+  background-image:none;
+}
+
+#carpicture {
+  width: 700px;
+  height: 300px;
+}
+
+
+#FavoritesInformation1{
+  display: none;  
+}
+#FavoritesInformation2{
+  display: none;  
+}
+
+
+#map {
+  width: 100%;
+  max-width: 100%;
+  height: 500px;
+}
