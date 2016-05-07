@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "svm": {
+      "version": "0.1.1"
+    },
+    "zipcodes": {
+      "version": "2.0.0"
+    }
+  }
+}
